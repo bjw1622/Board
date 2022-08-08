@@ -165,10 +165,10 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\User\SignUp.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\Board\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Board\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

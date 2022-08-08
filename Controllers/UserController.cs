@@ -44,11 +44,12 @@ namespace Board.Controllers
             // 로그인 성공
             if(check == 1)
             {
-                return View();
+                return RedirectToAction("Board", "Index");
             }
             //로그인 실패
             else
             {
+                return View();
             }
         }
         
