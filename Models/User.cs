@@ -51,5 +51,23 @@ namespace Board.Models
         //    con.Close();
         //    con.Dispose();
         //}
+        int check;
+        public int LoginCheck(string Email, string Pw)
+        {
+            Conn();
+            con.Open();
+            // 사용할 프로시저의 이름을 설정
+            using (SqlCommand com = new SqlCommand("dbo.loginCheck", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@email", Email);
+                com.Parameters.AddWithValue("@pw", Pw);
+                check = (int)com.ExecuteScalar();
+            }
+            con.Close();
+            con.Dispose();
+            Console.WriteLine(check);
+            return check;
+        }
     }
 }

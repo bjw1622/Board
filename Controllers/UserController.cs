@@ -12,11 +12,12 @@ namespace Board.Controllers
     {
         User user = new User();
         // GET: User
-        public ActionResult Index()
+        public ActionResult SignUp()
         {
             return View();
         }
 
+        [HttpPost]
         public ActionResult AddUsers(UserEntity obj)
         {
             user.AddUser(obj);
@@ -34,6 +35,23 @@ namespace Board.Controllers
         {
             return View();
         }
+
+
+        [HttpPost]
+        public ActionResult LoginCheck(string Email, string Pw)
+        {
+            var check = user.LoginCheck(Email,Pw);
+            // 로그인 성공
+            if(check == 1)
+            {
+                return View();
+            }
+            //로그인 실패
+            else
+            {
+            }
+        }
+        
     }
 }
 
