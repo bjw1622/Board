@@ -20,10 +20,9 @@
                 @Html.ActionLink("애플리케이션 이름", "Index", "User", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("홈", "Index", "User")</li>
-                    <li>@Html.ActionLink("정보", "Index", "User")</li>
-                    <li>@Html.ActionLink("연락처", "Index", "User")</li>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>@Html.ActionLink("로그인", "Login", "User")</li>
+                    <li>@Html.ActionLink("회원가입", "SignUp", "User")</li>
                 </ul>
             </div>
         </div>
