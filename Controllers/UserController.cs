@@ -17,6 +17,13 @@ namespace Board.Controllers
             return View();
         }
 
+        // 로그인
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        // 회원가입
         [HttpPost]
         public ActionResult AddUsers(UserEntity obj)
         {
@@ -31,10 +38,7 @@ namespace Board.Controllers
         //    return View();
         //}
 
-        public ActionResult Login()
-        {
-            return View();
-        }
+        
 
 
         [HttpPost]
