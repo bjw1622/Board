@@ -8,7 +8,6 @@ namespace Board.Controllers
 {
     public class BoardController : Controller
     {
-        // GET: Board
         public ActionResult Index()
         {
             return View();
