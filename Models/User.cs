@@ -20,6 +20,7 @@ namespace Board.Models
             con = new SqlConnection(constr);
         }
 
+        // 회원 가입
         public void AddUser(UserEntity obj)
         {
             Conn();
@@ -36,6 +37,41 @@ namespace Board.Models
             }
             con.Close();
             con.Dispose();
+        }
+
+        // 로그인
+        public int LogIn(UserEntity obj)
+        {
+            Conn();
+            con.Open();
+            int result;
+            using (SqlCommand com = new SqlCommand("dbo.LogInUser", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@Email", obj.Email);
+                com.Parameters.AddWithValue("@Pw", obj.Pw);
+                result = (int)com.ExecuteScalar();
+            }
+            con.Close();
+            con.Dispose();
+            return result;
+        }
+
+        // 이메일 중복 체크
+        public int EmailCheck(UserEntity obj)
+        {
+            Conn();
+            con.Open();
+            int result;
+            using (SqlCommand com = new SqlCommand("dbo.EmailCheck", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@Email", obj.Email);
+                result = (int)com.ExecuteScalar();
+            }
+            con.Close();
+            con.Dispose();
+            return result;
         }
     }
 }
