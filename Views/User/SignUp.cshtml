@@ -4,7 +4,7 @@
 }
 
 <h2>회원 가입</h2>
-<form style="display:flex; flex-direction:column;">
+<form class="form-horizontal"style="display:flex; flex-direction:column;">
     <div>
         <label>Email</label>
         <input type="email" name="email" value="" id="email" />
@@ -24,50 +24,3 @@
     </div>
     <button id="join" onclick="location.href='/User/Login'">회원 가입</button>
 </form>
-
-<script>
-    const _ = (element) => {
-        return document.querySelector(element);
-    }
-
-    // 이메일 중복체크
-    //_('#check').addEventListener('click', (event) => {
-    //    // TO DO
-    //    // 가입 된 이메일이 존재하는지 확인
-    //    event.preventDefault();
-    //    $.ajax({
-    //        url: '/User/CheckEmail',
-    //        type: 'post',
-    //        dataType: "string",
-    //        data: _('#email').value,
-    //        contentType: "application/json",
-    //        success: function (data) {
-    //            alter("등록성공");
-    //        },
-    //        error: function () {
-    //        }
-    //    });
-    //})
-
-    _("#join").addEventListener('click', () => {
-        const param = {
-            "Email": _('#email').value,
-            "Pw": _('#password').value,
-            "Name": _('#name').value,
-            "Birth": _('#birth').value,
-        }
-        console.log(param);
-        $.ajax({
-            url: '/User/AddUsers',
-            type: 'post',
-            dataType: "json",
-            data: JSON.stringify(param),
-            contentType: "application/json",
-            success: function (data) {
-                alter("등록성공");
-            },
-            error: function () {
-            }
-        });
-    })
-</script>
