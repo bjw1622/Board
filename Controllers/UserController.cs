@@ -12,6 +12,7 @@ namespace Board.Controllers
     public class UserController : Controller
     {
         User user = new User();
+        UserEntity userEntity = new UserEntity();
         
         // 회원 가입
         public ActionResult SignUp()
@@ -46,7 +47,7 @@ namespace Board.Controllers
             // 로그인 성공
             if(result == 1)
             {
-                Response.Write("<script>alert('로그인 성공')</script>");
+                Session["Email"] = obj.Email;
                 return RedirectToAction("Index", "Board");
             }
             // 로그인 실패
