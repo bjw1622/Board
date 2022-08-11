@@ -15,7 +15,8 @@ namespace Board.Controllers
         // SELECT로 데이터 가져오기
         public ActionResult Index()
         {
-            return View(boards.GetBoardList());
+            ViewBag.model = boards.GetBoardList();
+            return View();
         }
 
         // 글쓰기
