@@ -7,21 +7,24 @@
 <table class="table">
     <thead class="">
         <tr>
-            <th scope="col">#</th>
-            <th scope="col">제목</th>
-            <th scope="col">작성자</th>
-            <th scope="col">댓글</th>
-            <th scope="col">추천</th>
+            <th class="text-center" scope="col">#</th>
+            <th class="text-center" scope="col">제목</th>
+            <th class="text-center" scope="col">작성자</th>
+            <th class="text-center" scope="col">댓글</th>
+            <th class="text-center" scope="col">추천</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>TEST</td>
-            <td>백재원</td>
-            <td>12</td>
-            <td>3</td>
-        </tr>
+        @foreach (var item in Model)
+        {
+            <tr class="text-center">
+                <td class="text-center">@item.BoardNum</td>
+                <td class="text-center">@item.Title</td>
+                <td class="text-center">@item.Name</td>
+                <td class="text-center">@item.ReplyCount</td>
+                <td class="text-center">@item.RecommandCount</td>
+            </tr>
+        }
     </tbody>
 </table>
 <button class="btn btn-primary" onclick="location.href='/Board/Write'">글쓰기</button>

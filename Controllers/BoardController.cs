@@ -11,10 +11,11 @@ namespace Board.Controllers
     public class BoardController : Controller
     {
         Boards boards = new Boards();
+        
         // SELECT로 데이터 가져오기
         public ActionResult Index()
         {
-            return View();
+            return View(boards.GetBoardList());
         }
 
         // 글쓰기

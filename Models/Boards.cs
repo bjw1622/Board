@@ -14,6 +14,7 @@ namespace Board.Models
         int num = 0;
         // sqlConnection 
         private SqlConnection con;
+        List<BoardEntity> boardEntity = new List<BoardEntity>();
 
         public void Conn()
         {
@@ -41,6 +42,33 @@ namespace Board.Models
             }
             con.Close();
             con.Dispose();
+        }
+
+        // 회원 가입
+        public List<BoardEntity> GetBoardList()
+        {
+            Conn();
+            con.Open();
+            // 사용할 프로시저의 이름을 설정
+            using (SqlCommand com = new SqlCommand("dbo.SelectBoard", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.ExecuteNonQuery();
+                SqlDataReader reader = com.ExecuteReader();
+                while (reader.Read())
+                {
+                    BoardEntity boards = new BoardEntity();
+                    boards.BoardNum = Convert.ToInt32(reader["BoardNum"]);
+                    boards.Title = Convert.ToString(reader["Title"]);
+                    boards.Name = Convert.ToString(reader["Name"]);
+                    boards.ReplyCount = Convert.ToInt32(reader["ReplyCount"]);
+                    boards.RecommandCount = Convert.ToInt32(reader["RecommandCount"]);
+                    boardEntity.Add(boards);
+                }
+            }
+            con.Close();
+            con.Dispose();
+            return boardEntity;
         }
     }
 }
