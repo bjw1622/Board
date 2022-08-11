@@ -32,5 +32,12 @@ namespace Board.Controllers
             boards.WriteBoard(obj);
             return View();
         }
+
+        public ActionResult Detail(BoardEntity obj)
+        {
+            ViewBag.Model = boards.DetailBoard(obj);
+            Console.WriteLine(ViewBag.Model);
+            return View();
+        }
     }
 }

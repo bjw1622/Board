@@ -22,7 +22,7 @@ namespace Board.Models
             con = new SqlConnection(constr);
         }
 
-        // 회원 가입
+        // 게시판 글쓰기 기능
         public void WriteBoard(BoardEntity obj)
         {
             Conn();
@@ -44,7 +44,7 @@ namespace Board.Models
             con.Dispose();
         }
 
-        // 회원 가입
+        // 게시판 목록 가져오기
         public List<BoardEntity> GetBoardList()
         {
             Conn();
@@ -69,6 +69,30 @@ namespace Board.Models
             con.Close();
             con.Dispose();
             return boardEntity;
+        }
+
+        // 게시판 상세페이지 이동
+        public BoardEntity DetailBoard(BoardEntity obj)
+        {
+            Conn();
+            con.Open();
+            BoardEntity boards = new BoardEntity();
+            // 사용할 프로시저의 이름을 설정
+            using (SqlCommand com = new SqlCommand("dbo.DetailBoard", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@BoardNum", obj.BoardNum);
+                SqlDataReader reader = com.ExecuteReader();
+                while (reader.Read())
+                {
+                    boards.Title = Convert.ToString(reader["Title"]);
+                    boards.Name = Convert.ToString(reader["Name"]);
+                    boards.MainContent = Convert.ToString(reader["MainContent"]);
+                }
+            }
+            con.Close();
+            con.Dispose();
+            return boards;
         }
     }
 }

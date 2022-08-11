@@ -4,27 +4,47 @@
 
 <h2>Index</h2>
 <table class="table">
-    <thead class="">
+    <thead>
         <tr>
             <th class="text-center" scope="col">#</th>
             <th class="text-center" scope="col">제목</th>
             <th class="text-center" scope="col">작성자</th>
             <th class="text-center" scope="col">댓글</th>
             <th class="text-center" scope="col">추천</th>
+            <th class="text-center" scope="col">상세</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in ViewBag.model)
         {
             <tr class="text-center">
-                <td class="text-center">@item.BoardNum</td>
-                <td class="text-center">@item.Title</td>
+                <td class="text-center" id="board-num">@item.BoardNum</td>
+                <td class="text-center"><a href="/Board/Detail/@item.BoardNum">@item.Title</a></td>
                 <td class="text-center">@item.Name</td>
                 <td class="text-center">@item.ReplyCount</td>
                 <td class="text-center">@item.RecommandCount</td>
+                <td class="text-center">
+                    <button class="btn btn-default detail-btn" type="button">상세</button>
+                </td>
             </tr>
         }
     </tbody>
 </table>
 <button class="btn btn-primary" onclick="location.href='/Board/Write'">글쓰기</button>
 
+<script>
+    //document.querySelector(".detail-btn").addEventListener('click', () => {
+    //    const id = parseInt(document.querySelector('#board-num').innerText);
+    //    const param = { "BoardNum": id }
+    //    $.ajax({
+    //        url: '/Board/Detail',
+    //        type: 'post',
+    //        data: JSON.stringify(param),
+    //        contentType: "application/json",
+    //        success: function (data) {
+    //        },
+    //        error: function () {
+    //        }
+    //    });
+    //})
+</script>

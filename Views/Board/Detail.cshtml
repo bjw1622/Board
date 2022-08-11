@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewBag.Title = "Detail";
+}
+
+<h2>Detail</h2>
+<div class="form-group">
+    <label>제목</label>
+    <input type="text" class="form-control" placeholder="제목" name="Title" required>@ViewBag.Model.Title
+</div>
+
+<div class="form-group">
+    <label>작성자</label>
+    <input type="text" class="form-control" placeholder="이름" name="Name" readonly>@ViewBag.Model.Name
+</div>
+
+<div class="form-group">
+    <label for="exampleFormControlTextarea1">Example textarea</label>
+    <textarea class="form-control" name="MainContent" rows="5" required></textarea>@ViewBag.Model.MainContent
+</div>
