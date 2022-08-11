@@ -13,7 +13,7 @@ namespace Board.Controllers
     {
         User user = new User();
         UserEntity userEntity = new UserEntity();
-        
+
         // 회원 가입
         public ActionResult SignUp()
         {
@@ -51,7 +51,6 @@ namespace Board.Controllers
                 return RedirectToAction("Index", "Board");
             }
             // 로그인 실패
-            MessageBox.Show("회원 정보가 없습니다.");
             return View();
         }
 
@@ -60,13 +59,15 @@ namespace Board.Controllers
         public ActionResult EmailCheck(UserEntity obj)
         {
             var result = user.EmailCheck(obj);
-            // 이메일 중복
-            if (result == 1)
-            {
-                MessageBox.Show("이미 등록된 이메일 입니다!!");
-            }
             // 정상 작동
+            if (result != 1)
+            {
+                return View();
+
+            }  
+            // 이메일 중복
             return View();
+
         }
     }
 }
