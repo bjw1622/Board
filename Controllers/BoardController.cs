@@ -15,8 +15,7 @@ namespace Board.Controllers
         // SELECT로 데이터 가져오기
         public ActionResult Index()
         {
-            ViewBag.model = boards.GetBoardList();
-            return View();
+            return View(boards.GetBoardList());
         }
 
         // 글쓰기
@@ -33,10 +32,9 @@ namespace Board.Controllers
             return View();
         }
 
-        public ActionResult Detail(BoardEntity obj)
+        public ActionResult Detail(int boardNum)
         {
-            ViewBag.Model = boards.DetailBoard(obj);
-            Console.WriteLine(ViewBag.Model);
+            boards.DetailBoard(boardNum);
             return View();
         }
     }

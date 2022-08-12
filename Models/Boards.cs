@@ -72,16 +72,18 @@ namespace Board.Models
         }
 
         // 게시판 상세페이지 이동
-        public BoardEntity DetailBoard(BoardEntity obj)
+        public BoardEntity DetailBoard(int boardNum)
         {
             Conn();
             con.Open();
+            Console.WriteLine(boardNum);
             BoardEntity boards = new BoardEntity();
             // 사용할 프로시저의 이름을 설정
             using (SqlCommand com = new SqlCommand("dbo.DetailBoard", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
-                com.Parameters.AddWithValue("@BoardNum", obj.BoardNum);
+                Console.WriteLine(num);
+                com.Parameters.AddWithValue("@BoardNum", num);
                 SqlDataReader reader = com.ExecuteReader();
                 while (reader.Read())
                 {

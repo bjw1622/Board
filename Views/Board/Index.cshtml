@@ -15,10 +15,10 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in ViewBag.model)
+        @foreach (var item in Model)
         {
             <tr class="text-center">
-                <td class="text-center" id="board-num">@item.BoardNum</td>
+                <td class="text-center">@item.BoardNum</td>
                 <td class="text-center"><a href="/Board/Detail/@item.BoardNum">@item.Title</a></td>
                 <td class="text-center">@item.Name</td>
                 <td class="text-center">@item.ReplyCount</td>
@@ -31,20 +31,3 @@
     </tbody>
 </table>
 <button class="btn btn-primary" onclick="location.href='/Board/Write'">글쓰기</button>
-
-<script>
-    //document.querySelector(".detail-btn").addEventListener('click', () => {
-    //    const id = parseInt(document.querySelector('#board-num').innerText);
-    //    const param = { "BoardNum": id }
-    //    $.ajax({
-    //        url: '/Board/Detail',
-    //        type: 'post',
-    //        data: JSON.stringify(param),
-    //        contentType: "application/json",
-    //        success: function (data) {
-    //        },
-    //        error: function () {
-    //        }
-    //    });
-    //})
-</script>
