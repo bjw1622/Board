@@ -2,6 +2,11 @@
 @{
     ViewBag.Title = "Detail";
 }
+@{
+    string[] url = (HttpContext.Current.Request.Url.AbsoluteUri).Split('/');
+    var BoardNum = url[5];
+}
+
 
 <h2>Detail</h2>
 <div class="form-group">
@@ -20,8 +25,7 @@
 </div>
 
 <button class="btn btn-info" id="update">수정</button>
-<button class="btn btn-danger" onclick="/Board/">삭제</button>
-
+<button class="btn btn-danger" id="delete" onclick="location.href = '/Board/Delete/@BoardNum'">삭제</button>
 <script>
     document.querySelector('#update').addEventListener('click', () => {
         const param = {
@@ -36,11 +40,16 @@
             data: JSON.stringify(param),
             contentType: "application/json",
             success: function (data) {
-                console.log(data);
                 alert("수정 되었습니다.");
             },
             error: function () {
             }
         });
     })
+    document.querySelector('#delete').addEventListener('click', () => {
+        const flag = confirm('정말 삭제하시겠습니까?');
+        if (flag === true) {
+            return "/Borar/Delte/document.querySelector('#mainContent').value";
+}
+})
 </script>

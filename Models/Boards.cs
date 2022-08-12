@@ -111,5 +111,20 @@ namespace Board.Models
             con.Close();
             con.Dispose();
         }
+
+        // Delete 게시판
+        public void DeleteBoard(int boardNum)
+        {
+            Conn();
+            con.Open();
+            using (SqlCommand com = new SqlCommand("dbo.DeleteBoard", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@BoardNum", boardNum);
+                SqlDataReader reader = com.ExecuteReader();
+            }
+            con.Close();
+            con.Dispose();
+        }
     }
 }

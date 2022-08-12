@@ -20,6 +20,13 @@ namespace Board
                 new { controller = "Board", action = "Detail" }
             );
 
+            // "Board/Delete/{boardNum}"에 대한 Route
+            routes.MapRoute(
+                "Delete",
+                "Board/Delete/{boardNum}",
+                new { controller = "Board", action = "Delete" }
+            );
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

@@ -11,7 +11,6 @@ namespace Board.Controllers
     public class BoardController : Controller
     {
         Boards boards = new Boards();
-        
         // SELECT로 데이터 가져오기
         public ActionResult Index()
         {
@@ -29,28 +28,27 @@ namespace Board.Controllers
         public ActionResult Write(BoardEntity obj)
         {
             boards.WriteBoard(obj);
-            return View();
+            return RedirectToAction("Index", "Board");
         }
 
         // 상세 페이지
         public ActionResult Detail(int boardNum)
         {
-            Console.WriteLine(boardNum);
             return View(boards.DetailBoard(boardNum));
         }
 
         [HttpPost]
         // 상세 페이지 - 수정
-        public JsonResult Update (BoardEntity obj)
+        public JsonResult Update(BoardEntity obj)
         {
             boards.UpdateBoard(obj);
             return Json(obj);
         }
 
-        [HttpPost]
-        // 상세 페이지 - 수정
+        // 상세 페이지 - 삭제
         public ActionResult Delete(int boardNum)
         {
+            boards.DeleteBoard(boardNum);
             return RedirectToAction("Index", "Board");
         }
     }
