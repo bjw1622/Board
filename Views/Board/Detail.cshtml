@@ -6,15 +6,41 @@
 <h2>Detail</h2>
 <div class="form-group">
     <label>제목</label>
-    <input type="text" class="form-control" placeholder="제목" name="Title" required>
+    <input type="text" class="form-control" name="Title" id="title" value="@Model.Title">
 </div>
 
 <div class="form-group">
     <label>작성자</label>
-    <input type="text" class="form-control" placeholder="이름" name="Name" readonly>
+    <input type="text" class="form-control" name="Name" readonly value="@Model.Name">
 </div>
 
 <div class="form-group">
     <label for="exampleFormControlTextarea1">Example textarea</label>
-    <textarea class="form-control" name="MainContent" rows="5" required></textarea>
+    <textarea class="form-control" name="MainContent" id="mainContent" rows="5">@Model.MainContent</textarea>
 </div>
+
+<button class="btn btn-info" id="update">수정</button>
+<button class="btn btn-danger" onclick="/Board/">삭제</button>
+
+<script>
+    document.querySelector('#update').addEventListener('click', () => {
+        const param = {
+            "BoardNum": window.location.pathname.split('/')[3],
+            "Title": $('#title').val(),
+            "MainContent": document.querySelector('#mainContent').value,
+        }
+        $.ajax({
+            url: '/Board/Update',
+            type: 'post',
+            dataType: "json",
+            data: JSON.stringify(param),
+            contentType: "application/json",
+            success: function (data) {
+                console.log(data);
+                alert("수정 되었습니다.");
+            },
+            error: function () {
+            }
+        });
+    })
+</script>

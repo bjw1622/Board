@@ -32,10 +32,26 @@ namespace Board.Controllers
             return View();
         }
 
+        // 상세 페이지
         public ActionResult Detail(int boardNum)
         {
-            boards.DetailBoard(boardNum);
-            return View();
+            Console.WriteLine(boardNum);
+            return View(boards.DetailBoard(boardNum));
+        }
+
+        [HttpPost]
+        // 상세 페이지 - 수정
+        public JsonResult Update (BoardEntity obj)
+        {
+            boards.UpdateBoard(obj);
+            return Json(obj);
+        }
+
+        [HttpPost]
+        // 상세 페이지 - 수정
+        public ActionResult Delete(int boardNum)
+        {
+            return RedirectToAction("Index", "Board");
         }
     }
 }

@@ -76,14 +76,12 @@ namespace Board.Models
         {
             Conn();
             con.Open();
-            Console.WriteLine(boardNum);
             BoardEntity boards = new BoardEntity();
             // 사용할 프로시저의 이름을 설정
             using (SqlCommand com = new SqlCommand("dbo.DetailBoard", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
-                Console.WriteLine(num);
-                com.Parameters.AddWithValue("@BoardNum", num);
+                com.Parameters.AddWithValue("@BoardNum", boardNum);
                 SqlDataReader reader = com.ExecuteReader();
                 while (reader.Read())
                 {
@@ -95,6 +93,23 @@ namespace Board.Models
             con.Close();
             con.Dispose();
             return boards;
+        }
+
+        // Update 게시판
+        public void UpdateBoard(BoardEntity obj)
+        {
+            Conn();
+            con.Open();
+            using (SqlCommand com = new SqlCommand("dbo.UpdateBoard", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@BoardNum", obj.BoardNum);
+                com.Parameters.AddWithValue("@Title", obj.Title);
+                com.Parameters.AddWithValue("@MainContent", obj.MainContent);
+                SqlDataReader reader = com.ExecuteReader();
+            }
+            con.Close();
+            con.Dispose();
         }
     }
 }
