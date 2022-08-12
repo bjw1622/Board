@@ -14,7 +14,20 @@ namespace Board.Controllers
         // SELECT로 데이터 가져오기
         public ActionResult Index()
         {
-            return View(boards.GetBoardList());
+            ViewBag.Board = boards.GetBoardList();
+            
+            // 게시판 전체 갯수
+            var boardCount = ViewBag.Board.Count;
+            return View();
+        }
+
+        [HttpPost]
+        // Index에서 검색 조건으로 조회
+        public JsonResult Index(FindEntity obj)
+        {
+            List<BoardEntity> boar = boards.FindBoardList(obj);
+            return Json(boar);
+
         }
 
         // 글쓰기

@@ -1,8 +1,22 @@
 ﻿@{
     ViewBag.Title = "게시판";
 }
-
+@{
+    // 한 페이지에 나타내고 싶은 게시글 수
+    var boardCount = 5;
+    // 총 페이징 버튼 갯수
+    var totalPage = (ViewBag.Board.Count / boardCount) + 2;
+}
+<div>@ViewBag.Board.Count</div>
 <h2>게시판</h2>
+<div>
+    <select class="form-select">
+        <option value="Name">작성자</option>
+        <option value="Title">제목</option>
+    </select>
+    <input type="text" id="find" />
+    <button id="find-board">검색</button>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -13,8 +27,8 @@
             <th class="text-center" scope="col">추천</th>
         </tr>
     </thead>
-    <tbody>
-        @foreach (var item in Model)
+    <tbody id="tbody">
+        @foreach (var item in @ViewBag.Board)
         {
             <tr class="text-center">
                 <td class="text-center">@item.BoardNum</td>
@@ -25,5 +39,53 @@
             </tr>
         }
     </tbody>
+
 </table>
+@for (var i = 1; i < totalPage; i++)
+{
+    <button class="btn btn-outline-dark">@i</button>
+}
+<div></div>
 <button class="btn btn-primary" onclick="location.href='/Board/Write'">글쓰기</button>
+
+<script>
+    document.querySelector('#find-board').addEventListener('click', () => {
+        const param = {
+            "Variable": document.querySelector(".form-select").value,
+            "Input": $('#find').val(),
+        }
+        console.log(param);
+        $.ajax({
+            url: '/Board/Index',
+            type: 'post',
+            dataType: "json",
+            data: JSON.stringify(param),
+            contentType: "application/json",
+            success: function (data) {
+                // 1. tbody empty 처리
+                $('#tbody').empty();
+                // 2. data 유효성 체크
+                if (data !== "") {
+                    data.forEach((item) => {
+                        $('#tbody').append(createRow(item))
+
+                    })
+                }
+                // 3. 로우 생성
+            },
+            error: function () {
+            }
+        });
+        function createRow(item) {
+            // 검색 결과때 제목으로 a href 어떻게 구현할지
+            return `
+                    <tr class="text-center">
+                    <td class="text-center">${item.BoardNum}</td>
+                    <td class="text-center">${item.Title}</a></td>
+                    <td class="text-center">${item.Name}</td>
+                    <td class="text-center">${item.ReplyCount}</td>
+                    <td class="text-center">${item.RecommandCount}</td>
+                </tr>`
+        }
+    })
+</script>

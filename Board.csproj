@@ -122,6 +122,7 @@
     <Compile Include="Controllers\BoardController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Entitys\BoardEntity.cs" />
+    <Compile Include="Entitys\FindEntity.cs" />
     <Compile Include="Entitys\UserEntity.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
