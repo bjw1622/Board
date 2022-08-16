@@ -15,6 +15,7 @@ namespace Board.Controllers
         public ActionResult Index()
         {
             ViewBag.Board = boards.GetBoardList();
+            Console.WriteLine((ViewBag.Board).GetType());
             
             // 게시판 전체 갯수
             var boardCount = ViewBag.Board.Count;
@@ -22,10 +23,19 @@ namespace Board.Controllers
         }
 
         [HttpPost]
-        // Index에서 검색 조건으로 조회
-        public JsonResult Index(FindEntity obj)
+        //Index에서 검색 조건으로 조회
+        public JsonResult IndexFinding(FindEntity obj)
         {
             List<BoardEntity> boar = boards.FindBoardList(obj);
+            return Json(boar);
+
+        }
+
+        [HttpPost]
+        // 페이징
+        public JsonResult IndexPaging(PageEntity obj)
+        {
+            List<BoardEntity> boar = boards.PagingBoardList(obj);
             return Json(boar);
 
         }

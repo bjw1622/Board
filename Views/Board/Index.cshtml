@@ -3,9 +3,9 @@
 }
 @{
     // 한 페이지에 나타내고 싶은 게시글 수
-    var boardCount = 5;
+    var boardCount = 2;
     // 총 페이징 버튼 갯수
-    var totalPage = (ViewBag.Board.Count / boardCount) + 2;
+    var totalPage = (ViewBag.Board.Count / boardCount) + 1;
 }
 <div>@ViewBag.Board.Count</div>
 <h2>게시판</h2>
@@ -13,7 +13,7 @@
     <select class="form-select" id="board-count">
         <option value="2">2</option>
         <option value="10">10</option>
-        <option value="15">15</option>
+        <option value="20">20</option>
     </select>
     <select class="form-select">
         <option value="Name">작성자</option>
@@ -51,11 +51,11 @@
     {
         if (i == 1)
         {
-            <button class="btn btn-info">@i</button>
+            <button class="btn btn-info" onclick="paging()" value=@i>@i</button>
         }
         else
         {
-            <button class="btn btn-light">@i</button>
+            <button class="btn btn-light" onclick="paging()" value=@i>@i</button>
 
         }
     }
@@ -71,7 +71,7 @@
         }
         console.log(param);
         $.ajax({
-            url: '/Board/Index',
+            url: '/Board/IndexFinding',
             type: 'post',
             dataType: "json",
             data: JSON.stringify(param),
@@ -88,8 +88,9 @@
             error: function () {
             }
         });
-        function createRow(item) {
-            return `
+    })
+    function createRow(item) {
+        return `
                     <tr class="text-center">
                     <td class="text-center">${item.BoardNum}</td>
                     <td class="text-center"><a href="/Board/Detail/${item.BoardNum}">${item.Title}</a></td>
@@ -97,23 +98,67 @@
                     <td class="text-center">${item.ReplyCount}</td>
                     <td class="text-center">${item.RecommandCount}</td>
                 </tr>`
-        }
-    })
+    }
 
     // 페이징 나타내기
     document.querySelector('#board-count').addEventListener('click', () => {
         $('#page').empty();
         let totalPageCount = @Html.Raw(ViewBag.Board.Count);
-        for (let i = 1; i < (totalPageCount / document.querySelector('#board-count').value)+2; i++)
+        for (let i = 1; i < (totalPageCount / document.querySelector('#board-count').value)+1; i++)
         {
             if (i === 1) {
-                $('#page').append(` <button class="btn btn-info paging">${i}</button>`);
+                $('#page').append(` <button class="btn btn-info" onclick="paging()" value=${i} >${i}</button>`);
             }
             else {
-                $('#page').append(` <button class="btn btn-light paging">${i}</button>`);
+                $('#page').append(` <button class="btn btn-light" onclick="paging()" value=${i} >${i}</button>`);
             }
         }
+        const param = {
+            PageNumber: 1,
+            PageCount: $('#board-count').val()
+        }
+        $.ajax({
+            url: '/Board/IndexPaging',
+            type: 'post',
+            dataType: "json",
+            data: JSON.stringify(param),
+            contentType: "application/json",
+            success: function (data) {
+                $('#tbody').empty();
+                if (data !== "") {
+                    data.forEach((item) => {
+                        $('#tbody').append(createRow(item))
+
+                    })
+                }
+            },
+            error: function () {
+            }
+        });
     })
 
     // 페이징 이동 시
+    function paging() {
+        const param = {
+            PageNumber: event.target.value,
+            PageCount: $('#board-count').val()
+        }
+        $.ajax({
+            url: '/Board/IndexPaging',
+            type: 'post',
+            dataType: "json",
+            data: JSON.stringify(param),
+            contentType: "application/json",
+            success: function (data) {
+                $('#tbody').empty();
+                if (data !== "") {
+                    data.forEach((item) => {
+                        $('#tbody').append(createRow(item))
+                    })
+                }
+            },
+            error: function () {
+            }
+        });
+    }
 </script>

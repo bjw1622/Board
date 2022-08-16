@@ -71,6 +71,33 @@ namespace Board.Models
             return boardEntity;
         }
 
+        // 게시판 전체 목록 가져오기
+        public List<BoardEntity> GetTopBoardList()
+        {
+            Conn();
+            con.Open();
+            // 사용할 프로시저의 이름을 설정
+            using (SqlCommand com = new SqlCommand("dbo.SelectBoardByTop", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.ExecuteNonQuery();
+                SqlDataReader reader = com.ExecuteReader();
+                while (reader.Read())
+                {
+                    BoardEntity boards = new BoardEntity();
+                    boards.BoardNum = Convert.ToInt32(reader["BoardNum"]);
+                    boards.Title = Convert.ToString(reader["Title"]);
+                    boards.Name = Convert.ToString(reader["Name"]);
+                    boards.ReplyCount = Convert.ToInt32(reader["ReplyCount"]);
+                    boards.RecommandCount = Convert.ToInt32(reader["RecommandCount"]);
+                    boardEntity.Add(boards);
+                }
+            }
+            con.Close();
+            con.Dispose();
+            return boardEntity;
+        }
+
         // 게시판 상세페이지 이동
         public BoardEntity DetailBoard(int boardNum)
         {
@@ -189,6 +216,33 @@ namespace Board.Models
             }
             con.Close();
             con.Dispose();
+        }
+
+        // 검색으로 게시판 목록 가져오기
+        public List<BoardEntity> PagingBoardList(PageEntity obj)
+        {
+            Conn();
+            con.Open();
+            using (SqlCommand com = new SqlCommand("dbo.PagingBoard", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@PageCount", obj.PageCount);
+                com.Parameters.AddWithValue("@PageNumber", obj.PageNumber);
+                SqlDataReader reader = com.ExecuteReader();
+                while (reader.Read())
+                {
+                    BoardEntity boards = new BoardEntity();
+                    boards.BoardNum = Convert.ToInt32(reader["BoardNum"]);
+                    boards.Title = Convert.ToString(reader["Title"]);
+                    boards.Name = Convert.ToString(reader["Name"]);
+                    boards.ReplyCount = Convert.ToInt32(reader["ReplyCount"]);
+                    boards.ReplyCount = Convert.ToInt32(reader["RecommandCount"]);
+                    boardEntity.Add(boards);
+                }
+            }
+            con.Close();
+            con.Dispose();
+            return boardEntity;
         }
     }
 }
