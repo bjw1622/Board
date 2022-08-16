@@ -64,5 +64,13 @@ namespace Board.Controllers
             boards.DeleteBoard(boardNum);
             return RedirectToAction("Index", "Board");
         }
+
+        // 상세 페이지 - 추천 업데이트
+        [HttpPost]
+        public JsonResult RecommandUpdate(BoardEntity obj)
+        {
+            boards.RecommandCountUpdate(obj);
+            return Json(obj);
+        }
     }
 }

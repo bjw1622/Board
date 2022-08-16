@@ -88,6 +88,7 @@ namespace Board.Models
                     boards.Title = Convert.ToString(reader["Title"]);
                     boards.Name = Convert.ToString(reader["Name"]);
                     boards.MainContent = Convert.ToString(reader["MainContent"]);
+                    boards.RecommandCount = Convert.ToInt32(reader["RecommandCount"]);
                 }
             }
             con.Close();
@@ -166,15 +167,28 @@ namespace Board.Models
                     boards.Title = Convert.ToString(reader["Title"]);
                     boards.Name = Convert.ToString(reader["Name"]);
                     boards.ReplyCount = Convert.ToInt32(reader["ReplyCount"]);
-                    boards.RecommandCount = Convert.ToInt32(reader["RecommandCount"]);
                     boardEntity.Add(boards);
                 }
             }
             con.Close();
             con.Dispose();
             return boardEntity;
+        }
 
-
+        // 상세 페이지 - 추천 업데이트
+        public void RecommandCountUpdate(BoardEntity obj)
+        {
+            Conn();
+            con.Open();
+            using (SqlCommand com = new SqlCommand("dbo.UpdateRecommandCount", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@BoardNum", obj.BoardNum);
+                com.Parameters.AddWithValue("@RecommandCount", obj.RecommandCount);
+                SqlDataReader reader = com.ExecuteReader();
+            }
+            con.Close();
+            con.Dispose();
         }
     }
 }

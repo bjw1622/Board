@@ -18,13 +18,14 @@
     <label for="exampleFormControlTextarea1">Example textarea</label>
     <textarea class="form-control" name="MainContent" id="mainContent" rows="5">@Model.MainContent</textarea>
 </div>
-<button class="btn btn-primary" id="recommand">추천</button>
+<button class="btn btn-primary" id="recommand">추천 : @Model.RecommandCount</button>
 <div>
     <button class="btn btn-info" id="update">수정</button>
     <button class="btn btn-danger" id="delete">삭제</button>
 </div>
 <script>
-    let recommandNum = 0;
+    let recommandNumber =parseInt((document.querySelector('#recommand').innerHTML).replace(/[^0-9]/g, ''));
+
     document.querySelector('#update').addEventListener('click', () => {
         const param = {
             "BoardNum": window.location.pathname.split('/')[3],
@@ -48,13 +49,32 @@
     document.querySelector('#delete').addEventListener('click', () => {
         const flag = confirm('정말 삭제하시겠습니까?');
         if (flag === true) {
-            location.href = '/Board/Delete/window.location.pathname.split(' / ')[3]';
+            location.href = "/Board/Delete/" + window.location.pathname.split('/')[3];
         }
     })
 
     document.querySelector('#recommand').addEventListener('click', () => {
-        recommandNum += 1;
-        document.querySelector('#recommand').innerHTML = `추천 : ${recommandNum}`;
+        recommandNumber += 1;
+
+        document.querySelector('#recommand').innerHTML = `추천 : ${recommandNumber}`;
+
+        const param = {
+            "BoardNum": window.location.pathname.split('/')[3],
+            "RecommandCount": recommandNumber,
+        }
+
+        $.ajax({
+            url: '/Board/RecommandUpdate',
+            type: 'post',
+            dataType: "json",
+            data: JSON.stringify(param),
+            contentType: "application/json",
+            success: function (data) {
+                alert("추천 되었습니다.");
+            },
+            error: function () {
+            }
+        });
     })
 
 </script>

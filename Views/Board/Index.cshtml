@@ -62,16 +62,13 @@
             data: JSON.stringify(param),
             contentType: "application/json",
             success: function (data) {
-                // 1. tbody empty 처리
                 $('#tbody').empty();
-                // 2. data 유효성 체크
                 if (data !== "") {
                     data.forEach((item) => {
                         $('#tbody').append(createRow(item))
 
                     })
                 }
-                // 3. 로우 생성
             },
             error: function () {
             }
