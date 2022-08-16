@@ -15,8 +15,6 @@ namespace Board.Controllers
         public ActionResult Index()
         {
             ViewBag.Board = boards.GetBoardList();
-            Console.WriteLine((ViewBag.Board).GetType());
-            
             // 게시판 전체 갯수
             var boardCount = ViewBag.Board.Count;
             return View();

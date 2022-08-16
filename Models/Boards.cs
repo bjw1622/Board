@@ -160,31 +160,10 @@ namespace Board.Models
         {
             Conn();
             con.Open();
-            if (obj.Variable == "Name")
-            {
-                using (SqlCommand com = new SqlCommand("dbo.FindBoard", con))
-                {
-                    com.CommandType = CommandType.StoredProcedure;
-                    com.Parameters.AddWithValue("@Input", obj.Input);
-                    SqlDataReader reader = com.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        BoardEntity boards = new BoardEntity();
-                        boards.BoardNum = Convert.ToInt32(reader["BoardNum"]);
-                        boards.Title = Convert.ToString(reader["Title"]);
-                        boards.Name = Convert.ToString(reader["Name"]);
-                        boards.ReplyCount = Convert.ToInt32(reader["ReplyCount"]);
-                        boards.RecommandCount = Convert.ToInt32(reader["RecommandCount"]);
-                        boardEntity.Add(boards);
-                    }
-                }
-                con.Close();
-                con.Dispose();
-                return boardEntity;
-            }
-            using (SqlCommand com = new SqlCommand("dbo.FindBoardByTitle", con))
+            using (SqlCommand com = new SqlCommand("dbo.FindBoard", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@Variable", obj.Variable);
                 com.Parameters.AddWithValue("@Input", obj.Input);
                 SqlDataReader reader = com.ExecuteReader();
                 while (reader.Read())
@@ -194,9 +173,48 @@ namespace Board.Models
                     boards.Title = Convert.ToString(reader["Title"]);
                     boards.Name = Convert.ToString(reader["Name"]);
                     boards.ReplyCount = Convert.ToInt32(reader["ReplyCount"]);
+                    boards.RecommandCount = Convert.ToInt32(reader["RecommandCount"]);
                     boardEntity.Add(boards);
                 }
             }
+            //if (obj.Variable == "Name")
+            //{
+            //    using (SqlCommand com = new SqlCommand("dbo.FindBoard", con))
+            //    {
+            //        com.CommandType = CommandType.StoredProcedure;
+            //        com.Parameters.AddWithValue("@Input", obj.Input);
+            //        SqlDataReader reader = com.ExecuteReader();
+            //        while (reader.Read())
+            //        {
+            //            BoardEntity boards = new BoardEntity();
+            //            boards.BoardNum = Convert.ToInt32(reader["BoardNum"]);
+            //            boards.Title = Convert.ToString(reader["Title"]);
+            //            boards.Name = Convert.ToString(reader["Name"]);
+            //            boards.ReplyCount = Convert.ToInt32(reader["ReplyCount"]);
+            //            boards.RecommandCount = Convert.ToInt32(reader["RecommandCount"]);
+            //            boardEntity.Add(boards);
+            //        }
+            //    }
+            //    con.Close();
+            //    con.Dispose();
+            //    return boardEntity;
+            //}
+            //using (SqlCommand com = new SqlCommand("dbo.FindBoardByTitle", con))
+            //{
+            //    com.CommandType = CommandType.StoredProcedure;
+            //    com.Parameters.AddWithValue("@Input", obj.Input);
+            //    SqlDataReader reader = com.ExecuteReader();
+            //    while (reader.Read())
+            //    {
+            //        BoardEntity boards = new BoardEntity();
+            //        boards.BoardNum = Convert.ToInt32(reader["BoardNum"]);
+            //        boards.Title = Convert.ToString(reader["Title"]);
+            //        boards.Name = Convert.ToString(reader["Name"]);
+            //        boards.ReplyCount = Convert.ToInt32(reader["ReplyCount"]);
+            //        boards.RecommandCount = Convert.ToInt32(reader["RecommandCount"]);
+            //        boardEntity.Add(boards);
+            //    }
+            //}
             con.Close();
             con.Dispose();
             return boardEntity;
@@ -218,7 +236,7 @@ namespace Board.Models
             con.Dispose();
         }
 
-        // 검색으로 게시판 목록 가져오기
+        // 페이징
         public List<BoardEntity> PagingBoardList(PageEntity obj)
         {
             Conn();
