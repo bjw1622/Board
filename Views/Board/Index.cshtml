@@ -74,11 +74,10 @@
             }
         });
         function createRow(item) {
-            // 검색 결과때 제목으로 a href 어떻게 구현할지
             return `
                     <tr class="text-center">
                     <td class="text-center">${item.BoardNum}</td>
-                    <td class="text-center">${item.Title}</a></td>
+                    <td class="text-center"><a href="/Board/Detail/${item.BoardNum}">${item.Title}</a></td>
                     <td class="text-center">${item.Name}</td>
                     <td class="text-center">${item.ReplyCount}</td>
                     <td class="text-center">${item.RecommandCount}</td>
