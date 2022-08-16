@@ -10,6 +10,11 @@
 <div>@ViewBag.Board.Count</div>
 <h2>게시판</h2>
 <div>
+    <select class="form-select" id="board-count">
+        <option value="2">2</option>
+        <option value="10">10</option>
+        <option value="15">15</option>
+    </select>
     <select class="form-select">
         <option value="Name">작성자</option>
         <option value="Title">제목</option>
@@ -41,11 +46,21 @@
     </tbody>
 
 </table>
-@for (var i = 1; i < totalPage; i++)
-{
-    <button class="btn btn-outline-dark">@i</button>
-}
-<div></div>
+<div id="page">
+    @for (var i = 1; i < totalPage; i++)
+    {
+        if (i == 1)
+        {
+            <button class="btn btn-info">@i</button>
+        }
+        else
+        {
+            <button class="btn btn-light">@i</button>
+
+        }
+    }
+</div>
+
 <button class="btn btn-primary" onclick="location.href='/Board/Write'">글쓰기</button>
 
 <script>
@@ -84,4 +99,21 @@
                 </tr>`
         }
     })
+
+    // 페이징 나타내기
+    document.querySelector('#board-count').addEventListener('click', () => {
+        $('#page').empty();
+        let totalPageCount = @Html.Raw(ViewBag.Board.Count);
+        for (let i = 1; i < (totalPageCount / document.querySelector('#board-count').value)+2; i++)
+        {
+            if (i === 1) {
+                $('#page').append(` <button class="btn btn-info paging">${i}</button>`);
+            }
+            else {
+                $('#page').append(` <button class="btn btn-light paging">${i}</button>`);
+            }
+        }
+    })
+
+    // 페이징 이동 시
 </script>
