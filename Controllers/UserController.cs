@@ -56,18 +56,10 @@ namespace Board.Controllers
 
         //
         [HttpPost]
-        public ActionResult EmailCheck(UserEntity obj)
+        public JsonResult EmailCheck(UserEntity obj)
         {
             var result = user.EmailCheck(obj);
-            // 정상 작동
-            if (result != 1)
-            {
-                return View();
-
-            }  
-            // 이메일 중복
-            return View();
-
+            return Json(result);
         }
     }
 }
