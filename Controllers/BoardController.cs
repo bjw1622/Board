@@ -11,6 +11,7 @@ namespace Board.Controllers
     public class BoardController : Controller
     {
         Boards boards = new Boards();
+
         // SELECT로 데이터 가져오기
         public ActionResult Index()
         {
@@ -18,15 +19,6 @@ namespace Board.Controllers
             // 게시판 전체 갯수
             var boardCount = ViewBag.Board.Count;
             return View();
-        }
-
-        [HttpPost]
-        //Index에서 검색 조건으로 조회
-        public JsonResult IndexFinding(FindEntity obj)
-        {
-            List<BoardEntity> boar = boards.FindBoardList(obj);
-            return Json(boar);
-
         }
 
         [HttpPost]
@@ -79,6 +71,14 @@ namespace Board.Controllers
         {
             boards.RecommandCountUpdate(obj);
             return Json(obj);
+        }
+
+        // 인덱스 페이지 - 검색과 페이징 기능
+        [HttpPost]
+        public JsonResult PageAndFind(PageAndFindEntity obj)
+        {
+            List<BoardEntity> boar = boards.PagingAndFindingBoardList(obj);
+            return Json(boar);
         }
     }
 }

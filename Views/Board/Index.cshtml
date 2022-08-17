@@ -49,18 +49,17 @@
             {
                 if (i == 1)
                 {
-                    <button class="btn btn-info" onclick="paging()" value=@i>@i</button>
+                    <button class=" page-btn btn btn-light btn-info" onclick="paging()" value=@i>@i</button>
                 }
                 else
                 {
-                    <button class="btn btn-light" onclick="paging()" value=@i>@i</button>
+                    <button class="page-btn btn btn-light" onclick="paging()" value=@i>@i</button>
                 }
             }
 </div>
 <button class="btn btn-primary" onclick="location.href='/Board/Write'">글쓰기</button>
 
 <script>
-
     function createRow(item) {
         return `
         <tr class="text-center">
@@ -72,33 +71,6 @@
                 </tr>`
     }
 
-    // 검색 기능 구현
-    document.querySelector('#find-board').addEventListener('click', () => {
-        const param = {
-            "Variable": document.querySelector("#find-value").value,
-            "Input": $('#find').val(),
-        }
-        console.log(param);
-        $.ajax({
-            url: '/Board/IndexFinding',
-            type: 'post',
-            dataType: "json",
-            data: JSON.stringify(param),
-            contentType: "application/json",
-            success: function (data) {
-                $('#tbody').empty();
-                if (data !== "") {
-                    data.forEach((item) => {
-                        $('#tbody').append(createRow(item))
-
-                    })
-                }
-            },
-            error: function () {
-            }
-        });
-    })
-
     // 페이징 나타내기
     document.querySelector('#board-count').addEventListener('click', () => {
         $('#page').empty();
@@ -106,15 +78,17 @@
         for (let i = 1; i < (totalPageCount / document.querySelector('#board-count').value)+1; i++)
         {
             if (i === 1) {
-                $('#page').append(` <button class="btn btn-info" onclick="paging()" value=${i} >${i}</button>`);
+                $('#page').append(` <button class="page-btn btn btn-light btn-info" onclick="paging()" value=${i} >${i}</button>`);
             }
             else {
-                $('#page').append(` <button class="btn btn-light" onclick="paging()" value=${i} >${i}</button>`);
+                $('#page').append(` <button class="page-btn btn btn-light" onclick="paging()" value=${i} >${i}</button>`);
             }
         }
+        init();
         const param = {
             PageNumber: 1,
-            PageCount: $('#board-count').val()
+            PageCount: $('#board-count').val(),
+
         }
         $.ajax({
             url: '/Board/IndexPaging',
@@ -137,9 +111,46 @@
     })
 
     //검색과 페이징 동시에 나타내기
-
-
-
+    document.querySelector('#find-board').addEventListener('click', () => {
+        const param = {
+            PageNumber: 1,
+            PageCount: $('#board-count').val(),
+            Variable: document.querySelector("#find-value").value,
+            Input: $('#find').val(),
+        }
+        console.log(param)
+        $.ajax({
+            url: '/Board/PageAndFind',
+            type: 'post',
+            dataType: "json",
+            data: JSON.stringify(param),
+            contentType: "application/json",
+            success: function (data) {
+                // TO DO
+                // totalPageCount가 게시판 전체 total이 아닌 검색 했을 때의 count를 불러오기
+                console.log(data);
+                $('#page').empty();
+                let totalPageCount = 30;
+                for (let i = 1; i < (totalPageCount / document.querySelector('#board-count').value) + 1; i++) {
+                    if (i === 1) {
+                        $('#page').append(` <button class="page-btn btn btn-light btn-info" onclick="paging()" value=${i} >${i}</button>`);
+                    }
+                    else {
+                        $('#page').append(` <button class="page-btn btn btn-light" onclick="paging()" value=${i} >${i}</button>`);
+                    }
+                }
+                $('#tbody').empty();
+                init();
+                if (data !== "") {
+                    data.forEach((item) => {
+                        $('#tbody').append(createRow(item))
+                    })
+                }
+            },
+            error: function () {
+            }
+        });
+    })
 
     // 페이징 이동시 해당 개수 나타내는 method
     function paging() {
@@ -165,4 +176,23 @@
             }
         });
     }
+
+    //페이징 버튼 색깔 변경
+    const buttonClass = document.getElementsByClassName("page-btn");
+    function handleClick(event) {
+        if (event.target.classList[3] === "btn-info") {
+            event.target.classList.remove("btn-info");
+        } else {
+            for (var i = 0; i < buttonClass.length; i++) {
+                buttonClass[i].classList.remove("btn-info");
+            }
+            event.target.classList.add("btn-info");
+        }
+    }
+    function init() {
+        for (var i = 0; i < buttonClass.length; i++) {
+            buttonClass[i].addEventListener("click", handleClick);
+        }
+    }
+    init();
 </script>
