@@ -1,11 +1,6 @@
 ﻿using Board.Entitys;
 using Board.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Windows;
 
 namespace Board.Controllers
 {
@@ -45,7 +40,7 @@ namespace Board.Controllers
         {
             var result = user.LogIn(obj);
             // 로그인 성공
-            if(result == 1)
+            if (result == 1)
             {
                 Session["Email"] = obj.Email;
                 return RedirectToAction("Index", "Board");
