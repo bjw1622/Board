@@ -12,7 +12,7 @@ namespace Board.Controllers
     {
         Boards boards = new Boards();
 
-        // SELECT로 데이터 가져오기
+        // 게시판 데이터 가져오기
         public ActionResult Index()
         {
             ViewBag.Board = boards.GetBoardList();
@@ -47,7 +47,9 @@ namespace Board.Controllers
         // 상세 페이지
         public ActionResult Detail(int boardNum)
         {
-            return View(boards.DetailBoard(boardNum));
+            ViewBag.detailInfo = boards.DetailBoard(boardNum);
+            ViewBag.replyList = boards.ReadReply(boardNum);
+            return View();
         }
 
         [HttpPost]
@@ -78,7 +80,22 @@ namespace Board.Controllers
         public JsonResult PageAndFind(PageAndFindEntity obj)
         {
             List<BoardEntity> boar = boards.PagingAndFindingBoardList(obj);
-            return Json(boar);
+            // 여기서 totalCount 조회가 가능한 sq만들기
+            return Json(
+                new
+                {
+                    List = boar,
+                    TotalCount = 300
+                }
+                );
+        }
+
+        // 상세 페이지 - 댓글 추가 기능
+        [HttpPost]
+        public JsonResult Reply(ReplyEntity obj)
+        {
+            List<ReplyEntity> reply = boards.AddReply(obj);
+            return Json(reply);
         }
     }
 }

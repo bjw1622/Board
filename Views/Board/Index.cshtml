@@ -126,12 +126,12 @@
             data: JSON.stringify(param),
             contentType: "application/json",
             success: function (data) {
+                data.List = [];
+                data.TotalCount = 120;
                 // TO DO
                 // totalPageCount가 게시판 전체 total이 아닌 검색 했을 때의 count를 불러오기
-                console.log(data);
                 $('#page').empty();
-                let totalPageCount = 30;
-                for (let i = 1; i < (totalPageCount / document.querySelector('#board-count').value) + 1; i++) {
+                for (let i = 1; i < (data.TotalCount / document.querySelector('#board-count').value) + 1; i++) {
                     if (i === 1) {
                         $('#page').append(` <button class="page-btn btn btn-light btn-info" onclick="paging()" value=${i} >${i}</button>`);
                     }

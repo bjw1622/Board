@@ -6,25 +6,73 @@
 <h2>Detail</h2>
 <div class="form-group">
     <label>제목</label>
-    <input type="text" class="form-control" name="Title" id="title" value="@Model.Title">
+    <input type="text" class="form-control" name="Title" id="title" value="@ViewBag.detailInfo.Title">
 </div>
 
 <div class="form-group">
     <label>작성자</label>
-    <input type="text" class="form-control" name="Name" readonly value="@Model.Name">
+    <input type="text" class="form-control" name="Name" readonly value="@ViewBag.detailInfo.Name">
 </div>
 
 <div class="form-group">
     <label for="exampleFormControlTextarea1">Example textarea</label>
-    <textarea class="form-control" name="MainContent" id="mainContent" rows="5">@Model.MainContent</textarea>
+    <textarea class="form-control" name="MainContent" id="mainContent" rows="5">@ViewBag.detailInfo.MainContent</textarea>
 </div>
-<button class="btn btn-primary" id="recommand">추천 : @Model.RecommandCount</button>
+<button class="btn btn-primary" id="recommand">추천 : @ViewBag.detailInfo.RecommandCount</button>
 <div>
     <button class="btn btn-info" id="update">수정</button>
     <button class="btn btn-danger" id="delete">삭제</button>
 </div>
+<hr />
+<div>
+    <input type="text" name="name" id="reply" />
+    <button id="reply-btn">댓글 입력</button>
+</div>
+<hr />
+<h3>댓글 목록</h3>
+@if (ViewBag.replyList.Count == 1)
+{
+    <div>
+        <input value="@ViewBag.replyList[2].ReplyContent" />
+    </div>
+}
+else
+{
+    for (var i = 0; i < ViewBag.replyList.Count; i++)
+    {
+        <div>
+            <input value="@ViewBag.replyList[2].ReplyContent" />
+        </div>
+    }
+}
+
 <script>
-    let recommandNumber =parseInt((document.querySelector('#recommand').innerHTML).replace(/[^0-9]/g, ''));
+    let recommandNumber = parseInt((document.querySelector('#recommand').innerHTML).replace(/[^0-9]/g, ''));
+    let ReplyID = 0;
+    document.querySelector('#reply-btn').addEventListener('click', () => {
+        const param = {
+            BoardNum: window.location.pathname.split('/')[3],
+            ReplyID: ReplyID,
+            ReplyContent: document.querySelector('#reply').value,
+        };
+        // 새로 추가되는 댓글은 +1
+        ReplyID += 1;
+
+        $.ajax({
+            url: '/Board/Reply',
+            type: 'post',
+            dataType: "json",
+            data: JSON.stringify(param),
+            contentType: "application/json",
+            success: function (data) {
+                console.log(data);
+            },
+            error: function () {
+            }
+        });
+    })
+
+
 
     document.querySelector('#update').addEventListener('click', () => {
         const param = {

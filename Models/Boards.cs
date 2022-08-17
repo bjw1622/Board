@@ -13,6 +13,7 @@ namespace Board.Models
         // sqlConnection 
         private SqlConnection con;
         List<BoardEntity> boardEntity = new List<BoardEntity>();
+        List<ReplyEntity> replyEntity = new List<ReplyEntity>();
 
         public void Conn()
         {
@@ -223,6 +224,59 @@ namespace Board.Models
             con.Close();
             con.Dispose();
             return boardEntity;
+        }
+
+        // 댓글 추가
+        public List<ReplyEntity> AddReply(ReplyEntity obj)
+        {
+            Conn();
+            con.Open();
+            using (SqlCommand com = new SqlCommand("dbo.InsertReply", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@BoardNum", obj.BoardNum);
+                com.Parameters.AddWithValue("@ReplyID", obj.ReplyID);
+                com.Parameters.AddWithValue("@ReplyContent", obj.ReplyContent);
+                SqlDataReader reader = com.ExecuteReader();
+                while (reader.Read())
+                {
+                    ReplyEntity replys = new ReplyEntity();
+                    replys.BoardNum = Convert.ToInt32(reader["BoardNum"]);
+                    replys.ReplyID = Convert.ToInt32(reader["ReplyID"]);
+                    replys.ReplyContent = Convert.ToString(reader["ReplyContent"]);
+                    replyEntity.Add(replys);
+                }
+            }
+            con.Close();
+            con.Dispose();
+            return replyEntity;
+        }
+        // 상세페이지 - 댓글 불러오기
+
+        public List<ReplyEntity> ReadReply(int boardNum)
+        {
+            Conn();
+            con.Open();
+            ReplyEntity boards = new ReplyEntity();
+            // 사용할 프로시저의 이름을 설정
+            using (SqlCommand com = new SqlCommand("dbo.SelectReply", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@BoardNum", boardNum);
+                SqlDataReader reader = com.ExecuteReader();
+                while (reader.Read())
+                {
+                    ReplyEntity replys = new ReplyEntity();
+                    replys.BoardNum = Convert.ToInt32(reader["BoardNum"]);
+                    replys.ReplyID = Convert.ToInt32(reader["ReplyID"]);
+                    replys.ReplyContent = Convert.ToString(reader["ReplyContent"]);
+                    replyEntity.Add(replys);
+
+                }
+            }
+            con.Close();
+            con.Dispose();
+            return replyEntity;
         }
     }
 }

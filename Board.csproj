@@ -125,6 +125,7 @@
     <Compile Include="Entitys\PageAndFindEntity.cs" />
     <Compile Include="Entitys\FindEntity.cs" />
     <Compile Include="Entitys\PageEntity.cs" />
+    <Compile Include="Entitys\ReplyEntity.cs" />
     <Compile Include="Entitys\UserEntity.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
