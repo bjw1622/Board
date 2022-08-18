@@ -46,8 +46,14 @@ namespace Board.Controllers
         // 상세 페이지
         public ActionResult Detail(int boardNum)
         {
+            // 게시판 상세 정보 가져오기
             ViewBag.detailInfo = boards.DetailBoard(boardNum);
+            
+            // 댓글 가져오기
             ViewBag.replyList = boards.ReadReply(boardNum);
+
+            // ReplyID 최신화 하기
+            ViewBag.MaxReplyID = boards.GetReplyID(boardNum); 
             return View();
         }
 
@@ -98,9 +104,13 @@ namespace Board.Controllers
 
             // 댓글 개수 불러오는 sq
             ViewBag.replyList = boards.ReadReply(obj.BoardNum);
-            
+
             // 댓글 개수 return
-            return Json(ViewBag.replyList);
+            return Json(new 
+                 { 
+                    replyList = ViewBag.replyList,
+            });
+
         }
     }
 }

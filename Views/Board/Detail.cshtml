@@ -1,8 +1,9 @@
 ﻿
 @{
     ViewBag.Title = "Detail";
+    var maxReplyID = @ViewBag.MaxReplyID;
 }
-
+<div>@ViewBag.MaxReplyID</div>
 <h2>Detail</h2>
 <div class="form-group">
     <label>제목</label>
@@ -24,9 +25,9 @@
     <button class="btn btn-danger" id="delete">삭제</button>
 </div>
 <hr />
-<div>
-    <input type="text" name="name" id="reply" />
-    <button id="reply-btn">댓글 입력</button>
+<div class="input-group mb-3" style="display:flex;">
+    <input type="text" class="form-control" style="margin-right : 5px;" id="reply">
+    <button class="btn btn-outline-secondary" id="reply-btn" type="button">댓글 입력</button>
 </div>
 <hr />
 
@@ -34,23 +35,27 @@
 <div id="reply-content">
     @for (var i = 0; i <= ViewBag.replyList.Count - 1; i++)
     {
-        <div style="margin-bottom:10px;">
+        <div style="margin-bottom:15px;">
             <input type="text" class="form-control" value="@ViewBag.replyList[i].ReplyContent" readonly>
+            <button>답글 달기</button>
         </div>
     }
 </div>
 <script>
     let recommandNumber = parseInt((document.querySelector('#recommand').innerHTML).replace(/[^0-9]/g, ''));
     function createRow(item) {
-        return`
+        return `
         <div style="margin-bottom:10px;">
             <input type="text" class="form-control" value=${item} readonly />
+            <button>답글 달기</button>
           </div >
             `
     }
+    let maxReplyID = @maxReplyID;
     document.querySelector('#reply-btn').addEventListener('click', () => {
         const param = {
             BoardNum: window.location.pathname.split('/')[3],
+            ReplyID: maxReplyID + 1,
             ReplyContent: document.querySelector('#reply').value,
         };
         $.ajax({
@@ -62,12 +67,14 @@
             success: function (data) {
                 alert('댓글이 작성 되었습니다.')
                 $('#reply-content').empty();
-                data.forEach((item) => {
+                data.replyList.forEach((item) => {
                     $('#reply-content').append(createRow(item.ReplyContent))
                 })
                 document.querySelector('#reply').value = "";
+                maxReplyID += 1;
             },
             error: function () {
+                alert('댓글을 입력해주세요.');
             }
         });
     })

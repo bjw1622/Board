@@ -244,7 +244,6 @@ namespace Board.Models
             return result;
         }
 
-        int replyID = 0;
         // 댓글 추가
         public List<ReplyEntity> AddReply(ReplyEntity obj)
         {
@@ -254,7 +253,7 @@ namespace Board.Models
             {
                 com.CommandType = CommandType.StoredProcedure;
                 com.Parameters.AddWithValue("@BoardNum", obj.BoardNum);
-                com.Parameters.AddWithValue("@ReplyID", replyID);
+                com.Parameters.AddWithValue("@ReplyID", obj.ReplyID);
                 com.Parameters.AddWithValue("@ReplyContent", obj.ReplyContent);
                 SqlDataReader reader = com.ExecuteReader();
                 while (reader.Read())
@@ -265,23 +264,18 @@ namespace Board.Models
                     replys.ReplyContent = Convert.ToString(reader["ReplyContent"]);
                     replyEntity.Add(replys);
                 }
-                // TO DO 
-                // ID 추가 안되는 거 수정 필요
-                replyID += 1;
-                Console.WriteLine(replyID);
             }
             con.Close();
             con.Dispose();
             return replyEntity;
         }
-        // 상세페이지 - 댓글 불러오기
 
+        // 상세페이지 - 댓글 불러오기
         public List<ReplyEntity> ReadReply(int boardNum)
         {
             Conn();
             con.Open();
             ReplyEntity boards = new ReplyEntity();
-            // 사용할 프로시저의 이름을 설정
             using (SqlCommand com = new SqlCommand("dbo.SelectReply", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
@@ -300,6 +294,34 @@ namespace Board.Models
             con.Close();
             con.Dispose();
             return replyEntity;
+        }
+
+        public int GetReplyID(int boardNum)
+        {
+            // ReplyID 가장 큰 값
+            int result;
+            Conn();
+            con.Open();
+            ReplyEntity boards = new ReplyEntity();
+            using (SqlCommand com = new SqlCommand("dbo.GetReplyID", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@BoardNum", boardNum);
+                Object nullCheck = com.ExecuteScalar();
+                if (nullCheck.Equals(DBNull.Value))
+                {
+                    result = 0;
+                }
+                else
+                {
+                    result = (int)com.ExecuteScalar();
+
+                }
+
+            }
+            con.Close();
+            con.Dispose();
+            return result;
         }
     }
 }
