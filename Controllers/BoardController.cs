@@ -16,8 +16,6 @@ namespace Board.Controllers
         public ActionResult Index()
         {
             ViewBag.Board = boards.GetBoardList();
-            // 게시판 전체 갯수
-            var boardCount = ViewBag.Board.Count;
             return View();
         }
 
@@ -80,12 +78,12 @@ namespace Board.Controllers
         public JsonResult PageAndFind(PageAndFindEntity obj)
         {
             List<BoardEntity> boar = boards.PagingAndFindingBoardList(obj);
-            // 여기서 totalCount 조회가 가능한 sq만들기
+            var result = boards.FindBoardCount(obj);
             return Json(
                 new
                 {
                     List = boar,
-                    TotalCount = 300
+                    Result = result,
                 }
                 );
         }

@@ -29,26 +29,19 @@
     <button id="reply-btn">댓글 입력</button>
 </div>
 <hr />
+
 <h3>댓글 목록</h3>
-@if (ViewBag.replyList.Count == 1)
+<div>@ViewBag.replyList.Count</div>
+@for (var i = 0; i <= ViewBag.replyList.Count; i++)
 {
     <div>
-        <input value="@ViewBag.replyList[2].ReplyContent" />
+        @* 해당 요소를 가져오는게 아니라 3번째 인덱스를 가져오므로 수정이 필요함. *@
     </div>
-}
-else
-{
-    for (var i = 0; i < ViewBag.replyList.Count; i++)
-    {
-        <div>
-            <input value="@ViewBag.replyList[2].ReplyContent" />
-        </div>
-    }
 }
 
 <script>
     let recommandNumber = parseInt((document.querySelector('#recommand').innerHTML).replace(/[^0-9]/g, ''));
-    let ReplyID = 0;
+    let ReplyID = 1;
     document.querySelector('#reply-btn').addEventListener('click', () => {
         const param = {
             BoardNum: window.location.pathname.split('/')[3],

@@ -202,7 +202,7 @@ namespace Board.Models
         {
             Conn();
             con.Open();
-            using(SqlCommand com = new SqlCommand("dbo.FindingAndPaging", con))
+            using (SqlCommand com = new SqlCommand("dbo.FindingAndPaging", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
                 com.Parameters.AddWithValue("@PageCount", obj.PageCount);
@@ -224,6 +224,24 @@ namespace Board.Models
             con.Close();
             con.Dispose();
             return boardEntity;
+        }
+
+        // 검색 했을 때의 페이지 수 가져오기
+        public int FindBoardCount(PageAndFindEntity obj)
+        {
+            Conn();
+            con.Open();
+            int result;
+            using (SqlCommand com = new SqlCommand("dbo.FindBoardListCount", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@Variable", obj.Variable);
+                com.Parameters.AddWithValue("@Input", obj.Input);
+                result = (int)(com.ExecuteScalar());
+            }
+            con.Close();
+            con.Dispose();
+            return result;
         }
 
         // 댓글 추가
