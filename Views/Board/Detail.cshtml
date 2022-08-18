@@ -3,7 +3,6 @@
     ViewBag.Title = "Detail";
     var maxReplyID = @ViewBag.MaxReplyID;
 }
-<div>@ViewBag.MaxReplyID</div>
 <h2>Detail</h2>
 <div class="form-group">
     <label>제목</label>
@@ -35,23 +34,17 @@
 <div id="reply-content">
     @for (var i = 0; i <= ViewBag.replyList.Count - 1; i++)
     {
-        <div style="margin-bottom:15px;">
+        <div class="@ViewBag.replyList[i].ReplyID"; style="margin-bottom:15px;">
             <input type="text" class="form-control" value="@ViewBag.replyList[i].ReplyContent" readonly>
-            <button>답글 달기</button>
+            <button onclick="ReReplyButton(event)"name ="@ViewBag.replyList[i].ReplyID">답글 달기</button>
         </div>
     }
 </div>
 <script>
     let recommandNumber = parseInt((document.querySelector('#recommand').innerHTML).replace(/[^0-9]/g, ''));
-    function createRow(item) {
-        return `
-        <div style="margin-bottom:10px;">
-            <input type="text" class="form-control" value=${item} readonly />
-            <button>답글 달기</button>
-          </div >
-            `
-    }
     let maxReplyID = @maxReplyID;
+
+    // 일반 댓글
     document.querySelector('#reply-btn').addEventListener('click', () => {
         const param = {
             BoardNum: window.location.pathname.split('/')[3],
@@ -68,7 +61,7 @@
                 alert('댓글이 작성 되었습니다.')
                 $('#reply-content').empty();
                 data.replyList.forEach((item) => {
-                    $('#reply-content').append(createRow(item.ReplyContent))
+                    $('#reply-content').append(createRow(item))
                 })
                 document.querySelector('#reply').value = "";
                 maxReplyID += 1;
@@ -78,7 +71,6 @@
             }
         });
     })
-
 
 
     document.querySelector('#update').addEventListener('click', () => {
@@ -132,4 +124,61 @@
         });
     })
 
+    // 대댓글 댓글
+    document.querySelector(".re-reply-btn").on("click", function () {
+        alert("소스 코드를 클릭하셨군요!");
+        const param = {
+            BoardNum: window.location.pathname.split('/')[3],
+            ReplyID: maxReplyID + 1,
+            ReplyContent: document.querySelector('${maxReplyID}+1').value,
+            ParentReplyID: event.target.ParentNode.class,
+        }
+        console.log(param);
+    });
+        
+        //$.ajax({
+        //    url: '/Board/Reply',
+        //    type: 'post',
+        //    dataType: "json",
+        //    data: JSON.stringify(param),
+        //    contentType: "application/json",
+        //    success: function (data) {
+        //        alert('댓글이 작성 되었습니다.')
+        //        $('#reply-content').empty();
+        //        data.replyList.forEach((item) => {
+        //            $('#reply-content').append(createRow(item))
+        //        })
+        //        document.querySelector('#reply').value = "";
+        //        maxReplyID += 1;
+        //    },
+        //    error: function () {
+        //        alert('댓글을 입력해주세요.');
+        //    }
+        //});
+
+
+    function ReReplyButton(event) {
+        // 부모 ReplyID
+        const ParentReplyID = event.target.name;
+        // 대댓글 창 그려주기
+        $(`.${ParentReplyID}`).first().append(createReReply(ParentReplyID))
+    }
+
+    function createReReply(ParentReplyID) {
+        return `
+        <div class="${ParentReplyID}" style="margin:0px 0px 15px 50px; display:flex;">
+            <input type="text" id="${maxReplyID}+1" class="form-control"/>
+            <button class="re-reply-btn">댓글</button>
+          </div >
+        `
+    }
+
+    function createRow(item) {
+        return `
+        <div class="${item.ReplyID}"; style="margin-bottom:15px;">
+            <input type="text" class="form-control" value=${item.ReplyContent} readonly />
+            <button onclick="ReReplyButton(event)" name=${item.ReplyID}>답글 달기</button>
+          </div>
+            `
+    }
 </script>

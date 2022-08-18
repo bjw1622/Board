@@ -9,6 +9,8 @@ namespace Board.Entitys
     {
         public int BoardNum { get; set; }
         public int ReplyID { get; set; }
+        public int ParentReplyID { get; set; }
+
         public string ReplyContent { get; set; }
     }
 }

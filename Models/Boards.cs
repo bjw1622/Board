@@ -255,6 +255,7 @@ namespace Board.Models
                 com.Parameters.AddWithValue("@BoardNum", obj.BoardNum);
                 com.Parameters.AddWithValue("@ReplyID", obj.ReplyID);
                 com.Parameters.AddWithValue("@ReplyContent", obj.ReplyContent);
+                com.Parameters.AddWithValue("@ParentReplyID",0);
                 SqlDataReader reader = com.ExecuteReader();
                 while (reader.Read())
                 {
