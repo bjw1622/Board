@@ -9,7 +9,7 @@ namespace Board.Models
 {
     public class Boards
     {
-        int num = 0;
+        int boardNum = 0;
         // sqlConnection 
         private SqlConnection con;
         List<BoardEntity> boardEntity = new List<BoardEntity>();
@@ -30,14 +30,14 @@ namespace Board.Models
             using (SqlCommand com = new SqlCommand("dbo.WriteBoard", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
-                com.Parameters.AddWithValue("@BoardNum", num);
+                com.Parameters.AddWithValue("@BoardNum", boardNum);
                 com.Parameters.AddWithValue("@Title", obj.Title);
                 com.Parameters.AddWithValue("@Name", obj.Name);
                 com.Parameters.AddWithValue("@MainContent", obj.MainContent);
                 com.Parameters.AddWithValue("@ReplyCount", obj.ReplyCount);
                 com.Parameters.AddWithValue("@RecommandCount", obj.RecommandCount);
                 com.ExecuteNonQuery();
-                num += 1;
+                boardNum += 1;
             }
             con.Close();
             con.Dispose();
@@ -244,6 +244,7 @@ namespace Board.Models
             return result;
         }
 
+        int replyID = 0;
         // 댓글 추가
         public List<ReplyEntity> AddReply(ReplyEntity obj)
         {
@@ -253,7 +254,7 @@ namespace Board.Models
             {
                 com.CommandType = CommandType.StoredProcedure;
                 com.Parameters.AddWithValue("@BoardNum", obj.BoardNum);
-                com.Parameters.AddWithValue("@ReplyID", obj.ReplyID);
+                com.Parameters.AddWithValue("@ReplyID", replyID);
                 com.Parameters.AddWithValue("@ReplyContent", obj.ReplyContent);
                 SqlDataReader reader = com.ExecuteReader();
                 while (reader.Read())
@@ -264,6 +265,10 @@ namespace Board.Models
                     replys.ReplyContent = Convert.ToString(reader["ReplyContent"]);
                     replyEntity.Add(replys);
                 }
+                // TO DO 
+                // ID 추가 안되는 거 수정 필요
+                replyID += 1;
+                Console.WriteLine(replyID);
             }
             con.Close();
             con.Dispose();

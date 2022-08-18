@@ -31,26 +31,28 @@
 <hr />
 
 <h3>댓글 목록</h3>
-<div>@ViewBag.replyList.Count</div>
-@for (var i = 0; i <= ViewBag.replyList.Count; i++)
-{
-    <div>
-        @* 해당 요소를 가져오는게 아니라 3번째 인덱스를 가져오므로 수정이 필요함. *@
-    </div>
-}
-
+<div id="reply-content">
+    @for (var i = 0; i <= ViewBag.replyList.Count - 1; i++)
+    {
+        <div style="margin-bottom:10px;">
+            <input type="text" class="form-control" value="@ViewBag.replyList[i].ReplyContent" readonly>
+        </div>
+    }
+</div>
 <script>
     let recommandNumber = parseInt((document.querySelector('#recommand').innerHTML).replace(/[^0-9]/g, ''));
-    let ReplyID = 1;
+    function createRow(item) {
+        return`
+        <div style="margin-bottom:10px;">
+            <input type="text" class="form-control" value=${item} readonly />
+          </div >
+            `
+    }
     document.querySelector('#reply-btn').addEventListener('click', () => {
         const param = {
             BoardNum: window.location.pathname.split('/')[3],
-            ReplyID: ReplyID,
             ReplyContent: document.querySelector('#reply').value,
         };
-        // 새로 추가되는 댓글은 +1
-        ReplyID += 1;
-
         $.ajax({
             url: '/Board/Reply',
             type: 'post',
@@ -58,7 +60,12 @@
             data: JSON.stringify(param),
             contentType: "application/json",
             success: function (data) {
-                console.log(data);
+                alert('댓글이 작성 되었습니다.')
+                $('#reply-content').empty();
+                data.forEach((item) => {
+                    $('#reply-content').append(createRow(item.ReplyContent))
+                })
+                document.querySelector('#reply').value = "";
             },
             error: function () {
             }

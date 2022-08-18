@@ -16,6 +16,7 @@ namespace Board.Controllers
         public ActionResult Index()
         {
             ViewBag.Board = boards.GetBoardList();
+            // 게시판 전체 갯수
             return View();
         }
 
@@ -92,8 +93,14 @@ namespace Board.Controllers
         [HttpPost]
         public JsonResult Reply(ReplyEntity obj)
         {
-            List<ReplyEntity> reply = boards.AddReply(obj);
-            return Json(reply);
+            // 댓글 추가하고
+            boards.AddReply(obj);
+
+            // 댓글 개수 불러오는 sq
+            ViewBag.replyList = boards.ReadReply(obj.BoardNum);
+            
+            // 댓글 개수 return
+            return Json(ViewBag.replyList);
         }
     }
 }
