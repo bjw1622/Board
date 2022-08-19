@@ -95,7 +95,7 @@ namespace Board.Controllers
                 );
         }
 
-        // 상세 페이지 - 댓글 추가 기능
+        // 상세 페이지 - 댓글 추가 기능, 대댓글 추가
         [HttpPost]
         public JsonResult Reply(ReplyEntity obj)
         {
@@ -103,8 +103,10 @@ namespace Board.Controllers
             boards.AddReply(obj);
 
             // 댓글 개수 불러오는 sq
+            // ForEach로 댓글 그리기위함
             ViewBag.replyList = boards.ReadReply(obj.BoardNum);
 
+            //대댓글 그리기
             // 댓글 개수 return
             return Json(new 
                  { 

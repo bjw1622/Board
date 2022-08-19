@@ -255,7 +255,7 @@ namespace Board.Models
                 com.Parameters.AddWithValue("@BoardNum", obj.BoardNum);
                 com.Parameters.AddWithValue("@ReplyID", obj.ReplyID);
                 com.Parameters.AddWithValue("@ReplyContent", obj.ReplyContent);
-                com.Parameters.AddWithValue("@ParentReplyID",0);
+                com.Parameters.AddWithValue("@ParentReplyID",obj.ParentReplyID);
                 SqlDataReader reader = com.ExecuteReader();
                 while (reader.Read())
                 {
@@ -324,5 +324,34 @@ namespace Board.Models
             con.Dispose();
             return result;
         }
+
+        // 상세페이지 - 댓글 불러오기
+        public List<ReplyEntity> ReadReReply(int ParentReplyID)
+        {
+            Conn();
+            con.Open();
+            ReplyEntity boards = new ReplyEntity();
+            using (SqlCommand com = new SqlCommand("dbo.SelectReReply", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@ParentReplyID", ParentReplyID);
+                SqlDataReader reader = com.ExecuteReader();
+                while (reader.Read())
+                {
+                    ReplyEntity replys = new ReplyEntity();
+                    replys.BoardNum = Convert.ToInt32(reader["BoardNum"]);
+                    replys.ReplyID = Convert.ToInt32(reader["ReplyID"]);
+                    replys.ReplyContent = Convert.ToString(reader["ReplyContent"]);
+                    replys.ParentReplyID = Convert.ToInt32(reader["ParentReplyID"]);
+                    replyEntity.Add(replys);
+
+                }
+            }
+            con.Close();
+            con.Dispose();
+            return replyEntity;
+        }
+
+
     }
 }

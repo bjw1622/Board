@@ -34,9 +34,10 @@
 <div id="reply-content">
     @for (var i = 0; i <= ViewBag.replyList.Count - 1; i++)
     {
-        <div class="@ViewBag.replyList[i].ReplyID"; style="margin-bottom:15px;">
+        <div class="@ViewBag.replyList[i].ReplyID" ; style="margin-bottom:15px;">
             <input type="text" class="form-control" value="@ViewBag.replyList[i].ReplyContent" readonly>
-            <button onclick="ReReplyButton(event)"name ="@ViewBag.replyList[i].ReplyID">답글 달기</button>
+            <button onclick="ReReplyButton(event)" name="@ViewBag.replyList[i].ReplyID">답글 달기</button>
+            <button onclick="ReadReReplyList()">답글 보기</button>
         </div>
     }
 </div>
@@ -44,12 +45,14 @@
     let recommandNumber = parseInt((document.querySelector('#recommand').innerHTML).replace(/[^0-9]/g, ''));
     let maxReplyID = @maxReplyID;
 
-    // 일반 댓글
+    // 일반 댓글 등록
     document.querySelector('#reply-btn').addEventListener('click', () => {
         const param = {
             BoardNum: window.location.pathname.split('/')[3],
             ReplyID: maxReplyID + 1,
             ReplyContent: document.querySelector('#reply').value,
+            ParentReplyID: 0,
+
         };
         $.ajax({
             url: '/Board/Reply',
@@ -72,7 +75,7 @@
         });
     })
 
-
+    // 게시글 수정
     document.querySelector('#update').addEventListener('click', () => {
         const param = {
             "BoardNum": window.location.pathname.split('/')[3],
@@ -93,6 +96,7 @@
         });
     })
 
+    // 게시글 삭제
     document.querySelector('#delete').addEventListener('click', () => {
         const flag = confirm('정말 삭제하시겠습니까?');
         if (flag === true) {
@@ -100,6 +104,7 @@
         }
     })
 
+    // 게시글 추천
     document.querySelector('#recommand').addEventListener('click', () => {
         recommandNumber += 1;
 
@@ -124,38 +129,32 @@
         });
     })
 
-    // 대댓글 댓글
-    document.querySelector(".re-reply-btn").on("click", function () {
-        alert("소스 코드를 클릭하셨군요!");
+    function ReReply(event) {
         const param = {
             BoardNum: window.location.pathname.split('/')[3],
             ReplyID: maxReplyID + 1,
-            ReplyContent: document.querySelector('${maxReplyID}+1').value,
-            ParentReplyID: event.target.ParentNode.class,
+            ReplyContent: document.getElementById(maxReplyID).value,
+            ParentReplyID: event.target.parentElement.className,
         }
-        console.log(param);
-    });
-        
-        //$.ajax({
-        //    url: '/Board/Reply',
-        //    type: 'post',
-        //    dataType: "json",
-        //    data: JSON.stringify(param),
-        //    contentType: "application/json",
-        //    success: function (data) {
-        //        alert('댓글이 작성 되었습니다.')
-        //        $('#reply-content').empty();
-        //        data.replyList.forEach((item) => {
-        //            $('#reply-content').append(createRow(item))
-        //        })
-        //        document.querySelector('#reply').value = "";
-        //        maxReplyID += 1;
-        //    },
-        //    error: function () {
-        //        alert('댓글을 입력해주세요.');
-        //    }
-        //});
-
+        $.ajax({
+            url: '/Board/Reply',
+            type: 'post',
+            dataType: "json",
+            data: JSON.stringify(param),
+            contentType: "application/json",
+            success: function (data) {
+                alert('답글이 작성 되었습니다.')
+                $('#reply-content').empty();
+                data.replyList.forEach((item) => {
+                    $('#reply-content').append(createRow(item))
+                })
+                maxReplyID += 1;
+            },
+            error: function () {
+                alert('댓글을 입력해주세요.');
+            }
+        });
+    }
 
     function ReReplyButton(event) {
         // 부모 ReplyID
@@ -164,11 +163,16 @@
         $(`.${ParentReplyID}`).first().append(createReReply(ParentReplyID))
     }
 
+    function ReadReReplyList() {
+
+    }
+
+    // 대댓글 창 생성
     function createReReply(ParentReplyID) {
         return `
-        <div class="${ParentReplyID}" style="margin:0px 0px 15px 50px; display:flex;">
-            <input type="text" id="${maxReplyID}+1" class="form-control"/>
-            <button class="re-reply-btn">댓글</button>
+        <div class="${ParentReplyID}" style="margin:5px 0px 15px 50px; display:flex;">
+            <input type="text" id = ${maxReplyID} class="form-control"/>
+            <button class="re-reply-btn" onclick="ReReply(event)">답글 입력</button>
           </div >
         `
     }
@@ -178,7 +182,8 @@
         <div class="${item.ReplyID}"; style="margin-bottom:15px;">
             <input type="text" class="form-control" value=${item.ReplyContent} readonly />
             <button onclick="ReReplyButton(event)" name=${item.ReplyID}>답글 달기</button>
-          </div>
+            <button onclick="ReadReReplyList()">답글 보기</button>
+        </div>
             `
     }
 </script>
