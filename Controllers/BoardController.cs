@@ -1,7 +1,9 @@
 ﻿using Board.Entitys;
 using Board.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -15,6 +17,7 @@ namespace Board.Controllers
         // 게시판 데이터 가져오기
         public ActionResult Index()
         {
+            // 게시판 데이터를 가져오기 전에 reply중 max를 업데이트해서 넣어주기
             ViewBag.Board = boards.GetBoardList();
             // 게시판 전체 갯수
             return View();
@@ -117,6 +120,21 @@ namespace Board.Controllers
         public JsonResult ReadReReplyList(ReplyEntity obj)
         {
             return Json(boards.ReadReReply(obj));
+        }
+
+        [HttpPost]
+        public ActionResult Upload(HttpPostedFileBase file)
+        {
+            if (ModelState.IsValid)
+            {
+                if (file.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+                    var path = Path.Combine(Server.MapPath("~/App_Data"), fileName); 
+                    file.SaveAs(path);
+                }
+            }
+            return RedirectToAction("Write", "Board");
         }
     }
 }
