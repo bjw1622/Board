@@ -48,12 +48,12 @@ namespace Board.Controllers
         {
             // 게시판 상세 정보 가져오기
             ViewBag.detailInfo = boards.DetailBoard(boardNum);
-            
+
             // 댓글 가져오기
             ViewBag.replyList = boards.ReadReply(boardNum);
 
             // ReplyID 최신화 하기
-            ViewBag.MaxReplyID = boards.GetReplyID(boardNum); 
+            ViewBag.MaxReplyID = boards.GetReplyID(boardNum);
             return View();
         }
 
@@ -103,16 +103,20 @@ namespace Board.Controllers
             boards.AddReply(obj);
 
             // 댓글 개수 불러오는 sq
-            // ForEach로 댓글 그리기위함
             ViewBag.replyList = boards.ReadReply(obj.BoardNum);
 
-            //대댓글 그리기
             // 댓글 개수 return
-            return Json(new 
-                 { 
-                    replyList = ViewBag.replyList,
+            return Json(new
+            {
+                replyList = ViewBag.replyList,
             });
+        }
 
+        // 상세 페이지 - 답글 보기
+        [HttpPost]
+        public JsonResult ReadReReplyList(ReplyEntity obj)
+        {
+            return Json(boards.ReadReReply(obj));
         }
     }
 }

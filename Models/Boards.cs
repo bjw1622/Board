@@ -48,7 +48,6 @@ namespace Board.Models
         {
             Conn();
             con.Open();
-            // 사용할 프로시저의 이름을 설정
             using (SqlCommand com = new SqlCommand("dbo.SelectBoard", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
@@ -325,8 +324,8 @@ namespace Board.Models
             return result;
         }
 
-        // 상세페이지 - 댓글 불러오기
-        public List<ReplyEntity> ReadReReply(int ParentReplyID)
+        // 상세페이지 - 대댓글 불러오기
+        public List<ReplyEntity> ReadReReply(ReplyEntity obj)
         {
             Conn();
             con.Open();
@@ -334,7 +333,8 @@ namespace Board.Models
             using (SqlCommand com = new SqlCommand("dbo.SelectReReply", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
-                com.Parameters.AddWithValue("@ParentReplyID", ParentReplyID);
+                com.Parameters.AddWithValue("@BoardNum", obj.BoardNum);
+                com.Parameters.AddWithValue("@ParentReplyID", obj.ParentReplyID);
                 SqlDataReader reader = com.ExecuteReader();
                 while (reader.Read())
                 {

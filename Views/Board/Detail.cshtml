@@ -37,7 +37,7 @@
         <div class="@ViewBag.replyList[i].ReplyID" ; style="margin-bottom:15px;">
             <input type="text" class="form-control" value="@ViewBag.replyList[i].ReplyContent" readonly>
             <button onclick="ReReplyButton(event)" name="@ViewBag.replyList[i].ReplyID">답글 달기</button>
-            <button onclick="ReadReReplyList()">답글 보기</button>
+            <button onclick="ReadReReplyList(event)" name="@ViewBag.replyList[i].ReplyID">답글 보기</button>
         </div>
     }
 </div>
@@ -52,7 +52,6 @@
             ReplyID: maxReplyID + 1,
             ReplyContent: document.querySelector('#reply').value,
             ParentReplyID: 0,
-
         };
         $.ajax({
             url: '/Board/Reply',
@@ -64,6 +63,7 @@
                 alert('댓글이 작성 되었습니다.')
                 $('#reply-content').empty();
                 data.replyList.forEach((item) => {
+                    console.log(item.ReplyContent);
                     $('#reply-content').append(createRow(item))
                 })
                 document.querySelector('#reply').value = "";
@@ -163,8 +163,28 @@
         $(`.${ParentReplyID}`).first().append(createReReply(ParentReplyID))
     }
 
-    function ReadReReplyList() {
-
+    function ReadReReplyList(event) {
+        const param = {
+            BoardNum: window.location.pathname.split('/')[3],
+            ParentReplyID: event.target.name,
+        }
+        console.log(param);
+        $.ajax({
+            url: '/Board/ReadReReplyList',
+            type: 'post',
+            dataType: "json",
+            data: JSON.stringify(param),
+            contentType: "application/json",
+            success: function (data) {
+                $(`.${param.ParentReplyID}`).children('div').remove();
+                data.forEach((item) => {
+                    $(`.${param.ParentReplyID}`).append(createReReplyList(item))
+                })
+            },
+            error: function () {
+                alert('답글이 없습니다..');
+            }
+        });
     }
 
     // 대댓글 창 생성
@@ -176,13 +196,21 @@
           </div >
         `
     }
-
+    // 댓글 불러오기
     function createRow(item) {
         return `
         <div class="${item.ReplyID}"; style="margin-bottom:15px;">
-            <input type="text" class="form-control" value=${item.ReplyContent} readonly />
+            <input type="text" class="form-control" value="${item.ReplyContent}" readonly />
             <button onclick="ReReplyButton(event)" name=${item.ReplyID}>답글 달기</button>
-            <button onclick="ReadReReplyList()">답글 보기</button>
+            <button onclick="ReadReReplyList(event)" name=${item.ReplyID}>답글 보기</button>
+        </div>
+            `
+    }
+    // 대댓글 불러오기
+    function createReReplyList(item) {
+        return `
+        <div class="${item.ReplyID}"; style="margin:5px 0px 15px 50px;">
+            <input type="text" class="form-control" value="${item.ReplyContent}" readonly />
         </div>
             `
     }
