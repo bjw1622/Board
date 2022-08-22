@@ -147,6 +147,7 @@
     <Compile Include="Controllers\BoardController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Entitys\BoardEntity.cs" />
+    <Compile Include="Entitys\BoardFileEntity.cs" />
     <Compile Include="Entitys\FileEntity.cs" />
     <Compile Include="Entitys\PageAndFindEntity.cs" />
     <Compile Include="Entitys\FindEntity.cs" />

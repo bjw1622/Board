@@ -5,34 +5,32 @@
 
 <h2>글작성</h2>
 
-<form  method="post" id="FileUploadForm">
+<form id="FileUploadForm">
     <div class="form-group">
         <label>제목</label>
-        <input type="text" class="form-control" placeholder="제목" name="Title" id="title" required>
+        <input type="text" class="form-control" placeholder="제목" id="title" required>
     </div>
 
-    @*TODO 로그인 한 user.name을 자동으로 입력*@
     <div class="form-group">
         <label>작성자</label>
-        <input type="text" class="form-control" placeholder="제목" name="Name" id="writer" required>
+        <input type="text" class="form-control" placeholder="제목" id="writer" required>
     </div>
 
     <div class="form-group">
         <label for="exampleFormControlTextarea1">글 내용</label>
-        <textarea class="form-control" name="MainContent" rows="5" id="main-content" required></textarea>
+        <textarea class="form-control"rows="5" id="main-content" required></textarea>
     </div>
     <input id="fileInput" type="file" multiple accept="image/jpeg, image/jpg, image/png">
-    @*<input type="submit" value="Upload file" />*@
 
-    <button class="btn btn-primary" type="submit">글작성</button>
+    <button class="btn btn-primary">글작성</button>
 </form>
     
 
 <script>
-    document.getElementById('FileUploadForm').onsubmit = function () {
+    document.getElementById('FileUploadForm').onsubmit = function (event) {
+        event.preventDefault();
 
         const formdata = new FormData();
-
         const fileInput = document.getElementById('fileInput');
 
         if (fileInput.files.length >= 3) {
@@ -43,21 +41,21 @@
         for (i = 0; i < fileInput.files.length; i++) {
             formdata.append(fileInput.files[i].name, fileInput.files[i]);
         }
+
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', '/Board/Write');
+        xhr.open('POST', '/Board/UploadFiles');
         xhr.send(formdata); 
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 alert(xhr.responseText);
             }
         }
-        // ajax로 글쓰기 정보 입력
+        // 글쓰기
         const param = {
             Title: $('#title').val(),
-            Name : $('#name').val(),
+            Name: $('#writer').val(),
             MainContent: $('#main-content').val(),
         }
-        console.log(param);
         $.ajax({
             url: '/Board/Write',
             type: 'post',
@@ -65,11 +63,11 @@
             data: JSON.stringify(param),
             contentType: "application/json",
             success: function (data) {
-                console.log(data);
             },
             error: function () {
             }
         });
+        
     }
 </script>
 

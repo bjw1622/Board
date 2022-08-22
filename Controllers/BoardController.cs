@@ -41,27 +41,12 @@ namespace Board.Controllers
 
         [HttpPost]
         // 글쓰기
-        public ActionResult Write(BoardEntity obj)
+        public ActionResult Write(BoardFileEntity obj)
         {
-            if (Request.Files.Count > 0)
-            {
-                var files = Request.Files;
-
-                //iterating through multiple file collection   
-                foreach (string str in files)
-                {
-                    HttpPostedFileBase file = Request.Files[str] as HttpPostedFileBase;
-                    //Checking file is available to save.  
-                    if (file != null)
-                    {
-                        var InputFileName = Path.GetFileName(file.FileName);
-                        var ServerSavePath = Path.Combine(Server.MapPath("~/Uploads/") + InputFileName);
-                        //Save file to server folder  
-                        file.SaveAs(ServerSavePath);
-                    }
-                }
-            }
+            // board 데이터
             boards.WriteBoard(obj);
+            boards.WriteBoardFile(obj);
+            // 첨부파일 추가
             return RedirectToAction("Index", "Board");
         }
 
@@ -139,6 +124,30 @@ namespace Board.Controllers
         public JsonResult ReadReReplyList(ReplyEntity obj)
         {
             return Json(boards.ReadReReply(obj));
+        }
+
+        [HttpPost]
+        public void UploadFiles()
+        {
+            if (Request.Files.Count > 0)
+            {
+                var files = Request.Files;
+
+                //iterating through multiple file collection   
+                foreach (string str in files)
+                {
+                    HttpPostedFileBase file = Request.Files[str] as HttpPostedFileBase;
+                    //Checking file is available to save.  
+                    if (file != null)
+                    {
+                        var InputFileName = Path.GetFileName(file.FileName);
+                        var ServerSavePath = Path.Combine(Server.MapPath("~/Uploads/") + InputFileName);
+                        //Save file to server folder  
+                        file.SaveAs(ServerSavePath);
+                    }
+
+                }
+            }
         }
     }
 }
