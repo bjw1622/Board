@@ -43,8 +43,12 @@
             data: JSON.stringify(email),
             contentType: "application/json",
             success: function (data) {
+                console.log(data);
                 if (data === 1) {
                     document.querySelector('#check-email-span').innerHTML = "이미 가입된 이메일 입니다.";
+                }
+                else if (data === -1) {
+                    document.querySelector('#check-email-span').innerHTML = "올바른 메일을 입력해주세요.";
                 }
                 else {
                     document.querySelector('#check-email-span').innerHTML = "회원 가입 가능한 이메일 입니다.";

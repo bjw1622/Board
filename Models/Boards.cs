@@ -136,6 +136,7 @@ namespace Board.Models
             }
             con.Close();
             con.Dispose();
+
         }
 
         // Delete 게시판
@@ -199,47 +200,70 @@ namespace Board.Models
         // 검색과 페이징
         public List<BoardEntity> PagingAndFindingBoardList(PageAndFindEntity obj)
         {
-            Conn();
-            con.Open();
-            using (SqlCommand com = new SqlCommand("dbo.FindingAndPaging", con))
+            try
             {
-                com.CommandType = CommandType.StoredProcedure;
-                com.Parameters.AddWithValue("@PageCount", obj.PageCount);
-                com.Parameters.AddWithValue("@PageNumber", obj.PageNumber);
-                com.Parameters.AddWithValue("@Variable", obj.Variable);
-                com.Parameters.AddWithValue("@Input", obj.Input);
-                SqlDataReader reader = com.ExecuteReader();
-                while (reader.Read())
+                Conn();
+                con.Open();
+                using (SqlCommand com = new SqlCommand("dbo.FindingAndPaging", con))
                 {
-                    BoardEntity boards = new BoardEntity();
-                    boards.BoardNum = Convert.ToInt32(reader["BoardNum"]);
-                    boards.Title = Convert.ToString(reader["Title"]);
-                    boards.Name = Convert.ToString(reader["Name"]);
-                    boards.ReplyCount = Convert.ToInt32(reader["ReplyCount"]);
-                    boards.RecommandCount = Convert.ToInt32(reader["RecommandCount"]);
-                    boardEntity.Add(boards);
+                    com.CommandType = CommandType.StoredProcedure;
+                    com.Parameters.AddWithValue("@PageCount", obj.PageCount);
+                    com.Parameters.AddWithValue("@PageNumber", obj.PageNumber);
+                    com.Parameters.AddWithValue("@Variable", obj.Variable);
+                    com.Parameters.AddWithValue("@Input", obj.Input);
+                    SqlDataReader reader = com.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        BoardEntity boards = new BoardEntity();
+                        boards.BoardNum = Convert.ToInt32(reader["BoardNum"]);
+                        boards.Title = Convert.ToString(reader["Title"]);
+                        boards.Name = Convert.ToString(reader["Name"]);
+                        boards.ReplyCount = Convert.ToInt32(reader["ReplyCount"]);
+                        boards.RecommandCount = Convert.ToInt32(reader["RecommandCount"]);
+                        boardEntity.Add(boards);
+                    }
                 }
             }
-            con.Close();
-            con.Dispose();
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return boardEntity;
+            }
+            finally
+            {
+                con.Close();
+                con.Dispose();
+            }
             return boardEntity;
         }
 
         // 검색 했을 때의 페이지 수 가져오기
         public int FindBoardCount(PageAndFindEntity obj)
         {
-            Conn();
-            con.Open();
-            int result;
-            using (SqlCommand com = new SqlCommand("dbo.FindBoardListCount", con))
+            int result = 0;
+            try
             {
-                com.CommandType = CommandType.StoredProcedure;
-                com.Parameters.AddWithValue("@Variable", obj.Variable);
-                com.Parameters.AddWithValue("@Input", obj.Input);
-                result = (int)(com.ExecuteScalar());
+                Conn();
+                con.Open();
+                using (SqlCommand com = new SqlCommand("dbo.FindBoardListCount", con))
+                {
+                    com.CommandType = CommandType.StoredProcedure;
+                    com.Parameters.AddWithValue("@Variable", obj.Variable);
+                    com.Parameters.AddWithValue("@Input", obj.Input);
+                    result = (int)(com.ExecuteScalar());
+                }
             }
-            con.Close();
-            con.Dispose();
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return result;
+            }
+            finally
+            {
+                con.Close();
+                con.Dispose();
+            }
+            
             return result;
         }
 
@@ -254,7 +278,7 @@ namespace Board.Models
                 com.Parameters.AddWithValue("@BoardNum", obj.BoardNum);
                 com.Parameters.AddWithValue("@ReplyID", obj.ReplyID);
                 com.Parameters.AddWithValue("@ReplyContent", obj.ReplyContent);
-                com.Parameters.AddWithValue("@ParentReplyID",obj.ParentReplyID);
+                com.Parameters.AddWithValue("@ParentReplyID", obj.ParentReplyID);
                 SqlDataReader reader = com.ExecuteReader();
                 while (reader.Read())
                 {

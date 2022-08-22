@@ -60,17 +60,28 @@ namespace Board.Models
         // 이메일 중복 체크
         public int EmailCheck(UserEntity obj)
         {
-            Conn();
-            con.Open();
-            int result;
-            using (SqlCommand com = new SqlCommand("dbo.EmailCheck", con))
+            int result = -1;
+            try
             {
-                com.CommandType = CommandType.StoredProcedure;
-                com.Parameters.AddWithValue("@Email", obj.Email);
-                result = (int)com.ExecuteScalar();
+                Conn();
+                con.Open();
+                using (SqlCommand com = new SqlCommand("dbo.EmailCheck", con))
+                {
+                    com.CommandType = CommandType.StoredProcedure;
+                    com.Parameters.AddWithValue("@Email", obj.Email);
+                    result = (int)com.ExecuteScalar();
+                }
+
             }
-            con.Close();
-            con.Dispose();
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            finally
+            {
+                con.Close();
+                con.Dispose();
+            }
             return result;
         }
     }
