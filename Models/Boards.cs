@@ -12,7 +12,6 @@ namespace Board.Models
         int boardNum = 0;
         // sqlConnection 
         private SqlConnection con;
-        List<BoardEntity> boardEntity = new List<BoardEntity>();
         List<ReplyEntity> replyEntity = new List<ReplyEntity>();
 
         public void Conn()
@@ -46,6 +45,7 @@ namespace Board.Models
         // 게시판 목록 가져오기
         public List<BoardEntity> GetBoardList()
         {
+            List<BoardEntity> boardEntity = new List<BoardEntity>();
             Conn();
             con.Open();
             using (SqlCommand com = new SqlCommand("dbo.SelectBoard", con))
@@ -72,6 +72,7 @@ namespace Board.Models
         // 게시판 전체 목록 가져오기
         public List<BoardEntity> GetTopBoardList()
         {
+            List<BoardEntity> boardEntity = new List<BoardEntity>();
             Conn();
             con.Open();
             // 사용할 프로시저의 이름을 설정
@@ -173,6 +174,7 @@ namespace Board.Models
         // 페이징
         public List<BoardEntity> PagingBoardList(PageEntity obj)
         {
+            List<BoardEntity> boardEntity = new List<BoardEntity>();
             Conn();
             con.Open();
             using (SqlCommand com = new SqlCommand("dbo.PagingBoard", con))
@@ -200,6 +202,7 @@ namespace Board.Models
         // 검색과 페이징
         public List<BoardEntity> PagingAndFindingBoardList(PageAndFindEntity obj)
         {
+            List<BoardEntity> boardEntity = new List<BoardEntity>();
             try
             {
                 Conn();
@@ -339,9 +342,7 @@ namespace Board.Models
                 else
                 {
                     result = (int)com.ExecuteScalar();
-
                 }
-
             }
             con.Close();
             con.Dispose();
