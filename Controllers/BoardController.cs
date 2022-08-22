@@ -84,6 +84,9 @@ namespace Board.Controllers
 
             // ReplyID 최신화 하기
             ViewBag.MaxReplyID = boards.GetReplyID(boardNum);
+
+            // 첨부파일 이미지 경로 가져오기
+            ViewBag.GetFileImg = boards.GetFileImg(boardNum);
             return View();
         }
 

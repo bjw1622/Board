@@ -88,6 +88,31 @@ namespace Board.Models
             return boardEntity;
         }
 
+        // 게시판 목록 가져오기
+        public List<FileEntity> GetFileImg(int boardNum)
+        {
+            List<FileEntity> fileimg = new List<FileEntity>();
+            Conn();
+            con.Open();
+            using (SqlCommand com = new SqlCommand("dbo.SelectFileName", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@BoardNum", boardNum);
+                SqlDataReader reader = com.ExecuteReader();
+                while (reader.Read())
+                {
+                    FileEntity files = new FileEntity();
+                    files.FileName = Convert.ToString(reader["FileName"]);
+                    files.FileName2 = Convert.ToString(reader["FileName2"]);
+                    fileimg.Add(files);
+                }
+            }
+            con.Close();
+            con.Dispose();
+            return fileimg;
+        }
+
+
         // 게시판 전체 목록 가져오기
         public List<BoardEntity> GetTopBoardList()
         {
