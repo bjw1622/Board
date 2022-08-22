@@ -10,6 +10,7 @@ namespace Board.Models
     public class Boards
     {
         int boardNum = 0;
+        int fileNum = 0;
         // sqlConnection 
         private SqlConnection con;
         List<ReplyEntity> replyEntity = new List<ReplyEntity>();
@@ -27,6 +28,28 @@ namespace Board.Models
             con.Open();
             // 사용할 프로시저의 이름을 설정
             using (SqlCommand com = new SqlCommand("dbo.WriteBoard", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@BoardNum", boardNum);
+                com.Parameters.AddWithValue("@Title", obj.Title);
+                com.Parameters.AddWithValue("@Name", obj.Name);
+                com.Parameters.AddWithValue("@MainContent", obj.MainContent);
+                com.Parameters.AddWithValue("@ReplyCount", obj.ReplyCount);
+                com.Parameters.AddWithValue("@RecommandCount", obj.RecommandCount);
+                com.ExecuteNonQuery();
+                boardNum += 1;
+            }
+            con.Close();
+            con.Dispose();
+        }
+
+        // 게시판 글쓰기 기능
+        public void WriteBoardFile(BoardEntity obj)
+        {
+            Conn();
+            con.Open();
+            // 사용할 프로시저의 이름을 설정
+            using (SqlCommand com = new SqlCommand("dbo.WriteBoardFile", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
                 com.Parameters.AddWithValue("@BoardNum", boardNum);

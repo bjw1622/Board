@@ -14,6 +14,7 @@ namespace Board.Controllers
     {
         Boards boards = new Boards();
 
+
         // 게시판 데이터 가져오기
         public ActionResult Index()
         {
@@ -42,6 +43,24 @@ namespace Board.Controllers
         // 글쓰기
         public ActionResult Write(BoardEntity obj)
         {
+            if (Request.Files.Count > 0)
+            {
+                var files = Request.Files;
+
+                //iterating through multiple file collection   
+                foreach (string str in files)
+                {
+                    HttpPostedFileBase file = Request.Files[str] as HttpPostedFileBase;
+                    //Checking file is available to save.  
+                    if (file != null)
+                    {
+                        var InputFileName = Path.GetFileName(file.FileName);
+                        var ServerSavePath = Path.Combine(Server.MapPath("~/Uploads/") + InputFileName);
+                        //Save file to server folder  
+                        file.SaveAs(ServerSavePath);
+                    }
+                }
+            }
             boards.WriteBoard(obj);
             return RedirectToAction("Index", "Board");
         }
@@ -120,37 +139,6 @@ namespace Board.Controllers
         public JsonResult ReadReReplyList(ReplyEntity obj)
         {
             return Json(boards.ReadReReply(obj));
-        }
-
-        [HttpPost]
-        public ActionResult UploadFiles()
-        {
-            if (Request.Files.Count > 0)
-            {
-                var files = Request.Files;
-
-                //iterating through multiple file collection   
-                foreach (string str in files)
-                {
-                    HttpPostedFileBase file = Request.Files[str] as HttpPostedFileBase;
-                    //Checking file is available to save.  
-                    if (file != null)
-                    {
-                        var InputFileName = Path.GetFileName(file.FileName);
-                        var ServerSavePath = Path.Combine(Server.MapPath("~/Uploads/") + InputFileName);
-                        //Save file to server folder  
-                        file.SaveAs(ServerSavePath);
-                        Console.WriteLine(file);
-
-                    }
-
-                }
-                return Json("File Uploaded Successfully!");
-            }
-            else
-            {
-                return Json("No files to upload");
-            }
         }
     }
 }
