@@ -50,6 +50,29 @@ namespace Board.Controllers
             return RedirectToAction("Index", "Board");
         }
 
+        [HttpPost]
+        public void UploadFiles()
+        {
+            if (Request.Files.Count > 0)
+            {
+                var files = Request.Files;
+
+                //iterating through multiple file collection   
+                foreach (string str in files)
+                {
+                    HttpPostedFileBase file = Request.Files[str] as HttpPostedFileBase;
+                    //Checking file is available to save.  
+                    if (file != null)
+                    {
+                        var InputFileName = Path.GetFileName(file.FileName);
+                        var ServerSavePath = Path.Combine(Server.MapPath("~/Uploads/") + InputFileName);
+                        //Save file to server folder  
+                        file.SaveAs(ServerSavePath);
+                    }
+                }
+            }
+        }
+
         // 상세 페이지
         public ActionResult Detail(int boardNum)
         {
@@ -126,28 +149,6 @@ namespace Board.Controllers
             return Json(boards.ReadReReply(obj));
         }
 
-        [HttpPost]
-        public void UploadFiles()
-        {
-            if (Request.Files.Count > 0)
-            {
-                var files = Request.Files;
-
-                //iterating through multiple file collection   
-                foreach (string str in files)
-                {
-                    HttpPostedFileBase file = Request.Files[str] as HttpPostedFileBase;
-                    //Checking file is available to save.  
-                    if (file != null)
-                    {
-                        var InputFileName = Path.GetFileName(file.FileName);
-                        var ServerSavePath = Path.Combine(Server.MapPath("~/Uploads/") + InputFileName);
-                        //Save file to server folder  
-                        file.SaveAs(ServerSavePath);
-                    }
-
-                }
-            }
-        }
+        
     }
 }

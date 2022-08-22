@@ -54,7 +54,7 @@ namespace Board.Models
                 com.Parameters.AddWithValue("@BoardNum", 0);
                 com.Parameters.AddWithValue("@FileNum", 0);
                 com.Parameters.AddWithValue("@FileName", obj.FileName);
-                com.Parameters.AddWithValue("@FileSaveName", obj.FileSaveName);
+                com.Parameters.AddWithValue("@FileName2", obj.FileName2);
                 com.ExecuteNonQuery();
             }
             con.Close();

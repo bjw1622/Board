@@ -27,12 +27,12 @@
     
 
 <script>
-    document.getElementById('FileUploadForm').onsubmit = function (event) {
-        event.preventDefault();
+    document.getElementById('FileUploadForm').onsubmit = function () {
 
         const formdata = new FormData();
         const fileInput = document.getElementById('fileInput');
-
+        let filename1 = fileInput.files[0].name;
+        let filename2 = fileInput.files[1].name
         if (fileInput.files.length >= 3) {
             alert('파일은 최대 2개까지 첨부 가능합니다.');
             fileInput.files.value = "";
@@ -41,20 +41,18 @@
         for (i = 0; i < fileInput.files.length; i++) {
             formdata.append(fileInput.files[i].name, fileInput.files[i]);
         }
-
+        console.log(formdata[0]);
         const xhr = new XMLHttpRequest();
         xhr.open('POST', '/Board/UploadFiles');
-        xhr.send(formdata); 
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                alert(xhr.responseText);
-            }
-        }
-        // 글쓰기
+        xhr.send(formdata);
+
+
         const param = {
             Title: $('#title').val(),
             Name: $('#writer').val(),
             MainContent: $('#main-content').val(),
+            FileName: filename1,
+            FileName2 : filename2,
         }
         $.ajax({
             url: '/Board/Write',
@@ -63,11 +61,11 @@
             data: JSON.stringify(param),
             contentType: "application/json",
             success: function (data) {
+                console.log(data);
             },
             error: function () {
             }
         });
-        
     }
 </script>
 

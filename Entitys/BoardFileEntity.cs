@@ -15,6 +15,6 @@ namespace Board.Entitys
         public int RecommandCount { get; set; }
         public int FileNum { get; set; }
         public string FileName { get; set; }
-        public string FileSaveName { get; set; }
+        public string FileName2 { get; set; }
     }
 }
