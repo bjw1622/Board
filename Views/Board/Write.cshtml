@@ -21,16 +21,40 @@
         <label for="exampleFormControlTextarea1">글 내용</label>
         <textarea class="form-control" name="MainContent" rows="5" required></textarea>
     </div>
-    <div>
-        <input type="file" id="upload" accept=".gif, .jpg, .png, .hwp, .xls, .pdf, .doc " name="file">
-        <button id="upload-btn" type="button">파일 업로드</button>
-    </div>
-
     <button class="btn btn-primary" type="submit">글작성</button>
 </form>
 
-<form action="/Board/Upload" method="post" enctype="multipart/form-data">    
-    <input type="file" name="file" id="file">     
-    <input type="submit">
+<form id="FileUploadForm">
+    <input id="fileInput" type="file" multiple>
+    <input type="submit" value="Upload file" />
 </form>
+
+<script>
+    document.getElementById('FileUploadForm').onsubmit = function () {
+
+        const formdata = new FormData(); //FormData object
+
+        const fileInput = document.getElementById('fileInput');
+
+        if (fileInput.files.length >= 3) {
+            alert('파일은 최대 2개까지 첨부 가능합니다.');
+            fileInput.files.value = "";
+            fileInput.value = "";
+        }
+        for (i = 0; i < fileInput.files.length; i++) {
+            formdata.append(fileInput.files[i].name, fileInput.files[i]);
+        }
+        //Creating an XMLHttpRequest and sending
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/Board/UploadFiles');
+        xhr.send(formdata); // se
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                //on success alert response
+                alert(xhr.responseText);
+            }
+        }
+        return false;
+    }
+</script>
 

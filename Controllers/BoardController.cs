@@ -123,18 +123,34 @@ namespace Board.Controllers
         }
 
         [HttpPost]
-        public ActionResult Upload(HttpPostedFileBase file)
+        public ActionResult UploadFiles()
         {
-            if (ModelState.IsValid)
+            if (Request.Files.Count > 0)
             {
-                if (file.ContentLength > 0)
+                var files = Request.Files;
+
+                //iterating through multiple file collection   
+                foreach (string str in files)
                 {
-                    var fileName = Path.GetFileName(file.FileName);
-                    var path = Path.Combine(Server.MapPath("~/App_Data"), fileName); 
-                    file.SaveAs(path);
+                    HttpPostedFileBase file = Request.Files[str] as HttpPostedFileBase;
+                    //Checking file is available to save.  
+                    if (file != null)
+                    {
+                        var InputFileName = Path.GetFileName(file.FileName);
+                        var ServerSavePath = Path.Combine(Server.MapPath("~/Uploads/") + InputFileName);
+                        //Save file to server folder  
+                        file.SaveAs(ServerSavePath);
+                        Console.WriteLine(file);
+
+                    }
+
                 }
+                return Json("File Uploaded Successfully!");
             }
-            return RedirectToAction("Write", "Board");
+            else
+            {
+                return Json("No files to upload");
+            }
         }
     }
 }
