@@ -2,17 +2,17 @@
 @{
     ViewBag.Title = "LogIn";
 }
-
 <h2>로그인</h2>
 <form action="/User/LogIn" method="post">
+    @Html.AntiForgeryToken()
     <div class="form-group">
         <label>이메일</label>
-        <input class="form-control"type="email" name="Email" required />
+        <input class="form-control" type="email" name="Email" required />
 
         <label>비밀번호</label>
-        <input class="form-control"type="password" name="Pw" id="password" required />
+        <input class="form-control" type="password" name="Pw" id="password" required />
 
-        <button class="btn btn-success"type="submit">로그인</button>
+        <button class="btn btn-success" type="submit">로그인</button>
     </div>
 </form>
 <button onclick="location.href='/User/SignUp'">회원가입</button>

@@ -5,7 +5,7 @@
 
 <h2>글작성</h2>
 
-<form id="FileUploadForm">
+<form id="FileUploadForm" enctype="">
     <div class="form-group">
         <label>제목</label>
         <input type="text" class="form-control" placeholder="제목" id="title" required>
@@ -44,7 +44,6 @@
         const xhr = new XMLHttpRequest();
         xhr.open('POST', '/Board/UploadFiles');
         xhr.send(formdata);
-        console.log(fileName);
 
         const param = {
             Title: $('#title').val(),

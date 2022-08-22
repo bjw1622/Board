@@ -35,6 +35,7 @@ namespace Board.Controllers
         }
 
         // 로그인
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult LogIn(UserEntity obj)
         {
@@ -42,7 +43,7 @@ namespace Board.Controllers
             // 로그인 성공
             if (result == 1)
             {
-                Session["Email"] = obj.Email;
+                Session["Email"] = obj.Email.ToString();
                 return RedirectToAction("Index", "Board");
             }
             // 로그인 실패

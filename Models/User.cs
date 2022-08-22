@@ -54,6 +54,7 @@ namespace Board.Models
             }
             con.Close();
             con.Dispose();
+            // result가 아닌 name 반환
             return result;
         }
 
