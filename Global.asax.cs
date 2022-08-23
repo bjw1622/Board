@@ -17,5 +17,15 @@ namespace Board
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+
+        protected void Session_OnStart(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void Session_OnEnd(object sender, EventArgs e)
+        {
+
+        }
     }
 }

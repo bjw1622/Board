@@ -55,6 +55,11 @@ namespace Board.Controllers
             var result = user.EmailCheck(obj);
             return Json(result);
         }
+        public ActionResult Logout()
+        {
+            Session.Abandon();
+            return RedirectToAction("Login", "User");
+        }
     }
 }
 

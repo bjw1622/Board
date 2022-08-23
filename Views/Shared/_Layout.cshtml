@@ -28,8 +28,7 @@
                     }
                     else
                     {
-                        <li>@Html.ActionLink("로그아웃", "Login", "User")</li>
-                        Session.Abandon();
+                        <li>@Html.ActionLink("로그아웃", "Logout", "User")</li>
                     }
                 </ul>
             </div>
@@ -45,3 +44,4 @@
     @RenderSection("scripts", required: false)
 </body>
 </html>
+
