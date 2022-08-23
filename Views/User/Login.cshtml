@@ -4,7 +4,6 @@
 }
 <h2>로그인</h2>
 <form action="/User/LogIn" method="post">
-    @Html.AntiForgeryToken()
     <div class="form-group">
         <label>이메일</label>
         <input class="form-control" type="email" name="Email" required />

@@ -35,16 +35,15 @@ namespace Board.Controllers
         }
 
         // 로그인
-        [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult LogIn(UserEntity obj)
         {
             var result = user.LogIn(obj);
+            ViewBag.Name = result;
             // 로그인 성공
-            if (result == 1)
+            if (result != "")
             {
-                Session["Email"] = obj.Email.ToString();
-                return RedirectToAction("Index", "Board");
+                return RedirectToAction("Index", "Board", ViewBag.Name);
             }
             // 로그인 실패
             return View();

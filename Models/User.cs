@@ -40,21 +40,26 @@ namespace Board.Models
         }
 
         // 로그인
-        public int LogIn(UserEntity obj)
+        public string LogIn(UserEntity obj)
         {
             Conn();
             con.Open();
-            int result;
+            string result="";
             using (SqlCommand com = new SqlCommand("dbo.LogInUser", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
                 com.Parameters.AddWithValue("@Email", obj.Email);
                 com.Parameters.AddWithValue("@Pw", obj.Pw);
-                result = (int)com.ExecuteScalar();
+                SqlDataReader reader = com.ExecuteReader();
+                while (reader.Read())
+                {
+                    UserEntity users = new UserEntity();
+                    users.Name = Convert.ToString(reader["Name"]);
+                    result = users.Name;
+                }
             }
             con.Close();
             con.Dispose();
-            // result가 아닌 name 반환
             return result;
         }
 

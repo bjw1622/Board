@@ -2,9 +2,7 @@
     ViewBag.Title = "게시판";
 }
 @{
-    // 한 페이지에 나타내고 싶은 게시글 수
     var boardCount = 20;
-    // 총 페이징 버튼 갯수
     var totalPage = (ViewBag.Board.Count / boardCount) + 2;
 }
 <h2>게시판</h2>
