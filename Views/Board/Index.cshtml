@@ -5,6 +5,7 @@
     var boardCount = 20;
     var totalPage = (ViewBag.Board.Count / boardCount) + 2;
 }
+
 @if (Session["Name"] != null)
 {
     <h2>게시판</h2>
@@ -78,10 +79,10 @@
     </div>
     <button class="btn btn-primary" onclick="location.href='/Board/Write'">글쓰기</button>
 }
-@if(Session["Name"] == null)
-            {
-                <h1>로그인을 해주세요</h1>
-            }
+@*else
+{
+    Response.Redirect("/User/Login");
+}*@
 
 <script>
     function createRow(item) {

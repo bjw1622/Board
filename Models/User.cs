@@ -77,7 +77,6 @@ namespace Board.Models
                     com.Parameters.AddWithValue("@Email", obj.Email);
                     result = (int)com.ExecuteScalar();
                 }
-
             }
             catch (Exception e)
             {

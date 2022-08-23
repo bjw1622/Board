@@ -39,12 +39,11 @@ namespace Board.Controllers
         public ActionResult LogIn(UserEntity obj)
         {
             var result = user.LogIn(obj);
-            ViewBag.Name = result;
             // 로그인 성공
             if (result != "")
             {
                 Session["Name"] = result;
-                return RedirectToAction("Index", "Board", Session["Name"]);
+                return RedirectToAction("Index", "Board",Session["Name"]);
             }
             // 로그인 실패
             return View();

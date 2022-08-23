@@ -18,6 +18,7 @@ namespace Board.Controllers
         // 게시판 데이터 가져오기
         public ActionResult Index()
         {
+            Session["Number"].ToString();
             ViewBag.Board = boards.GetBoardList();
             return View();
         }
