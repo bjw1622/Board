@@ -43,13 +43,13 @@ namespace Board.Controllers
             // 로그인 성공
             if (result != "")
             {
-                return RedirectToAction("Index", "Board", ViewBag.Name);
+                Session["Name"] = result;
+                return RedirectToAction("Index", "Board", Session["Name"]);
             }
             // 로그인 실패
             return View();
         }
 
-        //
         [HttpPost]
         public JsonResult EmailCheck(UserEntity obj)
         {

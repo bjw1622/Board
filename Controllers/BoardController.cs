@@ -18,9 +18,7 @@ namespace Board.Controllers
         // 게시판 데이터 가져오기
         public ActionResult Index()
         {
-            // 게시판 데이터를 가져오기 전에 reply중 max를 업데이트해서 넣어주기
             ViewBag.Board = boards.GetBoardList();
-            // 게시판 전체 갯수
             return View();
         }
 
@@ -152,6 +150,6 @@ namespace Board.Controllers
             return Json(boards.ReadReReply(obj));
         }
 
-        
+
     }
 }

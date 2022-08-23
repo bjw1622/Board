@@ -21,8 +21,16 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li>@Html.ActionLink("로그인", "Login", "User")</li>
-                    <li>@Html.ActionLink("회원가입", "SignUp", "User")</li>
+                    @if (Session["Name"] == null)
+                    {
+                        <li>@Html.ActionLink("로그인", "Login", "User")</li>
+                        <li>@Html.ActionLink("회원가입", "SignUp", "User")</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("로그아웃", "Login", "User")</li>
+                        Session.Abandon();
+                    }
                 </ul>
             </div>
         </div>

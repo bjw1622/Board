@@ -4,8 +4,8 @@
 }
 
 <h2>글작성</h2>
-
-<form id="FileUploadForm" enctype="">
+<div>@Session["Name"]</div>
+<form id="FileUploadForm">
     <div class="form-group">
         <label>제목</label>
         <input type="text" class="form-control" placeholder="제목" id="title" required>
@@ -18,13 +18,13 @@
 
     <div class="form-group">
         <label for="exampleFormControlTextarea1">글 내용</label>
-        <textarea class="form-control"rows="5" id="main-content" required></textarea>
+        <textarea class="form-control" rows="5" id="main-content" required></textarea>
     </div>
     <input id="fileInput" type="file" multiple accept="image/jpeg, image/jpg, image/png">
 
     <button class="btn btn-primary">글작성</button>
 </form>
-    
+
 
 <script>
     document.getElementById('FileUploadForm').onsubmit = function () {
