@@ -18,7 +18,6 @@ namespace Board.Controllers
         // 게시판 데이터 가져오기
         public ActionResult Index()
         {
-            //Session["Name"].ToString();
             ViewBag.Board = boards.GetBoardList();
             return View();
         }
@@ -76,12 +75,13 @@ namespace Board.Controllers
         {
             // 게시판 상세 정보 가져오기
             ViewBag.detailInfo = boards.DetailBoard(boardNum);
-
             // 댓글 가져오기
             ViewBag.replyList = boards.ReadReply(boardNum);
 
             // ReplyID 최신화 하기
             ViewBag.MaxReplyID = boards.GetReplyID(boardNum);
+
+
 
             // 첨부파일 이미지 경로 가져오기
             ViewBag.GetFileImg = boards.GetFileImg(boardNum);
@@ -105,10 +105,29 @@ namespace Board.Controllers
 
         // 상세 페이지 - 추천 업데이트
         [HttpPost]
-        public JsonResult RecommandUpdate(BoardEntity obj)
+        public JsonResult RecommandUpdate(RecommandEntity obj)
         {
+            // 보드 넘버랑 이메일로 0인지 1인지
+            int recommand = boards.GetRecommandNumber(obj);
+            if (recommand == -1)
+            {
+                obj.RecommandCount += 1;
+                //테이블에 보드넘버,이메일,1로 추가하기
+                boards.UpdateRecommand(obj);
+            }
+            if (recommand == 1)
+            {
+                obj.RecommandCount -= 1;
+                boards.SetRecomandDisabled(obj);
+            }
+            if (recommand == 0)
+            {
+                obj.RecommandCount += 1;
+                boards.SetRecomandActive(obj);
+
+            }
             boards.RecommandCountUpdate(obj);
-            return Json(obj);
+            return Json( new {recommand, obj.RecommandCount });
         }
 
         // 인덱스 페이지 - 검색과 페이징 기능
@@ -135,6 +154,9 @@ namespace Board.Controllers
 
             // 댓글 개수 불러오는 sq
             ViewBag.replyList = boards.ReadReply(obj.BoardNum);
+
+            //Board 댓글 총 갯수 업데이트하기
+            boards.UpdateReplyCount(obj.BoardNum, obj.ReplyID);
 
             // 댓글 개수 return
             return Json(new

@@ -159,7 +159,7 @@ namespace Board.Models
                     boards.Name = Convert.ToString(reader["Name"]);
                     boards.MainContent = Convert.ToString(reader["MainContent"]);
                     boards.RecommandCount = Convert.ToInt32(reader["RecommandCount"]);
-                    boards.Email = Convert.ToString(reader["Email"]); 
+                    boards.Email = Convert.ToString(reader["Email"]);
 
                 }
             }
@@ -202,7 +202,7 @@ namespace Board.Models
         }
 
         // 상세 페이지 - 추천 업데이트
-        public void RecommandCountUpdate(BoardEntity obj)
+        public void RecommandCountUpdate(RecommandEntity obj)
         {
             Conn();
             con.Open();
@@ -423,6 +423,96 @@ namespace Board.Models
             return replyEntity;
         }
 
+        public void UpdateReplyCount(int boardNum, int replyCount)
+        {
+            Conn();
+            con.Open();
+            ReplyEntity boards = new ReplyEntity();
+            using (SqlCommand com = new SqlCommand("dbo.BoardReply", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@BoardNum", boardNum);
+                com.Parameters.AddWithValue("@ReplyCount", replyCount);
+                SqlDataReader reader = com.ExecuteReader();
+            }
+            con.Close();
+            con.Dispose();
+        }
 
+        public int GetRecommandNumber(RecommandEntity obj)
+        {
+            // ReplyID 가장 큰 값
+            int result;
+            Conn();
+            con.Open();
+            using (SqlCommand com = new SqlCommand("dbo.GetRecommandNumber", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@BoardNum", obj.BoardNum);
+                com.Parameters.AddWithValue("@Email", obj.Email);
+                Object nullCheck = com.ExecuteScalar();
+                if (nullCheck == null)
+                {
+                    //존재 X
+                    result = -1;
+                }
+                else
+                {
+                    // 0또는 1 반환
+                    result = (int)com.ExecuteScalar();
+                }
+            }
+            con.Close();
+            con.Dispose();
+            return result;
+        }
+
+        public void UpdateRecommand(RecommandEntity obj)
+        {
+            Conn();
+            con.Open();
+            ReplyEntity boards = new ReplyEntity();
+            using (SqlCommand com = new SqlCommand("dbo.UpdateRecommand", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@BoardNum", obj.BoardNum);
+                com.Parameters.AddWithValue("@Email", obj.Email);
+                SqlDataReader reader = com.ExecuteReader();
+            }
+            con.Close();
+            con.Dispose();
+        }
+        public void SetRecomandDisabled(RecommandEntity obj)
+        {
+            Conn();
+            con.Open();
+            ReplyEntity boards = new ReplyEntity();
+            using (SqlCommand com = new SqlCommand("dbo.SetRecommandDisabled", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@BoardNum", obj.BoardNum);
+                com.Parameters.AddWithValue("@Email", obj.Email);
+                SqlDataReader reader = com.ExecuteReader();
+            }
+            con.Close();
+            con.Dispose();
+        }
+
+        public void SetRecomandActive(RecommandEntity obj)
+        {
+            Conn();
+            con.Open();
+            ReplyEntity boards = new ReplyEntity();
+            using (SqlCommand com = new SqlCommand("dbo.SetRecommandActive", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@BoardNum", obj.BoardNum);
+                com.Parameters.AddWithValue("@Email", obj.Email);
+                SqlDataReader reader = com.ExecuteReader();
+            }
+            con.Close();
+            con.Dispose();
+        }
     }
+
 }
