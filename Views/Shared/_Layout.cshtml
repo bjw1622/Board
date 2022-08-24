@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - 내 ASP.NET 애플리케이션</title>
+    <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -17,17 +17,18 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("애플리케이션 이름", "Index", "Board", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("게시판", "Index", "Board", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    @if (Session["Name"] == null)
+                    @if (Session["Email"] == null)
                     {
                         <li>@Html.ActionLink("로그인", "Login", "User")</li>
                         <li>@Html.ActionLink("회원가입", "SignUp", "User")</li>
                     }
                     else
                     {
+                        <li style="color:white; margin-top:15px;">@Session["Name"]님 환영합니다. </li>
                         <li>@Html.ActionLink("로그아웃", "Logout", "User")</li>
                     }
                 </ul>

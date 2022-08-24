@@ -40,10 +40,11 @@ namespace Board.Controllers
         {
             var result = user.LogIn(obj);
             // 로그인 성공
-            if (result != "")
+            if (result.Count != 0)
             {
-                Session["Name"] = result;
-                return RedirectToAction("Index", "Board",Session["Name"]);
+                Session["Name"] = result[0].Name;
+                Session["Email"] = result[0].Email;
+                return RedirectToAction("Index", "Board");
             }
             // 로그인 실패
             return View();

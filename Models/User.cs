@@ -40,11 +40,11 @@ namespace Board.Models
         }
 
         // 로그인
-        public string LogIn(UserEntity obj)
+        public List<UserEntity> LogIn(UserEntity obj)
         {
             Conn();
             con.Open();
-            string result="";
+            List<UserEntity> userList = new List<UserEntity>();
             using (SqlCommand com = new SqlCommand("dbo.LogInUser", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
@@ -54,13 +54,14 @@ namespace Board.Models
                 while (reader.Read())
                 {
                     UserEntity users = new UserEntity();
+                    users.Email = Convert.ToString(reader["Email"]);
                     users.Name = Convert.ToString(reader["Name"]);
-                    result = users.Name;
+                    userList.Add(users);
                 }
             }
             con.Close();
             con.Dispose();
-            return result;
+            return userList;
         }
 
         // 이메일 중복 체크

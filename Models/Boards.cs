@@ -25,7 +25,6 @@ namespace Board.Models
             Conn();
             con.Open();
             // 사용할 프로시저의 이름을 설정
-            Console.WriteLine(obj);
             using (SqlCommand com = new SqlCommand("dbo.WriteBoard", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
@@ -33,6 +32,7 @@ namespace Board.Models
                 com.Parameters.AddWithValue("@Title", obj.Title);
                 com.Parameters.AddWithValue("@Name", obj.Name);
                 com.Parameters.AddWithValue("@MainContent", obj.MainContent);
+                com.Parameters.AddWithValue("@Email", obj.Email);
                 com.Parameters.AddWithValue("@ReplyCount", obj.ReplyCount);
                 com.Parameters.AddWithValue("@RecommandCount", obj.RecommandCount);
                 com.ExecuteNonQuery();
@@ -159,6 +159,8 @@ namespace Board.Models
                     boards.Name = Convert.ToString(reader["Name"]);
                     boards.MainContent = Convert.ToString(reader["MainContent"]);
                     boards.RecommandCount = Convert.ToInt32(reader["RecommandCount"]);
+                    boards.Email = Convert.ToString(reader["Email"]); 
+
                 }
             }
             con.Close();
@@ -310,7 +312,7 @@ namespace Board.Models
                 con.Close();
                 con.Dispose();
             }
-            
+
             return result;
         }
 

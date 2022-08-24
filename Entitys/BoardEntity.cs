@@ -8,5 +8,6 @@
         public string Name { get; set; }
         public int ReplyCount { get; set; }
         public int RecommandCount { get; set; }
+        public string Email { get; set; }
     }
 }

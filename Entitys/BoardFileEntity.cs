@@ -16,5 +16,6 @@ namespace Board.Entitys
         public int FileNum { get; set; }
         public string FileName { get; set; }
         public string FileName2 { get; set; }
+        public string Email { get; set; }
     }
 }

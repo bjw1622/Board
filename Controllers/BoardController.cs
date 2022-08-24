@@ -45,7 +45,6 @@ namespace Board.Controllers
             // board 데이터
             boards.WriteBoard(obj);
             boards.WriteBoardFile(obj);
-            // 첨부파일 추가
             return RedirectToAction("Index", "Board");
         }
 
