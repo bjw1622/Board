@@ -39,15 +39,16 @@ namespace Board.Controllers
         public ActionResult LogIn(UserEntity obj)
         {
             var result = user.LogIn(obj);
-            // 로그인 성공
             if (result.Count != 0)
             {
                 Session["Name"] = result[0].Name;
                 Session["Email"] = result[0].Email;
                 return RedirectToAction("Index", "Board");
             }
-            // 로그인 실패
-            return View();
+            return Content("<script language='javascript' type='text/javascript'> " +
+                "alert('로그인 정보가 일치하지 않습니다.');" +
+                "location.href='/User/Login'" +
+                "</script>");
         }
 
         [HttpPost]
