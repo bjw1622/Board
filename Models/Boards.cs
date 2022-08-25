@@ -171,18 +171,28 @@ namespace Board.Models
         // Update 게시판
         public void UpdateBoard(BoardEntity obj)
         {
-            Conn();
-            con.Open();
-            using (SqlCommand com = new SqlCommand("dbo.UpdateBoard", con))
-            {
-                com.CommandType = CommandType.StoredProcedure;
-                com.Parameters.AddWithValue("@BoardNum", obj.BoardNum);
-                com.Parameters.AddWithValue("@Title", obj.Title);
-                com.Parameters.AddWithValue("@MainContent", obj.MainContent);
-                SqlDataReader reader = com.ExecuteReader();
+            try {
+                Conn();
+                con.Open();
+                using (SqlCommand com = new SqlCommand("dbo.UpdateBoard", con))
+                {
+                    com.CommandType = CommandType.StoredProcedure;
+                    com.Parameters.AddWithValue("@BoardNum", obj.BoardNum);
+                    com.Parameters.AddWithValue("@Title", obj.Title);
+                    com.Parameters.AddWithValue("@MainContent", obj.MainContent);
+                    SqlDataReader reader = com.ExecuteReader();
+                }
             }
-            con.Close();
-            con.Dispose();
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            finally
+            {
+                con.Close();
+                con.Dispose();
+            }
+          
 
         }
 
