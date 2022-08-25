@@ -5,68 +5,72 @@
     string email = ViewBag.detailInfo.Email;
 
 }
-<h2>상세</h2>
-<div class="form-group">
-    <label>제목</label>
-    <input type="text" class="form-control" name="Title" id="title" value="@ViewBag.detailInfo.Title">
-</div>
-
-<div class="form-group">
-    <label>작성자</label>
-    <input type="text" class="form-control" name="Name" readonly value="@ViewBag.detailInfo.Name">
-</div>
-
-<div class="form-group">
-    <label for="exampleFormControlTextarea1">내용</label>
-    <textarea class="form-control" name="MainContent" id="mainContent" rows="5">@ViewBag.detailInfo.MainContent</textarea>
-</div>
-
-<hr />
-<div class="form-group">
-    <h4>첨부 파일</h4>
-    @if (@ViewBag.GetFileImg[0].FileName != "")
-    {
-        <a href="~/Uploads/@ViewBag.GetFileImg[0].FileName" download="@ViewBag.GetFileImg[0].FileName">
-            <img src="~/Uploads/@ViewBag.GetFileImg[0].FileName" alt="첨부 파일 없음">
-        </a>
-    }
-    @if (@ViewBag.GetFileImg[0].FileName2 != "")
-    {
-        <a href="~/Uploads/@ViewBag.GetFileImg[0].FileName2" download="@ViewBag.GetFileImg[0].FileName2">
-            <img src="~/Uploads/@ViewBag.GetFileImg[0].FileName2" alt="첨부 파일 없음">
-        </a>
-    }
-
-</div>
-
-<hr />
-<button class="btn btn-primary" id="recommand">추천 : @ViewBag.detailInfo.RecommandCount</button>
-
-@if (Session["Email"].ToString() == email)
-{
-    <div>
-        <button class="btn btn-info" onclick="update()">수정</button>
-        <button class="btn btn-danger" onclick="deleteBoard()">삭제</button>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+</head>
+<body>
+    <h2>상세</h2>
+    <div class="form-group">
+        <label>제목</label>
+        <input type="text" class="form-control" name="Title" id="title" value="@ViewBag.detailInfo.Title">
     </div>
-}
-<hr />
-<div class="input-group mb-3" style="display:flex;">
-    <input type="text" class="form-control" style="margin-right : 5px;" id="reply">
-    <button class="btn btn-outline-secondary" id="reply-btn" type="button">댓글 입력</button>
-</div>
-<hr />
 
-<h3>댓글 목록</h3>
-<div id="reply-content">
-    @for (var i = 0; i <= ViewBag.replyList.Count - 1; i++)
+    <div class="form-group">
+        <label>작성자</label>
+        <input type="text" class="form-control" name="Name" readonly value="@ViewBag.detailInfo.Name">
+    </div>
+
+    <div class="form-group">
+        <label for="exampleFormControlTextarea1">내용</label>
+        <textarea class="form-control" name="MainContent" id="mainContent" rows="5">@ViewBag.detailInfo.MainContent</textarea>
+    </div>
+    <hr />
+    <div class="form-group">
+        <h4>첨부 파일</h4>
+        @if (@ViewBag.GetFileImg[0].FileName != "")
+        {
+            <a href="~/Uploads/@ViewBag.GetFileImg[0].FileName" download="@ViewBag.GetFileImg[0].FileName">
+                <img src="~/Uploads/@ViewBag.GetFileImg[0].FileName" alt="첨부 파일 없음">
+            </a>
+        }
+        @if (@ViewBag.GetFileImg[0].FileName2 != "")
+        {
+            <a href="~/Uploads/@ViewBag.GetFileImg[0].FileName2" download="@ViewBag.GetFileImg[0].FileName2">
+                <img src="~/Uploads/@ViewBag.GetFileImg[0].FileName2" alt="첨부 파일 없음">
+            </a>
+        }
+
+    </div>
+    <hr />
+    <button class="btn btn-primary" id="recommand">추천 : @ViewBag.detailInfo.RecommandCount</button>
+
+    @if (Session["Email"].ToString() == email)
     {
-        <div class="@ViewBag.replyList[i].ReplyID" ; style="margin-bottom:15px;">
-            <input type="text" class="form-control" value="@ViewBag.replyList[i].ReplyContent" readonly>
-            <button class="re-reply-btn"onclick="ReReplyButton(event)" name="@ViewBag.replyList[i].ReplyID">답글 달기</button>
-            <button onclick="ReadReReplyList(event)" name="@ViewBag.replyList[i].ReplyID">답글 보기</button>
+        <div>
+            <button class="btn btn-info" onclick="update()">수정</button>
+            <button class="btn btn-danger" onclick="deleteBoard()">삭제</button>
         </div>
     }
-</div>
+    <hr />
+    <div class="input-group mb-3" style="display:flex;">
+        <input type="text" class="form-control" style="margin-right : 5px;" id="reply">
+        <button class="btn btn-outline-secondary" id="reply-btn" type="button">댓글 입력</button>
+    </div>
+    <hr />
+
+    <h3>댓글 목록</h3>
+    <div id="reply-content">
+        @for (var i = 0; i <= ViewBag.replyList.Count - 1; i++)
+        {
+            <div class="@ViewBag.replyList[i].ReplyID" ; style="margin-bottom:15px;">
+                <input type="text" class="form-control" value="@ViewBag.replyList[i].ReplyContent" readonly>
+                <button class="re-reply-btn" onclick="ReReplyButton(event)" name="@ViewBag.replyList[i].ReplyID">답글 달기</button>
+                <button onclick="ReadReReplyList(event)" name="@ViewBag.replyList[i].ReplyID">답글 보기</button>
+            </div>
+        }
+    </div>
+</body>
+</html>
 <script>
     let recommandNumber = parseInt((document.querySelector('#recommand').innerHTML).replace(/[^0-9]/g, ''));
     let maxReplyID = @maxReplyID;

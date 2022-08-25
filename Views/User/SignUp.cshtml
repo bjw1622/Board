@@ -2,33 +2,39 @@
     ViewBag.Title = "Sign Up";
 }
 
-<h2>회원 가입</h2>
-<form class="form-horizontal" onsubmit="return checkEmail();" action="/User/SignUp" method="post">
-    <div class="form-group">
-        <label>사용자 Email</label>
-        <input type="email" class="form-control" name="Email" placeholder="사용자 Email 입력" id="email" required />
-        <button class="btn btn-info" id="check_email-btn" type="button">이메일 중복 체크</button>
-        <span class="badge badge-warning" id="check-email-span"></span>
-    </div>
-    <div class="form-group">
-        <label>사용자 PW</label>
-        <input type="password" class="form-control" name="Pw" placeholder="사용자 PW 입력" required />
-    </div>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+</head>
+<body>
+    <h2>회원 가입</h2>
+    <form class="form-horizontal" onsubmit="return checkEmail();" action="/User/SignUp" method="post">
+        <div class="form-group">
+            <label>사용자 Email</label>
+            <input type="email" class="form-control" name="Email" placeholder="사용자 Email 입력" id="email" required />
+            <button class="btn btn-info" id="check_email-btn" type="button">이메일 중복 체크</button>
+            <span class="badge badge-warning" id="check-email-span"></span>
+        </div>
+        <div class="form-group">
+            <label>사용자 PW</label>
+            <input type="password" class="form-control" name="Pw" placeholder="사용자 PW 입력" required />
+        </div>
 
-    <div class="form-group">
-        <label>사용자 Name</label>
-        <input type="text" class="form-control" name="Name" placeholder="사용자 이름 입력" required />
-    </div>
+        <div class="form-group">
+            <label>사용자 Name</label>
+            <input type="text" class="form-control" name="Name" placeholder="사용자 이름 입력" required />
+        </div>
 
-    <div class="form-group">
-        <label>사용자 Bith</label>
-        <input type="number" class="form-control" name="Birth" placeholder="사용자 Birth 입력" required />
-    </div>
+        <div class="form-group">
+            <label>사용자 Bith</label>
+            <input type="number" class="form-control" name="Birth" placeholder="사용자 Birth 입력" required />
+        </div>
 
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">회원가입</button>
-    </div>
-</form>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">회원가입</button>
+        </div>
+    </form>
+</body>
+</html>
 
 <script>
     let flag = false;

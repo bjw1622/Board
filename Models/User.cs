@@ -11,7 +11,6 @@ namespace Board.Models
 {
     public class User
     {
-        // sqlConnection 
         private SqlConnection con;
 
         public void Conn()
@@ -25,7 +24,6 @@ namespace Board.Models
         {
             Conn();
             con.Open();
-            // 사용할 프로시저의 이름을 설정
             using (SqlCommand com = new SqlCommand("dbo.InsertUser", con))
             {
                 com.CommandType = CommandType.StoredProcedure;

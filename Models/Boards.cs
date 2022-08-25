@@ -9,9 +9,8 @@ namespace Board.Models
 {
     public class Boards
     {
-        // sqlConnection 
         private SqlConnection con;
-        List<ReplyEntity> replyEntity = new List<ReplyEntity>();
+        private List<ReplyEntity> replyEntity = new List<ReplyEntity>();
 
         public void Conn()
         {
@@ -24,7 +23,6 @@ namespace Board.Models
         {
             Conn();
             con.Open();
-            // 사용할 프로시저의 이름을 설정
             using (SqlCommand com = new SqlCommand("dbo.WriteBoard", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
@@ -46,8 +44,6 @@ namespace Board.Models
         {
             Conn();
             con.Open();
-            // 사용할 프로시저의 이름을 설정
-            Console.WriteLine(obj);
             using (SqlCommand com = new SqlCommand("dbo.WriteBoardFile", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
@@ -119,7 +115,6 @@ namespace Board.Models
             List<BoardEntity> boardEntity = new List<BoardEntity>();
             Conn();
             con.Open();
-            // 사용할 프로시저의 이름을 설정
             using (SqlCommand com = new SqlCommand("dbo.SelectBoardByTop", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
@@ -147,7 +142,6 @@ namespace Board.Models
             Conn();
             con.Open();
             BoardEntity boards = new BoardEntity();
-            // 사용할 프로시저의 이름을 설정
             using (SqlCommand com = new SqlCommand("dbo.DetailBoard", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
@@ -383,6 +377,7 @@ namespace Board.Models
         {
             // ReplyID 가장 큰 값
             int result;
+
             Conn();
             con.Open();
             ReplyEntity boards = new ReplyEntity();
