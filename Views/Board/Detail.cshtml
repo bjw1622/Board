@@ -5,7 +5,7 @@
     string email = ViewBag.detailInfo.Email;
 
 }
-<h2>Detail</h2>
+<h2>상세</h2>
 <div class="form-group">
     <label>제목</label>
     <input type="text" class="form-control" name="Title" id="title" value="@ViewBag.detailInfo.Title">
@@ -17,7 +17,7 @@
 </div>
 
 <div class="form-group">
-    <label for="exampleFormControlTextarea1">Example textarea</label>
+    <label for="exampleFormControlTextarea1">내용</label>
     <textarea class="form-control" name="MainContent" id="mainContent" rows="5">@ViewBag.detailInfo.MainContent</textarea>
 </div>
 
@@ -62,7 +62,7 @@
     {
         <div class="@ViewBag.replyList[i].ReplyID" ; style="margin-bottom:15px;">
             <input type="text" class="form-control" value="@ViewBag.replyList[i].ReplyContent" readonly>
-            <button id="re-reply-btn"onclick="ReReplyButton(event)" name="@ViewBag.replyList[i].ReplyID">답글 달기</button>
+            <button class="re-reply-btn"onclick="ReReplyButton(event)" name="@ViewBag.replyList[i].ReplyID">답글 달기</button>
             <button onclick="ReadReReplyList(event)" name="@ViewBag.replyList[i].ReplyID">답글 보기</button>
         </div>
     }
@@ -195,7 +195,7 @@
         const ParentReplyID = event.target.name;
         // 대댓글 창 그려주기
         $(`.${ParentReplyID}`).first().append(createReReply(ParentReplyID))
-        $('#re-reply-btn').hide();
+        $('.re-reply-btn').hide();
     }
 
     function ReadReReplyList(event) {
@@ -214,7 +214,7 @@
                 data.forEach((item) => {
                     $(`.${param.ParentReplyID}`).append(createReReplyList(item))
                 })
-                $('#re-reply-btn').show();
+                $('.re-reply-btn').show();
             },
             error: function () {
                 alert('답글이 없습니다..');
@@ -227,7 +227,7 @@
         return `
         <div class="${ParentReplyID}" style="margin:5px 0px 15px 50px; display:flex;">
             <input type="text" id = ${maxReplyID} class="form-control"/>
-            <button class="re-reply-btn" onclick="ReReply(event)">답글 입력</button>
+            <button onclick="ReReply(event)">답글 입력</button>
           </div >
         `
     }
@@ -236,7 +236,7 @@
         return `
         <div class="${item.ReplyID}"; style="margin-bottom:15px;">
             <input type="text" class="form-control" value="${item.ReplyContent}" readonly />
-            <button onclick="ReReplyButton(event)" name=${item.ReplyID}>답글 달기</button>
+            <button class="re-reply-btn" onclick="ReReplyButton(event)" name=${item.ReplyID}>답글 달기</button>
             <button onclick="ReadReReplyList(event)" name=${item.ReplyID}>답글 보기</button>
         </div>
             `
