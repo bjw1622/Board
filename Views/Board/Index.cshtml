@@ -143,7 +143,6 @@ else
             Variable: document.querySelector("#find-value").value,
             Input: $('#find').val(),
         }
-        console.log(param)
         $.ajax({
             url: '/Board/PageAndFind',
             type: 'post',
@@ -154,14 +153,14 @@ else
                 $('#page').empty();
                 for (let i = 1; i < (data.Result / document.querySelector('#board-count').value) + 1; i++) {
                     if (i === 1) {
-                        $('#page').append(` <button class="page-btn btn btn-light btn-info" onclick="paging()" value=${i} >${i}</button>`);
+                        $('#page').append(` <button class="page-btn btn btn-light btn-info" onclick="findPaging()" value=${i} >${i}</button>`);
                     }
                     else {
-                        $('#page').append(` <button class="page-btn btn btn-light" onclick="paging()" value=${i} >${i}</button>`);
+                        $('#page').append(` <button class="page-btn btn btn-light" onclick="findPaging()" value=${i} >${i}</button>`);
                     }
                 }
-                $('#tbody').empty();
                 init();
+                $('#tbody').empty();
                 if (data.List !== "") {
                     data.List.forEach((item) => {
                         $('#tbody').append(createRow(item))
@@ -173,6 +172,31 @@ else
         });
     })
 
+    function findPaging() {
+        const param = {
+            PageNumber: event.target.value,
+            PageCount: $('#board-count').val(),
+            Variable: document.querySelector("#find-value").value,
+            Input: $('#find').val(),
+        }
+        $.ajax({
+            url: '/Board/PageAndFind',
+            type: 'post',
+            dataType: "json",
+            data: JSON.stringify(param),
+            contentType: "application/json",
+            success: function (data) {
+                $('#tbody').empty();
+                if (data.List !== "") {
+                    data.List.forEach((item) => {
+                        $('#tbody').append(createRow(item))
+                    })
+                }
+            },
+            error: function () {
+            }
+        });
+    }
     // 페이징 이동시 해당 개수 나타내는 method
     function paging() {
         const param = {
