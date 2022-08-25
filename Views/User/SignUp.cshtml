@@ -3,14 +3,13 @@
 }
 
 <h2>회원 가입</h2>
-<form class="form-horizontal" action="/User/SignUp" method="post">
+<form class="form-horizontal" onsubmit="return checkEmail();" action="/User/SignUp" method="post">
     <div class="form-group">
         <label>사용자 Email</label>
         <input type="email" class="form-control" name="Email" placeholder="사용자 Email 입력" id="email" required />
         <button class="btn btn-info" id="check_email-btn" type="button">이메일 중복 체크</button>
         <span class="badge badge-warning" id="check-email-span"></span>
     </div>
-
     <div class="form-group">
         <label>사용자 PW</label>
         <input type="password" class="form-control" name="Pw" placeholder="사용자 PW 입력" required />
@@ -32,30 +31,50 @@
 </form>
 
 <script>
+    let flag = false;
+
     document.querySelector("#check_email-btn").addEventListener('click', () => {
+
+        function email_check(email) {
+            var reg = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+            return reg.test(email);
+        }
+
+        const emailAdr = $("#email").val();
+
+        if (!email_check(emailAdr)) {
+            document.querySelector('#check-email-span').innerHTML = "이메일 형식에 맞게 입력해주세요.";
+            flag = false;
+            return false;
+        }
+
         const email = {
             "Email": $("#email").val(),
         }
         $.ajax({
             url: '/User/EmailCheck',
-            type: 'post',   
+            type: 'post',
             dataType: "json",
             data: JSON.stringify(email),
             contentType: "application/json",
             success: function (data) {
-                console.log(data);
                 if (data === 1) {
                     document.querySelector('#check-email-span').innerHTML = "이미 가입된 이메일 입니다.";
-                }
-                else if (data === -1) {
-                    document.querySelector('#check-email-span').innerHTML = "올바른 메일을 입력해주세요.";
+                    flag = false;
                 }
                 else {
                     document.querySelector('#check-email-span').innerHTML = "회원 가입 가능한 이메일 입니다.";
+                    flag = true;
                 }
             },
             error: function (err) {
             }
         });
-                })
+    })
+    function checkEmail() {
+        if (flag === false) {
+            alert('이메일 중복 체크를 확인해주세요.');
+            return false;
+        }
+    }
 </script>
