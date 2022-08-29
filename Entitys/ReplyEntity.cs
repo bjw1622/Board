@@ -12,5 +12,7 @@ namespace Board.Entitys
         public int ParentReplyID { get; set; }
 
         public string ReplyContent { get; set; }
+        public string Email { get; set; }
+
     }
 }

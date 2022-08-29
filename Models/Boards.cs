@@ -323,28 +323,42 @@ namespace Board.Models
         // 댓글 추가
         public List<ReplyEntity> AddReply(ReplyEntity obj)
         {
-            Conn();
-            con.Open();
-            using (SqlCommand com = new SqlCommand("dbo.InsertReply", con))
+            try
             {
-                com.CommandType = CommandType.StoredProcedure;
-                com.Parameters.AddWithValue("@BoardNum", obj.BoardNum);
-                com.Parameters.AddWithValue("@ReplyID", obj.ReplyID);
-                com.Parameters.AddWithValue("@ReplyContent", obj.ReplyContent);
-                com.Parameters.AddWithValue("@ParentReplyID", obj.ParentReplyID);
-                SqlDataReader reader = com.ExecuteReader();
-                while (reader.Read())
+                Conn();
+                con.Open();
+                using (SqlCommand com = new SqlCommand("dbo.InsertReply", con))
                 {
-                    ReplyEntity replys = new ReplyEntity();
-                    replys.BoardNum = Convert.ToInt32(reader["BoardNum"]);
-                    replys.ReplyID = Convert.ToInt32(reader["ReplyID"]);
-                    replys.ReplyContent = Convert.ToString(reader["ReplyContent"]);
-                    replyEntity.Add(replys);
+                    com.CommandType = CommandType.StoredProcedure;
+                    com.Parameters.AddWithValue("@BoardNum", obj.BoardNum);
+                    com.Parameters.AddWithValue("@ReplyID", obj.ReplyID);
+                    com.Parameters.AddWithValue("@ReplyContent", obj.ReplyContent);
+                    com.Parameters.AddWithValue("@ParentReplyID", obj.ParentReplyID);
+                    com.Parameters.AddWithValue("@Email", obj.Email);
+                    SqlDataReader reader = com.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        ReplyEntity replys = new ReplyEntity();
+                        replys.BoardNum = Convert.ToInt32(reader["BoardNum"]);
+                        replys.ReplyID = Convert.ToInt32(reader["ReplyID"]);
+                        replys.ReplyContent = Convert.ToString(reader["ReplyContent"]);
+                        replys.Email = Convert.ToString(reader["Email"]);
+                        replyEntity.Add(replys);
+                    }
                 }
+                return replyEntity;
             }
-            con.Close();
-            con.Dispose();
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            finally
+            {
+                con.Close();
+                con.Dispose();
+            }
             return replyEntity;
+
         }
 
         // 상세페이지 - 댓글 불러오기
@@ -364,6 +378,8 @@ namespace Board.Models
                     replys.BoardNum = Convert.ToInt32(reader["BoardNum"]);
                     replys.ReplyID = Convert.ToInt32(reader["ReplyID"]);
                     replys.ReplyContent = Convert.ToString(reader["ReplyContent"]);
+                    replys.Email = Convert.ToString(reader["Email"]);
+                    replys.ParentReplyID = Convert.ToInt32(reader["ParentReplyID"]);
                     replyEntity.Add(replys);
 
                 }
@@ -419,6 +435,7 @@ namespace Board.Models
                     replys.ReplyID = Convert.ToInt32(reader["ReplyID"]);
                     replys.ReplyContent = Convert.ToString(reader["ReplyContent"]);
                     replys.ParentReplyID = Convert.ToInt32(reader["ParentReplyID"]);
+                    replys.Email = Convert.ToString(reader["Email"]);
                     replyEntity.Add(replys);
 
                 }
@@ -513,6 +530,40 @@ namespace Board.Models
                 com.CommandType = CommandType.StoredProcedure;
                 com.Parameters.AddWithValue("@BoardNum", obj.BoardNum);
                 com.Parameters.AddWithValue("@Email", obj.Email);
+                SqlDataReader reader = com.ExecuteReader();
+            }
+            con.Close();
+            con.Dispose();
+        }
+
+        // 댓글 삭제
+        public void RemoveReply(ReplyEntity obj)
+        {
+            Conn();
+            con.Open();
+            ReplyEntity boards = new ReplyEntity();
+            using (SqlCommand com = new SqlCommand("dbo.RemoveReply", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@BoardNum", obj.BoardNum);
+                com.Parameters.AddWithValue("@ReplyID", obj.ReplyID);
+                SqlDataReader reader = com.ExecuteReader();
+            }
+            con.Close();
+            con.Dispose();
+        }
+
+        // 대댓글 삭제
+        public void ReRemoveReply(ReplyEntity obj)
+        {
+            Conn();
+            con.Open();
+            ReplyEntity boards = new ReplyEntity();
+            using (SqlCommand com = new SqlCommand("dbo.ReRemoveReply", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@BoardNum", obj.BoardNum);
+                com.Parameters.AddWithValue("@ReplyID", obj.ReplyID);
                 SqlDataReader reader = com.ExecuteReader();
             }
             con.Close();

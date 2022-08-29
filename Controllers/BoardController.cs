@@ -172,6 +172,20 @@ namespace Board.Controllers
             return Json(boards.ReadReReply(obj));
         }
 
+        // 상세 페이지 - 댓글 삭제
+        [HttpPost]
+        public void RemoveReply(ReplyEntity obj)
+        {
+            boards.RemoveReply(obj);
+            boards.UpdateReplyCount(obj.BoardNum, obj.ReplyID);
+        }
 
+        // 상세 페이지 - 답글 삭제
+        [HttpPost]
+        public void ReRemoveReply(ReplyEntity obj)
+        {
+            boards.ReRemoveReply(obj);
+            boards.UpdateReplyCount(obj.BoardNum, obj.ReplyID);
+        }
     }
 }

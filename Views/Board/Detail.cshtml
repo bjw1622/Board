@@ -66,6 +66,7 @@
                 <input type="text" class="form-control" value="@ViewBag.replyList[i].ReplyContent" readonly>
                 <button class="re-reply-btn" onclick="ReReplyButton(event)" name="@ViewBag.replyList[i].ReplyID">답글 달기</button>
                 <button onclick="ReadReReplyList(event)" name="@ViewBag.replyList[i].ReplyID">답글 보기</button>
+                <button class="remove-btn" name="@ViewBag.replyList[i].Email @ViewBag.replyList[i].ReplyID @ViewBag.replyList[i].ParentReplyID" onclick="ReplyRemove(event)">삭제</button>
             </div>
         }
     </div>
@@ -82,6 +83,8 @@
             ReplyID: maxReplyID + 1,
             ReplyContent: document.querySelector('#reply').value,
             ParentReplyID: 0,
+            Email: "@Session["Email"]",
+
         };
         $.ajax({
             url: '/Board/Reply',
@@ -93,6 +96,7 @@
                 alert('댓글이 작성 되었습니다.')
                 $('#reply-content').empty();
                 data.replyList.forEach((item) => {
+                    console.log(item.Email);
                     $('#reply-content').append(createRow(item))
                 })
                 document.querySelector('#reply').value = "";
@@ -173,6 +177,7 @@
             ReplyID: maxReplyID + 1,
             ReplyContent: document.getElementById(maxReplyID).value,
             ParentReplyID: event.target.parentElement.className,
+            Email: "@Session["Email"]",
         }
         $.ajax({
             url: '/Board/Reply',
@@ -183,6 +188,7 @@
             success: function (data) {
                 alert('답글이 작성 되었습니다.')
                 $('#reply-content').empty();
+                console.log(data);
                 data.replyList.forEach((item) => {
                     $('#reply-content').append(createRow(item))
                 })
@@ -226,6 +232,52 @@
         });
     }
 
+    function ReplyRemove(event) {
+        let flag = false;
+        const Info = ((event.target.name).split(" "));
+        console.log(Info[0], Info[1], Info[2]);
+        if ("@Session["Email"]" === Info[0]) {
+            flag = confirm('댓글을 삭제 하시겠습니까?');
+        }
+        else {
+            alert('삭제 권한이 없습니다');
+        }
+        if (flag === true) {
+            const param = {
+                BoardNum: window.location.pathname.split('/')[3],
+                ReplyID: Info[1],
+            }
+            if (Info[2] == 0) {
+                $.ajax({
+                    url: '/Board/RemoveReply',
+                    type: 'post',
+                    data: JSON.stringify(param),
+                    contentType: "application/json",
+                    success: function () {
+                        alert('삭제 되었습니다.');
+                        location.reload();
+                    },
+                    error: function () {
+                    }
+                });
+            } else {
+                $.ajax({
+                    url: '/Board/ReRemoveReply',
+                    type: 'post',
+                    data: JSON.stringify(param),
+                    contentType: "application/json",
+                    success: function () {
+                        alert('삭제 되었습니다.')
+                        location.reload();
+                    },
+                    error: function () {
+                    }
+                });
+
+            }
+        }
+    }
+
     // 대댓글 창 생성
     function createReReply(ParentReplyID) {
         return `
@@ -242,6 +294,7 @@
             <input type="text" class="form-control" value="${item.ReplyContent}" readonly />
             <button class="re-reply-btn" onclick="ReReplyButton(event)" name=${item.ReplyID}>답글 달기</button>
             <button onclick="ReadReReplyList(event)" name=${item.ReplyID}>답글 보기</button>
+            <button class="remove-btn" name="${item.Email} ${item.ReplyID} ${item.ParentReplyID}" onclick="ReplyRemove(event)">삭제</button>
         </div>
             `
     }
@@ -250,6 +303,7 @@
         return `
         <div class="${item.ReplyID}"; style="margin:5px 0px 15px 50px;">
             <input type="text" class="form-control" value="${item.ReplyContent}" readonly />
+            <button class="remove-btn" name="${item.Email} ${item.ReplyID} ${item.ParentReplyID}" onclick="ReplyRemove(event)">삭제</button>
         </div>
             `
     }
