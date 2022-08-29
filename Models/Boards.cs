@@ -66,7 +66,6 @@ namespace Board.Models
             using (SqlCommand com = new SqlCommand("dbo.SelectBoard", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
-                com.ExecuteNonQuery();
                 SqlDataReader reader = com.ExecuteReader();
                 while (reader.Read())
                 {
@@ -118,7 +117,6 @@ namespace Board.Models
             using (SqlCommand com = new SqlCommand("dbo.SelectBoardByTop", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
-                com.ExecuteNonQuery();
                 SqlDataReader reader = com.ExecuteReader();
                 while (reader.Read())
                 {
@@ -554,12 +552,12 @@ namespace Board.Models
         }
 
         // 대댓글 삭제
-        public void ReRemoveReply(ReplyEntity obj)
+        public void RemoveReReply(ReplyEntity obj)
         {
             Conn();
             con.Open();
             ReplyEntity boards = new ReplyEntity();
-            using (SqlCommand com = new SqlCommand("dbo.ReRemoveReply", con))
+            using (SqlCommand com = new SqlCommand("dbo.RemoveReReply", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
                 com.Parameters.AddWithValue("@BoardNum", obj.BoardNum);

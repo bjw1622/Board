@@ -96,7 +96,6 @@
                 alert('댓글이 작성 되었습니다.')
                 $('#reply-content').empty();
                 data.replyList.forEach((item) => {
-                    console.log(item.Email);
                     $('#reply-content').append(createRow(item))
                 })
                 document.querySelector('#reply').value = "";
@@ -188,7 +187,6 @@
             success: function (data) {
                 alert('답글이 작성 되었습니다.')
                 $('#reply-content').empty();
-                console.log(data);
                 data.replyList.forEach((item) => {
                     $('#reply-content').append(createRow(item))
                 })
@@ -235,7 +233,6 @@
     function ReplyRemove(event) {
         let flag = false;
         const Info = ((event.target.name).split(" "));
-        console.log(Info[0], Info[1], Info[2]);
         if ("@Session["Email"]" === Info[0]) {
             flag = confirm('댓글을 삭제 하시겠습니까?');
         }
@@ -262,7 +259,7 @@
                 });
             } else {
                 $.ajax({
-                    url: '/Board/ReRemoveReply',
+                    url: '/Board/RemoveReReply',
                     type: 'post',
                     data: JSON.stringify(param),
                     contentType: "application/json",

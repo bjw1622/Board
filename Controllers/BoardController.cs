@@ -182,9 +182,9 @@ namespace Board.Controllers
 
         // 상세 페이지 - 답글 삭제
         [HttpPost]
-        public void ReRemoveReply(ReplyEntity obj)
+        public void RemoveReReply(ReplyEntity obj)
         {
-            boards.ReRemoveReply(obj);
+            boards.RemoveReReply(obj);
             boards.UpdateReplyCount(obj.BoardNum, obj.ReplyID);
         }
     }
