@@ -10,7 +10,7 @@
     <form class="form-horizontal" onsubmit="return checkEmail();" action="/User/SignUp" method="post">
         <div class="form-group">
             <label>사용자 Email</label>
-            <input type="email" class="form-control" name="Email" placeholder="사용자 Email 입력" id="email" required />
+            <input type="email" class="form-control" name="Email" placeholder="사용자 Email 입력" id="email" onchange="inputChange()" required />
             <button class="btn btn-info" id="check_email-btn" type="button">이메일 중복 체크</button>
             <span class="badge badge-warning" id="check-email-span"></span>
         </div>
@@ -57,6 +57,7 @@
         const email = {
             "Email": $("#email").val(),
         }
+
         $.ajax({
             url: '/User/EmailCheck',
             type: 'post',
@@ -77,6 +78,13 @@
             }
         });
     })
+
+    function inputChange() {
+        flag = false;
+        document.querySelector('#check-email-span').innerHTML = "이메일 중복 체크를 해주세요.";
+    }
+
+    //Submit 전 회원 가입 가능한 이메일 인지 확인
     function checkEmail() {
         if (flag === false) {
             alert('이메일 중복 체크를 확인해주세요.');
