@@ -140,7 +140,32 @@
         });
     })
 
-    //검색과 페이징 동시에 나타내기
+    // 검색 조건 없을 때 페이징
+    function paging() {
+        const param = {
+            PageNumber: event.target.value,
+            PageCount: $('#board-count').val()
+        }
+        $.ajax({
+            url: '/Board/IndexPaging',
+            type: 'post',
+            dataType: "json",
+            data: JSON.stringify(param),
+            contentType: "application/json",
+            success: function (data) {
+                $('#tbody').empty();
+                if (data !== "") {
+                    data.forEach((item) => {
+                        $('#tbody').append(createRow(item))
+                    })
+                }
+            },
+            error: function () {
+            }
+        });
+    }
+
+    //검색 시 첫 화면  + 페이징 버튼 그리기
     document.querySelector('#find-board').addEventListener('click', () => {
         const param = {
             PageNumber: 1,
@@ -177,6 +202,7 @@
         });
     })
 
+    // 검색 조건 있을 때 페이징
     function findPaging() {
         const param = {
             PageNumber: event.target.value,
@@ -202,47 +228,21 @@
             }
         });
     }
-    // 페이징 이동시 해당 개수 나타내는 method
-    function paging() {
-        const param = {
-            PageNumber: event.target.value,
-            PageCount: $('#board-count').val()
-        }
-        $.ajax({
-            url: '/Board/IndexPaging',
-            type: 'post',
-            dataType: "json",
-            data: JSON.stringify(param),
-            contentType: "application/json",
-            success: function (data) {
-                $('#tbody').empty();
-                if (data !== "") {
-                    data.forEach((item) => {
-                        $('#tbody').append(createRow(item))
-                    })
-                }
-            },
-            error: function () {
-            }
-        });
-    }
 
     //페이징 버튼 색깔 변경
     const buttonClass = document.getElementsByClassName("page-btn");
     function handleClick(event) {
-        if (event.target.classList[3] === "btn-info") {
-            event.target.classList.remove("btn-info");
-        } else {
-            for (var i = 0; i < buttonClass.length; i++) {
-                buttonClass[i].classList.remove("btn-info");
-            }
-            event.target.classList.add("btn-info");
+        for (var i = 0; i < buttonClass.length; i++) {
+            buttonClass[i].classList.remove("btn-info");
         }
+        event.target.classList.add("btn-info");
     }
     function init() {
         for (var i = 0; i < buttonClass.length; i++) {
             buttonClass[i].addEventListener("click", handleClick);
         }
     }
+
     init();
+
 </script>
