@@ -19,13 +19,14 @@ namespace Board.Controllers
         [HttpPost]
         public ActionResult SignUp(UserEntity obj)
         {
-            // Entity 에서 required 해둔것들이 모두 충족되면 True
             if (ModelState.IsValid)
             {
                 user.AddUser(obj);
-                return RedirectToAction("Index", "Board");
             }
-            return View(obj);
+            return Content("<script language='javascript' type='text/javascript'> " +
+                "alert('회원가입이 완료 되었습니다.');" +
+                "location.href='/User/Login'" +
+                "</script>");
         }
 
         // 로그인
@@ -39,10 +40,10 @@ namespace Board.Controllers
         public ActionResult LogIn(UserEntity obj)
         {
             var result = user.LogIn(obj);
-            if (result.Count != 0)
+            if (result.Email != null)
             {
-                Session["Name"] = result[0].Name;
-                Session["Email"] = result[0].Email;
+                Session["Name"] = result.Name;
+                Session["Email"] = result.Email;
                 return RedirectToAction("Index", "Board");
             }
             return Content("<script language='javascript' type='text/javascript'> " +
