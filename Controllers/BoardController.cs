@@ -41,10 +41,10 @@ namespace Board.Controllers
         // 글쓰기
         public ActionResult Write(BoardFileEntity obj)
         {
-            // board 데이터
             boards.WriteBoard(obj);
             boards.WriteBoardFile(obj);
             return RedirectToAction("Index", "Board");
+
         }
 
         [HttpPost]
@@ -77,12 +77,8 @@ namespace Board.Controllers
             ViewBag.detailInfo = boards.DetailBoard(boardNum);
             // 댓글 가져오기
             ViewBag.replyList = boards.ReadReply(boardNum);
-
             // ReplyID 최신화 하기
             ViewBag.MaxReplyID = boards.GetReplyID(boardNum);
-
-
-
             // 첨부파일 이미지 경로 가져오기
             ViewBag.GetFileImg = boards.GetFileImg(boardNum);
             return View();
@@ -127,7 +123,7 @@ namespace Board.Controllers
 
             }
             boards.RecommandCountUpdate(obj);
-            return Json( new {recommand, obj.RecommandCount });
+            return Json(new { recommand, obj.RecommandCount });
         }
 
         // 인덱스 페이지 - 검색과 페이징 기능
@@ -151,13 +147,10 @@ namespace Board.Controllers
         {
             // 댓글 추가하고
             boards.AddReply(obj);
-
             // 댓글 개수 불러오는 sq
             ViewBag.replyList = boards.ReadReply(obj.BoardNum);
-
             //Board 댓글 총 갯수 업데이트하기
             boards.UpdateReplyCount(obj.BoardNum, obj.ReplyID);
-
             // 댓글 개수 return
             return Json(new
             {

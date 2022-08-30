@@ -12,23 +12,15 @@
             <label>제목</label>
             <input type="text" class="form-control" placeholder="제목" id="title" required>
         </div>
-
-        <div class="form-group" style="display:none">
-            <label>이메일</label>
-            <input type="email" class="form-control" placeholder="이메일" id="email" value=@Session["Email"] required>
-        </div>
-
         <div class="form-group">
             <label>작성자</label>
             <input type="text" class="form-control" id="writer" value=@Session["Name"] readonly>
         </div>
-
         <div class="form-group">
             <label for="exampleFormControlTextarea1">글 내용</label>
             <textarea class="form-control" rows="5" id="main-content" required></textarea>
         </div>
         <input id="fileInput" type="file" multiple accept="image/jpeg, image/jpg, image/png" onchage="checkSize(this)">
-
         <button class="btn btn-primary">글작성</button>
     </form>
 </body>
@@ -41,17 +33,21 @@
         const formdata = new FormData();
         const fileInput = document.getElementById('fileInput');
         const fileName = [];
+
         if (fileInput.files.length >= 3) {
             alert('파일은 최대 2개까지 첨부 가능합니다.');
             fileInput.files.value = "";
             fileInput.value = "";
             return;
         }
+
         for (i = 0; i < fileInput.files.length; i++) {
             fileName.push(fileInput.files[i].name);
             formdata.append(fileInput.files[i].name, fileInput.files[i]);
         }
+
         const xhr = new XMLHttpRequest();
+
         xhr.open('POST', '/Board/UploadFiles');
         xhr.send(formdata);
 
@@ -59,10 +55,11 @@
             Title: $('#title').val(),
             Name: $('#writer').val(),
             MainContent: $('#main-content').val(),
-            Email: document.querySelector('#email').value,
+            Email: "@Session["Email"]",
             FileName: fileName[0],
             FileName2: fileName[1],
         }
+
         $.ajax({
             url: '/Board/Write',
             type: 'post',
