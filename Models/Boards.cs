@@ -551,7 +551,7 @@ namespace Board.Models
             con.Dispose();
         }
 
-        // 대댓글 삭제
+        // 자식 댓글 삭제
         public void RemoveReReply(ReplyEntity obj)
         {
             Conn();

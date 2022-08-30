@@ -86,10 +86,9 @@ namespace Board.Controllers
 
         [HttpPost]
         // 상세 페이지 - 수정
-        public JsonResult Update(BoardEntity obj)
+        public void Update(BoardEntity obj)
         {
             boards.UpdateBoard(obj);
-            return Json(obj);
         }
 
         // 상세 페이지 - 삭제
@@ -123,7 +122,13 @@ namespace Board.Controllers
 
             }
             boards.RecommandCountUpdate(obj);
-            return Json(new { recommand, obj.RecommandCount });
+            return Json(
+                new
+                {
+                    recommand,
+                    obj.RecommandCount
+                }
+                );
         }
 
         // 인덱스 페이지 - 검색과 페이징 기능
