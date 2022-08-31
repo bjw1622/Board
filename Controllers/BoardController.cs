@@ -39,12 +39,10 @@ namespace Board.Controllers
 
         [HttpPost]
         // 글쓰기
-        public ActionResult Write(BoardFileEntity obj)
+        public void Write(BoardFileEntity obj)
         {
             boards.WriteBoard(obj);
             boards.WriteBoardFile(obj);
-            return RedirectToAction("Index", "Board");
-
         }
 
         [HttpPost]
