@@ -90,21 +90,10 @@
 </body>
 </html>
 <script>
-    function createRow(item) {
-        return `
-        <tr class="text-center">
-                    <td class="text-center">${item.BoardNum}</td>
-                    <td class="text-center"><a href="/Board/Detail/${item.BoardNum}">${item.Title}</a></td>
-                    <td class="text-center">${item.Name}</td>
-                    <td class="text-center">${item.ReplyCount}</td>
-                    <td class="text-center">${item.RecommandCount}</td>
-                </tr>`
-    }
-
     // 페이징 나타내기
     document.querySelector('#board-count').addEventListener('click', () => {
         $('#page').empty();
-        let totalPageCount = @Html.Raw(ViewBag.Board.Count);
+        let totalPageCount = @(ViewBag.Board.Count);
         for (let i = 1; i < (totalPageCount / document.querySelector('#board-count').value)+1; i++)
         {
             if (i === 1) {
@@ -228,6 +217,17 @@
             }
         });
     }
+   
+    function createRow(item) {
+        return `
+        <tr class="text-center">
+                    <td class="text-center">${item.BoardNum}</td>
+                    <td class="text-center"><a href="/Board/Detail/${item.BoardNum}">${item.Title}</a></td>
+                    <td class="text-center">${item.Name}</td>
+                    <td class="text-center">${item.ReplyCount}</td>
+                    <td class="text-center">${item.RecommandCount}</td>
+                </tr>`
+    }
 
     //페이징 버튼 색깔 변경
     const buttonClass = document.getElementsByClassName("page-btn");
@@ -237,12 +237,11 @@
         }
         event.target.classList.add("btn-info");
     }
+
     function init() {
         for (var i = 0; i < buttonClass.length; i++) {
             buttonClass[i].addEventListener("click", handleClick);
         }
     }
-
     init();
-
 </script>
