@@ -15,9 +15,13 @@ namespace Board.Controllers
         // 게시판 데이터 가져오기
         public ActionResult Index()
         {
-            Boards boards = new Boards();
-            ViewBag.Board = boards.GetBoardList();
-            return View();
+            if (Session["Email"] != null)
+            {
+                Boards boards = new Boards();
+                ViewBag.Board = boards.GetBoardList();
+                return View();
+            }
+            return RedirectToAction("Login", "User");
         }
 
         [HttpPost]
