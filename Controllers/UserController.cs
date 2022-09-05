@@ -6,8 +6,6 @@ namespace Board.Controllers
 {
     public class UserController : Controller
     {
-        User user = new User();
-        UserEntity userEntity = new UserEntity();
 
         // 회원 가입
         public ActionResult SignUp()
@@ -19,6 +17,7 @@ namespace Board.Controllers
         [HttpPost]
         public ActionResult SignUp(UserEntity obj)
         {
+            User user = new User();
             if (ModelState.IsValid)
             {
                 user.AddUser(obj);
@@ -39,6 +38,7 @@ namespace Board.Controllers
         [HttpPost]
         public ActionResult LogIn(UserEntity obj)
         {
+            User user = new User();
             var result = user.LogIn(obj);
             if (result.Email != null)
             {
@@ -55,6 +55,7 @@ namespace Board.Controllers
         [HttpPost]
         public JsonResult EmailCheck(UserEntity obj)
         {
+            User user = new User();
             var result = user.EmailCheck(obj);
             return Json(result);
         }

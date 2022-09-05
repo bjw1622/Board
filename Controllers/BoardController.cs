@@ -12,12 +12,10 @@ namespace Board.Controllers
 {
     public class BoardController : Controller
     {
-        Boards boards = new Boards();
-
-
         // 게시판 데이터 가져오기
         public ActionResult Index()
         {
+            Boards boards = new Boards();
             ViewBag.Board = boards.GetBoardList();
             return View();
         }
@@ -26,6 +24,7 @@ namespace Board.Controllers
         // 페이징
         public JsonResult IndexPaging(PageEntity obj)
         {
+            Boards boards = new Boards();
             List<BoardEntity> boar = boards.PagingBoardList(obj);
             return Json(boar);
 
@@ -41,6 +40,7 @@ namespace Board.Controllers
         // 글쓰기
         public void Write(BoardFileEntity obj)
         {
+            Boards boards = new Boards();
             boards.WriteBoard(obj);
             boards.WriteBoardFile(obj);
         }
@@ -71,6 +71,7 @@ namespace Board.Controllers
         // 상세 페이지
         public ActionResult Detail(int boardNum)
         {
+            Boards boards = new Boards();
             // 게시판 상세 정보 가져오기
             ViewBag.detailInfo = boards.DetailBoard(boardNum);
             // 댓글 가져오기
@@ -86,12 +87,14 @@ namespace Board.Controllers
         // 상세 페이지 - 수정
         public void Update(BoardEntity obj)
         {
+            Boards boards = new Boards();
             boards.UpdateBoard(obj);
         }
 
         // 상세 페이지 - 삭제
         public ActionResult Delete(int boardNum)
         {
+            Boards boards = new Boards();
             boards.DeleteBoard(boardNum);
             return RedirectToAction("Index", "Board");
         }
@@ -100,6 +103,7 @@ namespace Board.Controllers
         [HttpPost]
         public JsonResult RecommandUpdate(RecommandEntity obj)
         {
+            Boards boards = new Boards();
             // 보드 넘버랑 이메일로 0인지 1인지
             int recommand = boards.GetRecommandNumber(obj);
             if (recommand == -1)
@@ -133,6 +137,7 @@ namespace Board.Controllers
         [HttpPost]
         public JsonResult PageAndFind(PageAndFindEntity obj)
         {
+            Boards boards = new Boards();
             List<BoardEntity> boar = boards.PagingAndFindingBoardList(obj);
             var result = boards.FindBoardCount(obj);
             return Json(
@@ -148,6 +153,7 @@ namespace Board.Controllers
         [HttpPost]
         public JsonResult Reply(ReplyEntity obj)
         {
+            Boards boards = new Boards();
             // 댓글 추가하고
             boards.AddReply(obj);
             // 댓글 개수 불러오는 sq
@@ -165,6 +171,7 @@ namespace Board.Controllers
         [HttpPost]
         public JsonResult ReadReReplyList(ReplyEntity obj)
         {
+            Boards boards = new Boards();
             return Json(boards.ReadReReply(obj));
         }
 
@@ -172,6 +179,7 @@ namespace Board.Controllers
         [HttpPost]
         public void RemoveReply(ReplyEntity obj)
         {
+            Boards boards = new Boards();
             boards.RemoveReply(obj);
             boards.UpdateReplyCount(obj.BoardNum, obj.ReplyID);
         }
@@ -180,6 +188,7 @@ namespace Board.Controllers
         [HttpPost]
         public void RemoveReReply(ReplyEntity obj)
         {
+            Boards boards = new Boards();
             boards.RemoveReReply(obj);
             boards.UpdateReplyCount(obj.BoardNum, obj.ReplyID);
         }
