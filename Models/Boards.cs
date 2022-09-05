@@ -7,17 +7,8 @@ using System.Data.SqlClient;
 
 namespace Board.Models
 {
-    public class Boards
+    public class Boards : Connection
     {
-        private SqlConnection con;
-        private List<ReplyEntity> replyEntity = new List<ReplyEntity>();
-
-        public void Conn()
-        {
-            string constr = ConfigurationManager.ConnectionStrings["BoardDB"].ToString();
-            con = new SqlConnection(constr);
-        }
-
         // 게시판 글쓰기 기능
         public void WriteBoard(BoardFileEntity obj)
         {
@@ -163,7 +154,8 @@ namespace Board.Models
         // Update 게시판
         public void UpdateBoard(BoardEntity obj)
         {
-            try {
+            try
+            {
                 Conn();
                 con.Open();
                 using (SqlCommand com = new SqlCommand("dbo.UpdateBoard", con))
@@ -184,7 +176,7 @@ namespace Board.Models
                 con.Close();
                 con.Dispose();
             }
-          
+
 
         }
 
@@ -321,6 +313,7 @@ namespace Board.Models
         // 댓글 추가
         public List<ReplyEntity> AddReply(ReplyEntity obj)
         {
+            List<ReplyEntity> replyEntity = new List<ReplyEntity>();
             try
             {
                 Conn();
@@ -362,6 +355,7 @@ namespace Board.Models
         // 상세페이지 - 댓글 불러오기
         public List<ReplyEntity> ReadReply(int boardNum)
         {
+            List<ReplyEntity> replyEntity = new List<ReplyEntity>();
             Conn();
             con.Open();
             ReplyEntity boards = new ReplyEntity();
@@ -391,7 +385,7 @@ namespace Board.Models
         {
             // ReplyID 가장 큰 값
             int result;
-
+            List<ReplyEntity> replyEntity = new List<ReplyEntity>();
             Conn();
             con.Open();
             ReplyEntity boards = new ReplyEntity();
@@ -417,6 +411,7 @@ namespace Board.Models
         // 상세페이지 - 대댓글 불러오기
         public List<ReplyEntity> ReadReReply(ReplyEntity obj)
         {
+            List<ReplyEntity> replyEntity = new List<ReplyEntity>();
             Conn();
             con.Open();
             ReplyEntity boards = new ReplyEntity();

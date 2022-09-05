@@ -9,16 +9,8 @@ using System.Web;
 
 namespace Board.Models
 {
-    public class User
+    public class User : Connection
     {
-        private SqlConnection con;
-
-        public void Conn()
-        {
-            string constr = ConfigurationManager.ConnectionStrings["BoardDB"].ToString();
-            con = new SqlConnection(constr);
-        }
-
         // 회원 가입
         public void AddUser(UserEntity obj)
         {
