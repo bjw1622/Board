@@ -20,7 +20,7 @@ namespace Board.Models
 
         public void ConClose()
         {
-            con.Close();
+            //con.Close();
             con.Dispose();
         }
     }
