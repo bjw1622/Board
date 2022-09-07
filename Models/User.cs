@@ -15,7 +15,7 @@ namespace Board.Models
         public void AddUser(UserEntity obj)
         {
             Conn();
-            con.Open();
+            ConOpen();
             using (SqlCommand com = new SqlCommand("dbo.InsertUser", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
@@ -25,15 +25,14 @@ namespace Board.Models
                 com.Parameters.AddWithValue("@Birth", obj.Birth);
                 com.ExecuteNonQuery();
             }
-            con.Close();
-            con.Dispose();
+            ConClose();
         }
 
         // 로그인
         public UserEntity LogIn(UserEntity obj)
         {
             Conn();
-            con.Open();
+            ConOpen();
             UserEntity users = new UserEntity();
             using (SqlCommand com = new SqlCommand("dbo.LogInUser", con))
             {
@@ -47,8 +46,7 @@ namespace Board.Models
                     users.Name = Convert.ToString(reader["Name"]);
                 }
             }
-            con.Close();
-            con.Dispose();
+            ConClose();
             return users;
         }
 
@@ -59,7 +57,7 @@ namespace Board.Models
             try
             {
                 Conn();
-                con.Open();
+                ConOpen();
                 using (SqlCommand com = new SqlCommand("dbo.EmailCheck", con))
                 {
                     com.CommandType = CommandType.StoredProcedure;
@@ -73,8 +71,7 @@ namespace Board.Models
             }
             finally
             {
-                con.Close();
-                con.Dispose();
+                ConClose();
             }
             return result;
         }

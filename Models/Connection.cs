@@ -5,11 +5,23 @@ namespace Board.Models
 {
     public class Connection
     {
-        public SqlConnection con;
+        protected SqlConnection con;
         public void Conn()
         {
             string constr = ConfigurationManager.ConnectionStrings["BoardDB"].ToString();
             con = new SqlConnection(constr);
+        }
+
+        public void ConOpen()
+        {
+            con.Open();
+
+        }
+
+        public void ConClose()
+        {
+            con.Close();
+            con.Dispose();
         }
     }
 }

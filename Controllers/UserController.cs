@@ -56,6 +56,7 @@ namespace Board.Controllers
         public JsonResult EmailCheck(UserEntity obj)
         {
             User user = new User();
+
             var result = user.EmailCheck(obj);
             return Json(result);
         }

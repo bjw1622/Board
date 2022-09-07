@@ -13,7 +13,7 @@ namespace Board.Models
         public void WriteBoard(BoardFileEntity obj)
         {
             Conn();
-            con.Open();
+            ConOpen();
             using (SqlCommand com = new SqlCommand("dbo.WriteBoard", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
@@ -26,15 +26,14 @@ namespace Board.Models
                 com.Parameters.AddWithValue("@RecommandCount", obj.RecommandCount);
                 com.ExecuteNonQuery();
             }
-            con.Close();
-            con.Dispose();
+            ConClose();
         }
 
         // 글쓰기 첨부파일 추가
         public void WriteBoardFile(BoardFileEntity obj)
         {
             Conn();
-            con.Open();
+            ConOpen();
             using (SqlCommand com = new SqlCommand("dbo.WriteBoardFile", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
@@ -44,8 +43,7 @@ namespace Board.Models
                 com.Parameters.AddWithValue("@FileName2", obj.FileName2);
                 com.ExecuteNonQuery();
             }
-            con.Close();
-            con.Dispose();
+            ConClose();
         }
 
         // 게시판 목록 가져오기
@@ -53,7 +51,7 @@ namespace Board.Models
         {
             List<BoardEntity> boardEntity = new List<BoardEntity>();
             Conn();
-            con.Open();
+            ConOpen();
             using (SqlCommand com = new SqlCommand("dbo.SelectBoard", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
@@ -69,8 +67,7 @@ namespace Board.Models
                     boardEntity.Add(boards);
                 }
             }
-            con.Close();
-            con.Dispose();
+            ConClose();
             return boardEntity;
         }
 
@@ -79,7 +76,7 @@ namespace Board.Models
         {
             List<FileEntity> fileimg = new List<FileEntity>();
             Conn();
-            con.Open();
+            ConOpen();
             using (SqlCommand com = new SqlCommand("dbo.SelectFileName", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
@@ -93,8 +90,7 @@ namespace Board.Models
                     fileimg.Add(files);
                 }
             }
-            con.Close();
-            con.Dispose();
+            ConClose();
             return fileimg;
         }
 
@@ -104,7 +100,7 @@ namespace Board.Models
         {
             List<BoardEntity> boardEntity = new List<BoardEntity>();
             Conn();
-            con.Open();
+            ConOpen();
             using (SqlCommand com = new SqlCommand("dbo.SelectBoardByTop", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
@@ -120,8 +116,7 @@ namespace Board.Models
                     boardEntity.Add(boards);
                 }
             }
-            con.Close();
-            con.Dispose();
+            ConClose();
             return boardEntity;
         }
 
@@ -129,7 +124,7 @@ namespace Board.Models
         public BoardEntity DetailBoard(int boardNum)
         {
             Conn();
-            con.Open();
+            ConOpen();
             BoardEntity boards = new BoardEntity();
             using (SqlCommand com = new SqlCommand("dbo.DetailBoard", con))
             {
@@ -146,8 +141,7 @@ namespace Board.Models
 
                 }
             }
-            con.Close();
-            con.Dispose();
+            ConClose();
             return boards;
         }
 
@@ -157,7 +151,7 @@ namespace Board.Models
             try
             {
                 Conn();
-                con.Open();
+                ConOpen();
                 using (SqlCommand com = new SqlCommand("dbo.UpdateBoard", con))
                 {
                     com.CommandType = CommandType.StoredProcedure;
@@ -173,8 +167,7 @@ namespace Board.Models
             }
             finally
             {
-                con.Close();
-                con.Dispose();
+                ConClose();
             }
 
 
@@ -184,22 +177,21 @@ namespace Board.Models
         public void DeleteBoard(int boardNum)
         {
             Conn();
-            con.Open();
+            ConOpen();
             using (SqlCommand com = new SqlCommand("dbo.DeleteBoard", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
                 com.Parameters.AddWithValue("@BoardNum", boardNum);
                 SqlDataReader reader = com.ExecuteReader();
             }
-            con.Close();
-            con.Dispose();
+            ConClose();
         }
 
         // 상세 페이지 - 추천 업데이트
         public void RecommandCountUpdate(RecommandEntity obj)
         {
             Conn();
-            con.Open();
+            ConOpen();
             using (SqlCommand com = new SqlCommand("dbo.UpdateRecommandCount", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
@@ -207,8 +199,7 @@ namespace Board.Models
                 com.Parameters.AddWithValue("@RecommandCount", obj.RecommandCount);
                 SqlDataReader reader = com.ExecuteReader();
             }
-            con.Close();
-            con.Dispose();
+            ConClose();
         }
 
         // 페이징
@@ -216,7 +207,7 @@ namespace Board.Models
         {
             List<BoardEntity> boardEntity = new List<BoardEntity>();
             Conn();
-            con.Open();
+            ConOpen();
             using (SqlCommand com = new SqlCommand("dbo.PagingBoard", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
@@ -234,8 +225,7 @@ namespace Board.Models
                     boardEntity.Add(boards);
                 }
             }
-            con.Close();
-            con.Dispose();
+            ConClose();
             return boardEntity;
         }
 
@@ -246,7 +236,7 @@ namespace Board.Models
             try
             {
                 Conn();
-                con.Open();
+                ConOpen();
                 using (SqlCommand com = new SqlCommand("dbo.FindingAndPaging", con))
                 {
                     com.CommandType = CommandType.StoredProcedure;
@@ -274,8 +264,7 @@ namespace Board.Models
             }
             finally
             {
-                con.Close();
-                con.Dispose();
+                ConClose();
             }
             return boardEntity;
         }
@@ -287,7 +276,7 @@ namespace Board.Models
             try
             {
                 Conn();
-                con.Open();
+                ConOpen();
                 using (SqlCommand com = new SqlCommand("dbo.FindBoardListCount", con))
                 {
                     com.CommandType = CommandType.StoredProcedure;
@@ -303,8 +292,7 @@ namespace Board.Models
             }
             finally
             {
-                con.Close();
-                con.Dispose();
+                ConClose();
             }
 
             return result;
@@ -317,7 +305,7 @@ namespace Board.Models
             try
             {
                 Conn();
-                con.Open();
+                ConOpen();
                 using (SqlCommand com = new SqlCommand("dbo.InsertReply", con))
                 {
                     com.CommandType = CommandType.StoredProcedure;
@@ -345,8 +333,7 @@ namespace Board.Models
             }
             finally
             {
-                con.Close();
-                con.Dispose();
+                ConClose();
             }
             return replyEntity;
 
@@ -357,7 +344,7 @@ namespace Board.Models
         {
             List<ReplyEntity> replyEntity = new List<ReplyEntity>();
             Conn();
-            con.Open();
+            ConOpen();
             ReplyEntity boards = new ReplyEntity();
             using (SqlCommand com = new SqlCommand("dbo.SelectReply", con))
             {
@@ -376,8 +363,7 @@ namespace Board.Models
 
                 }
             }
-            con.Close();
-            con.Dispose();
+            ConClose();
             return replyEntity;
         }
 
@@ -387,7 +373,7 @@ namespace Board.Models
             int result;
             List<ReplyEntity> replyEntity = new List<ReplyEntity>();
             Conn();
-            con.Open();
+            ConOpen();
             ReplyEntity boards = new ReplyEntity();
             using (SqlCommand com = new SqlCommand("dbo.GetReplyID", con))
             {
@@ -403,8 +389,7 @@ namespace Board.Models
                     result = (int)com.ExecuteScalar();
                 }
             }
-            con.Close();
-            con.Dispose();
+            ConClose();
             return result;
         }
 
@@ -413,7 +398,7 @@ namespace Board.Models
         {
             List<ReplyEntity> replyEntity = new List<ReplyEntity>();
             Conn();
-            con.Open();
+            ConOpen();
             ReplyEntity boards = new ReplyEntity();
             using (SqlCommand com = new SqlCommand("dbo.SelectReReply", con))
             {
@@ -433,15 +418,14 @@ namespace Board.Models
 
                 }
             }
-            con.Close();
-            con.Dispose();
+            ConClose();
             return replyEntity;
         }
 
         public void UpdateReplyCount(int boardNum, int replyCount)
         {
             Conn();
-            con.Open();
+            ConOpen();
             ReplyEntity boards = new ReplyEntity();
             using (SqlCommand com = new SqlCommand("dbo.BoardReply", con))
             {
@@ -450,8 +434,7 @@ namespace Board.Models
                 com.Parameters.AddWithValue("@ReplyCount", replyCount);
                 SqlDataReader reader = com.ExecuteReader();
             }
-            con.Close();
-            con.Dispose();
+            ConClose();
         }
 
         public int GetRecommandNumber(RecommandEntity obj)
@@ -459,7 +442,7 @@ namespace Board.Models
             // ReplyID 가장 큰 값
             int result;
             Conn();
-            con.Open();
+            ConOpen();
             using (SqlCommand com = new SqlCommand("dbo.GetRecommandNumber", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
@@ -477,15 +460,14 @@ namespace Board.Models
                     result = (int)com.ExecuteScalar();
                 }
             }
-            con.Close();
-            con.Dispose();
+            ConClose();
             return result;
         }
 
         public void UpdateRecommand(RecommandEntity obj)
         {
             Conn();
-            con.Open();
+            ConOpen();
             ReplyEntity boards = new ReplyEntity();
             using (SqlCommand com = new SqlCommand("dbo.UpdateRecommand", con))
             {
@@ -494,13 +476,12 @@ namespace Board.Models
                 com.Parameters.AddWithValue("@Email", obj.Email);
                 SqlDataReader reader = com.ExecuteReader();
             }
-            con.Close();
-            con.Dispose();
+            ConClose();
         }
         public void SetRecomandDisabled(RecommandEntity obj)
         {
             Conn();
-            con.Open();
+            ConOpen();
             ReplyEntity boards = new ReplyEntity();
             using (SqlCommand com = new SqlCommand("dbo.SetRecommandDisabled", con))
             {
@@ -509,14 +490,13 @@ namespace Board.Models
                 com.Parameters.AddWithValue("@Email", obj.Email);
                 SqlDataReader reader = com.ExecuteReader();
             }
-            con.Close();
-            con.Dispose();
+            ConClose();
         }
 
         public void SetRecomandActive(RecommandEntity obj)
         {
             Conn();
-            con.Open();
+            ConOpen();
             ReplyEntity boards = new ReplyEntity();
             using (SqlCommand com = new SqlCommand("dbo.SetRecommandActive", con))
             {
@@ -525,15 +505,14 @@ namespace Board.Models
                 com.Parameters.AddWithValue("@Email", obj.Email);
                 SqlDataReader reader = com.ExecuteReader();
             }
-            con.Close();
-            con.Dispose();
+            ConClose();
         }
 
         // 댓글 삭제
         public void RemoveReply(ReplyEntity obj)
         {
             Conn();
-            con.Open();
+            ConOpen();
             ReplyEntity boards = new ReplyEntity();
             using (SqlCommand com = new SqlCommand("dbo.RemoveReply", con))
             {
@@ -542,15 +521,14 @@ namespace Board.Models
                 com.Parameters.AddWithValue("@ReplyID", obj.ReplyID);
                 SqlDataReader reader = com.ExecuteReader();
             }
-            con.Close();
-            con.Dispose();
+            ConClose();
         }
 
         // 자식 댓글 삭제
         public void RemoveReReply(ReplyEntity obj)
         {
             Conn();
-            con.Open();
+            ConOpen();
             ReplyEntity boards = new ReplyEntity();
             using (SqlCommand com = new SqlCommand("dbo.RemoveReReply", con))
             {
@@ -559,8 +537,7 @@ namespace Board.Models
                 com.Parameters.AddWithValue("@ReplyID", obj.ReplyID);
                 SqlDataReader reader = com.ExecuteReader();
             }
-            con.Close();
-            con.Dispose();
+            ConClose();
         }
     }
 
