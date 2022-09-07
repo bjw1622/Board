@@ -23,6 +23,7 @@ namespace Board.Models
                 com.Parameters.AddWithValue("@Pw", obj.Pw);
                 com.Parameters.AddWithValue("@Name", obj.Name);
                 com.Parameters.AddWithValue("@Birth", obj.Birth);
+                com.Parameters.AddWithValue("@CreateDate", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"));
                 com.ExecuteNonQuery();
             }
             ConClose();

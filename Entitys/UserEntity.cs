@@ -9,12 +9,14 @@ namespace Board.Entitys
     public class UserEntity
     {
         [Required]
-        public string Email { get; set; }
+        public int No { get; set; }
         [Required]
+        public string Email { get; set; }
         public string Pw { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]
         public string Birth { get; set; }
+        public string CreateDate { get; set; }
     }
 }
