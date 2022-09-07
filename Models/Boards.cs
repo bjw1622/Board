@@ -169,8 +169,6 @@ namespace Board.Models
             {
                 ConClose();
             }
-
-
         }
 
         // Delete 게시판
