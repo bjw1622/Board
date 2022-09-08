@@ -69,20 +69,20 @@ namespace Board.Controllers
         //        }
         //    }
 
-        //    // 상세 페이지
-        //    public ActionResult Detail(int boardNum)
-        //    {
-        //        Boards boards = new Boards();
-        //        // 게시판 상세 정보 가져오기
-        //        ViewBag.detailInfo = boards.DetailBoard(boardNum);
-        //        // 댓글 가져오기
-        //        ViewBag.replyList = boards.ReadReply(boardNum);
-        //        // ReplyID 최신화 하기
-        //        ViewBag.MaxReplyID = boards.GetReplyID(boardNum);
-        //        // 첨부파일 이미지 경로 가져오기
-        //        ViewBag.GetFileImg = boards.GetFileImg(boardNum);
-        //        return View();
-        //    }
+        // 상세 페이지
+        public ActionResult Detail(int boardNum)
+        {
+            Boards boards = new Boards();
+            // 게시판 상세 정보 가져오기
+            ViewBag.detailInfo = boards.DetailBoard(boardNum);
+            ////댓글 가져오기
+            //ViewBag.replyList = boards.ReadReply(boardNum);
+            ////ReplyID 최신화 하기
+            //ViewBag.MaxReplyID = boards.GetReplyID(boardNum);
+            ////첨부파일 이미지 경로 가져오기
+            //ViewBag.GetFileImg = boards.GetFileImg(boardNum);
+            return View();
+        }
 
         //    [HttpPost]
         //    // 상세 페이지 - 수정

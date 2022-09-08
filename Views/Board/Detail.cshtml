@@ -1,8 +1,8 @@
 ﻿
 @{
     ViewBag.Title = "Detail";
-    var maxReplyID = @ViewBag.MaxReplyID;
-    string email = ViewBag.detailInfo.Email;
+    //var maxReplyID = @ViewBag.MaxReplyID;
+    //string email = ViewBag.detailInfo.Email;
 
 }
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -22,10 +22,10 @@
 
     <div class="form-group">
         <label for="exampleFormControlTextarea1">내용</label>
-        <textarea class="form-control" name="MainContent" id="mainContent" rows="5">@ViewBag.detailInfo.MainContent</textarea>
+        <textarea class="form-control" name="MainContent" id="mainContent" rows="5">@ViewBag.detailInfo.Content</textarea>
     </div>
     <hr />
-    <div class="form-group">
+    @*<div class="form-group">
         <h4>첨부 파일</h4>
         @if (@ViewBag.GetFileImg[0].FileName != "")
         {
@@ -40,11 +40,11 @@
             </a>
         }
 
-    </div>
+    </div>*@
     <hr />
-    <button class="btn btn-primary" id="recommand">추천 : @ViewBag.detailInfo.RecommandCount</button>
+    @*<button class="btn btn-primary" id="recommand">추천 : @ViewBag.detailInfo.RecommandCount</button>*@
 
-    @if (Session["Email"].ToString() == email)
+    @*@if (Session["Email"].ToString() == email)
     {
         <div>
             <button class="btn btn-info" onclick="update()">수정</button>
@@ -69,11 +69,11 @@
                 <button class="remove-btn" name="@ViewBag.replyList[i].Email @ViewBag.replyList[i].ReplyID @ViewBag.replyList[i].ParentReplyID" onclick="ReplyRemove(event)">삭제</button>
             </div>
         }
-    </div>
+    </div>*@
 </body>
 </html>
 <script>
-    let recommandNumber = parseInt((document.querySelector('#recommand').innerHTML).replace(/[^0-9]/g, ''));
+    @*let recommandNumber = parseInt((document.querySelector('#recommand').innerHTML).replace(/[^0-9]/g, ''));
     let maxReplyID = @maxReplyID;
 
     // 일반 댓글 등록
@@ -105,7 +105,7 @@
                 alert('댓글을 입력해주세요.');
             }
         });
-    })
+    })*@
 
     // 게시글 수정
     function update() {
@@ -127,7 +127,7 @@
         });
     };
 
-    // 게시글 삭제
+    @*// 게시글 삭제
     function deleteBoard ()
     {
         const flag = confirm('정말 삭제하시겠습니까?');
@@ -166,9 +166,9 @@
             error: function () {
             }
         });
-    })
+    })*@
 
-    function ReReply(event) {
+    @*function ReReply(event) {
         const param = {
             BoardNum: window.location.pathname.split('/')[3],
             ReplyID: maxReplyID + 1,
@@ -274,7 +274,7 @@
 
             }
         }
-    }
+    }*@
 
     // 대댓글 창 생성
     function createReReply(ParentReplyID) {

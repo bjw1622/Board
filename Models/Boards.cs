@@ -134,30 +134,37 @@ namespace Board.Models
         //            return boardEntity;
         //        }
 
-        //        // 게시판 상세페이지 이동
-        //        public BoardEntity DetailBoard(int boardNum)
-        //        {
-        //            Conn();
-        //            ConOpen();
-        //            BoardEntity boards = new BoardEntity();
-        //            using (SqlCommand com = new SqlCommand("dbo.DetailBoard", con))
-        //            {
-        //                com.CommandType = CommandType.StoredProcedure;
-        //                com.Parameters.AddWithValue("@BoardNum", boardNum);
-        //                SqlDataReader reader = com.ExecuteReader();
-        //                while (reader.Read())
-        //                {
-        //                    boards.Title = Convert.ToString(reader["Title"]);
-        //                    boards.Name = Convert.ToString(reader["Name"]);
-        //                    boards.MainContent = Convert.ToString(reader["MainContent"]);
-        //                    boards.RecommandCount = Convert.ToInt32(reader["RecommandCount"]);
-        //                    boards.Email = Convert.ToString(reader["Email"]);
-
-        //                }
-        //            }
-        //            ConClose();
-        //            return boards;
-        //        }
+        // 게시판 상세페이지 이동
+        public BoardEntity DetailBoard(int boardNum)
+        {
+            BoardEntity boards = new BoardEntity();
+            try
+            {
+                Conn();
+                ConOpen();
+                using (SqlCommand com = new SqlCommand("dbo.DetailBoard", con))
+                {
+                    com.CommandType = CommandType.StoredProcedure;
+                    com.Parameters.AddWithValue("@No", boardNum);
+                    SqlDataReader reader = com.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        boards.Title = Convert.ToString(reader["Title"]);
+                        boards.Content = Convert.ToString(reader["Content"]);
+                        boards.User_No = Convert.ToInt32(reader["User_No"]);
+                        boards.Name = Convert.ToString(reader["Name"]);
+                    }
+                }
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+            }
+            finally
+            {
+                ConClose();
+            }
+            return boards;
+        }
 
         //        // Update 게시판
         //        public void UpdateBoard(BoardEntity obj)

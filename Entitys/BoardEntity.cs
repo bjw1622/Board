@@ -9,5 +9,6 @@
         public string UpdateDate { get; set; }
         public string Email { get; set; }
         public string Name { get; set; }
+        public int User_No { get; set; }
     }
 }
