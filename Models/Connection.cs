@@ -18,7 +18,6 @@ namespace Board.Models
         }
         public void ConClose()
         {
-            //con.Close();
             con.Dispose();
         }
     }
