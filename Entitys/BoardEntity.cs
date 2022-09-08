@@ -8,5 +8,6 @@
         public string CreateDate { get; set; }
         public string UpdateDate { get; set; }
         public string Email { get; set; }
+        public string Name { get; set; }
     }
 }

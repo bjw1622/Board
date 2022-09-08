@@ -12,25 +12,24 @@ namespace Board.Controllers
         // 게시판 데이터 가져오기
         public ActionResult Index()
         {
-            //if (Session["Email"] != null)
-            //{
-            //    Boards boards = new Boards();
-            //    ViewBag.Board = boards.GetBoardList();
-            //    return View();
-            //}
-            //return RedirectToAction("Login", "User");
-            return View();
+            if (Session["Email"] != null)
+            {
+                Boards boards = new Boards();
+                ViewBag.Board = boards.GetBoardList();
+                return View();
+            }
+            return RedirectToAction("Login", "User");
         }
 
-        //[HttpPost]
-        //// 페이징
-        //public JsonResult IndexPaging(PageEntity obj)
-        //{
-        //    Boards boards = new Boards();
-        //    List<BoardEntity> boar = boards.PagingBoardList(obj);
-        //    return Json(boar);
+        [HttpPost]
+        // 페이징
+        public JsonResult IndexPaging(PageEntity obj)
+        {
+            Boards boards = new Boards();
+            List<BoardEntity> boar = boards.PagingBoardList(obj);
+            return Json(boar);
 
-        //}
+        }
 
         // 글쓰기
         public ActionResult Write()
