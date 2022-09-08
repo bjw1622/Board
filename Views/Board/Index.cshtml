@@ -2,8 +2,8 @@
     ViewBag.Title = "게시판";
 }
 @{
-    var boardCount = 20;
-    var totalPage = (ViewBag.Board.Count / boardCount) + 2;
+//var boardCount = 20;
+//var totalPage = (ViewBag.Board.Count / boardCount) + 2;
 }
 @* 체크 아웃 테스트 *@
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -37,7 +37,7 @@
             </tr>
         </thead>
         <tbody id="tbody">
-            @if (@ViewBag.Board.Count < boardCount)
+            @*@if (@ViewBag.Board.Count < boardCount)
             {
                 for (var i = 0; i < @ViewBag.Board.Count; i++)
                 {
@@ -62,12 +62,12 @@
                         <td class="text-center">@ViewBag.Board[i].RecommandCount</td>
                     </tr>
                 }
-            }
+            }*@
         </tbody>
 
     </table>
     <div id="page" style="text-align: center;">
-        @for (var i = 1; i < totalPage; i++)
+        @*@for (var i = 1; i < totalPage; i++)
         {
             if (i == 1)
             {
@@ -77,14 +77,14 @@
             {
                 <button class="page-btn btn btn-light" onclick="paging()" value=@i>@i</button>
             }
-        }
+        }*@
     </div>
     <button class="btn btn-primary" onclick="location.href='/Board/Write'">글쓰기</button>
 </body>
 </html>
 <script>
     // 페이징 나타내기
-    document.querySelector('#board-count').addEventListener('click', () => {
+    @*document.querySelector('#board-count').addEventListener('click', () => {
         $('#page').empty();
         let totalPageCount = @(ViewBag.Board.Count);
         for (let i = 1; i < (totalPageCount / document.querySelector('#board-count').value)+1; i++)
@@ -236,5 +236,5 @@
             buttonClass[i].addEventListener("click", handleClick);
         }
     }
-    init();
+    init();*@
 </script>

@@ -21,44 +21,42 @@
             <textarea class="form-control" rows="5" id="main-content" required></textarea>
         </div>
         <input id="fileInput" type="file" multiple accept="image/jpeg, image/jpg, image/png" onchage="checkSize(this)">
-        <button class="btn btn-primary">글작성</button>
+        <button class="btn btn-primary" id="write">글작성</button>
     </form>
 </body>
 </html>
 
 
-
+<script src="~/Scripts/jquery-3.4.1.js"></script>
 <script>
-    document.getElementById('FileUploadForm').onsubmit = function () {
-        const formdata = new FormData();
-        const fileInput = document.getElementById('fileInput');
-        const fileName = [];
+    //document.getElementById('FileUploadForm').onsubmit = function () {
+    //    const formdata = new FormData();
+    //    const fileInput = document.getElementById('fileInput');
+    //    const fileName = [];
 
-        if (fileInput.files.length >= 3) {
-            alert('파일은 최대 2개까지 첨부 가능합니다.');
-            fileInput.files.value = "";
-            fileInput.value = "";
-            return;
-        }
+    //    if (fileInput.files.length >= 3) {
+    //        alert('파일은 최대 2개까지 첨부 가능합니다.');
+    //        fileInput.files.value = "";
+    //        fileInput.value = "";
+    //        return;
+    //    }
 
-        for (i = 0; i < fileInput.files.length; i++) {
-            fileName.push(fileInput.files[i].name);
-            formdata.append(fileInput.files[i].name, fileInput.files[i]);
-        }
+    //    for (i = 0; i < fileInput.files.length; i++) {
+    //        fileName.push(fileInput.files[i].name);
+    //        formdata.append(fileInput.files[i].name, fileInput.files[i]);
+    //    }
 
-        const xhr = new XMLHttpRequest();
+    //    const xhr = new XMLHttpRequest();
 
-        xhr.open('POST', '/Board/UploadFiles');
-        xhr.send(formdata);
-
+    //    xhr.open('POST', '/Board/UploadFiles');
+    //    xhr.send(formdata);
+    document.querySelector('#write').addEventListener('click', () => {
         const param = {
             Title: $('#title').val(),
-            Name: $('#writer').val(),
-            MainContent: $('#main-content').val(),
-            Email: "@Session["Email"]",
-            FileName: fileName[0],
-            FileName2: fileName[1],
+            Content: $('#main-content').val(),
+            Email:'@Session["Email"]',
         }
+        console.log(param);
 
         $.ajax({
             url: '/Board/Write',
@@ -72,13 +70,15 @@
             error: function () {
             }
         });
-    }
+    })
 
-    function checkSize(input) {
-        if (input.files && input.files[0].size > (5 * 1024 * 1024)) {
-            alert("파일 사이즈가 5mb 를 넘습니다.");
-            input.value = null;
-        }
-    }
+    //}
+
+    //function checkSize(input) {
+    //    if (input.files && input.files[0].size > (5 * 1024 * 1024)) {
+    //        alert("파일 사이즈가 5mb 를 넘습니다.");
+    //        input.value = null;
+    //    }
+    //}
 </script>
 

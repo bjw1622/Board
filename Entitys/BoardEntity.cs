@@ -2,12 +2,11 @@
 {
     public class BoardEntity
     {
-        public int BoardNum { get; set; }
+        public int No { get; set; }
         public string Title { get; set; }
-        public string MainContent { get; set; }
-        public string Name { get; set; }
-        public int ReplyCount { get; set; }
-        public int RecommandCount { get; set; }
+        public string Content { get; set; }
+        public string CreateDate { get; set; }
+        public string UpdateDate { get; set; }
         public string Email { get; set; }
     }
 }
