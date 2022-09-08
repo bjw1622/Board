@@ -86,7 +86,6 @@ namespace Board.Models
             return boardEntity;
         }
 
-        //        // 게시판 목록 가져오기
         //        public List<FileEntity> GetFileImg(int boardNum)
         //        {
         //            List<FileEntity> fileimg = new List<FileEntity>();
@@ -215,11 +214,12 @@ namespace Board.Models
         //            ConClose();
         //        }
 
-        //        // 페이징
+        // 페이징
         public List<BoardEntity> PagingBoardList(PageEntity obj)
         {
             List<BoardEntity> boardEntity = new List<BoardEntity>();
-            try {
+            try
+            {
                 Conn();
                 ConOpen();
                 using (SqlCommand com = new SqlCommand("dbo.PagingBoard", con))
@@ -249,74 +249,70 @@ namespace Board.Models
             return boardEntity;
         }
 
-        //        // 검색과 페이징
-        //        public List<BoardEntity> PagingAndFindingBoardList(PageAndFindEntity obj)
-        //        {
-        //            List<BoardEntity> boardEntity = new List<BoardEntity>();
-        //            try
-        //            {
-        //                Conn();
-        //                ConOpen();
-        //                using (SqlCommand com = new SqlCommand("dbo.FindingAndPaging", con))
-        //                {
-        //                    com.CommandType = CommandType.StoredProcedure;
-        //                    com.Parameters.AddWithValue("@PageCount", obj.PageCount);
-        //                    com.Parameters.AddWithValue("@PageNumber", obj.PageNumber);
-        //                    com.Parameters.AddWithValue("@Variable", obj.Variable);
-        //                    com.Parameters.AddWithValue("@Input", obj.Input);
-        //                    SqlDataReader reader = com.ExecuteReader();
-        //                    while (reader.Read())
-        //                    {
-        //                        BoardEntity boards = new BoardEntity();
-        //                        boards.BoardNum = Convert.ToInt32(reader["BoardNum"]);
-        //                        boards.Title = Convert.ToString(reader["Title"]);
-        //                        boards.Name = Convert.ToString(reader["Name"]);
-        //                        boards.ReplyCount = Convert.ToInt32(reader["ReplyCount"]);
-        //                        boards.RecommandCount = Convert.ToInt32(reader["RecommandCount"]);
-        //                        boardEntity.Add(boards);
-        //                    }
-        //                }
-        //            }
-        //            catch (Exception e)
-        //            {
-        //                Console.WriteLine(e);
-        //                return boardEntity;
-        //            }
-        //            finally
-        //            {
-        //                ConClose();
-        //            }
-        //            return boardEntity;
-        //        }
+        // 검색과 페이징
+        public List<BoardEntity> PagingAndFindingBoardList(PageAndFindEntity obj)
+        {
+            List<BoardEntity> boardEntity = new List<BoardEntity>();
+            try
+            {
+                Conn();
+                ConOpen();
+                using (SqlCommand com = new SqlCommand("dbo.FindingAndPaging", con))
+                {
+                    com.CommandType = CommandType.StoredProcedure;
+                    com.Parameters.AddWithValue("@PageCount", obj.PageCount);
+                    com.Parameters.AddWithValue("@PageNumber", obj.PageNumber);
+                    com.Parameters.AddWithValue("@Variable", obj.Variable);
+                    com.Parameters.AddWithValue("@Input", obj.Input);
+                    SqlDataReader reader = com.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        BoardEntity boards = new BoardEntity();
+                        boards.No = Convert.ToInt32(reader["No"]);
+                        boards.Title = Convert.ToString(reader["Title"]);
+                        boards.Name = Convert.ToString(reader["Name"]);
+                        boardEntity.Add(boards);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            finally
+            {
+                ConClose();
+            }
+            return boardEntity;
+        }
 
-        //        // 검색 했을 때의 페이지 수 가져오기
-        //        public int FindBoardCount(PageAndFindEntity obj)
-        //        {
-        //            int result = 0;
-        //            try
-        //            {
-        //                Conn();
-        //                ConOpen();
-        //                using (SqlCommand com = new SqlCommand("dbo.FindBoardListCount", con))
-        //                {
-        //                    com.CommandType = CommandType.StoredProcedure;
-        //                    com.Parameters.AddWithValue("@Variable", obj.Variable);
-        //                    com.Parameters.AddWithValue("@Input", obj.Input);
-        //                    result = (int)(com.ExecuteScalar());
-        //                }
-        //            }
-        //            catch (Exception e)
-        //            {
-        //                Console.WriteLine(e);
-        //                return result;
-        //            }
-        //            finally
-        //            {
-        //                ConClose();
-        //            }
-
-        //            return result;
-        //        }
+        // 검색 했을 때의 페이지 수 가져오기
+        public int FindBoardCount(PageAndFindEntity obj)
+        {
+            int result = 0;
+            try
+            {
+                Conn();
+                ConOpen();
+                using (SqlCommand com = new SqlCommand("dbo.FindBoardListCount", con))
+                {
+                    com.CommandType = CommandType.StoredProcedure;
+                    com.Parameters.AddWithValue("@Variable", obj.Variable);
+                    com.Parameters.AddWithValue("@Input", obj.Input);
+                    result = (int)(com.ExecuteScalar());
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return result;
+            }
+            finally
+            {
+                ConClose();
+            }
+            return result;
+        }
 
         //        // 댓글 추가
         //        public List<ReplyEntity> AddReply(ReplyEntity obj)
