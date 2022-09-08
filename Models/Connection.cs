@@ -8,16 +8,14 @@ namespace Board.Models
         protected SqlConnection con;
         public void Conn()
         {
-            string constr = ConfigurationManager.ConnectionStrings["BoardDB"].ToString();
+            string constr = ConfigurationManager.ConnectionStrings["BoardTestDB"].ToString();
             con = new SqlConnection(constr);
         }
-
         public void ConOpen()
         {
             con.Open();
 
         }
-
         public void ConClose()
         {
             //con.Close();

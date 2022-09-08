@@ -5,7 +5,6 @@
     var boardCount = 20;
     var totalPage = (ViewBag.Board.Count / boardCount) + 2;
 }
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 </head>
@@ -42,11 +41,11 @@
                 for (var i = 0; i < @ViewBag.Board.Count; i++)
                 {
                     <tr class="text-center">
-                        <td class="text-center">@ViewBag.Board[i].BoardNum</td>
-                        <td class="text-center"><a href="/Board/Detail/@ViewBag.Board[i].BoardNum">@ViewBag.Board[i].Title</a></td>
+                        <td class="text-center">@ViewBag.Board[i].No</td>
+                        <td class="text-center"><a href="/Board/Detail/@ViewBag.Board[i].No">@ViewBag.Board[i].Title</a></td>
                         <td class="text-center">@ViewBag.Board[i].Name</td>
-                        <td class="text-center">@ViewBag.Board[i].ReplyCount</td>
-                        <td class="text-center">@ViewBag.Board[i].RecommandCount</td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
                     </tr>
                 }
             }
@@ -55,11 +54,11 @@
                 for (var i = 0; i < boardCount; i++)
                 {
                     <tr class="text-center">
-                        <td class="text-center">@ViewBag.Board[i].BoardNum</td>
-                        <td class="text-center"><a href="/Board/Detail/@ViewBag.Board[i].BoardNum">@ViewBag.Board[i].Title</a></td>
+                        <td class="text-center">@ViewBag.Board[i].No</td>
+                        <td class="text-center"><a href="/Board/Detail/@ViewBag.Board[i].No">@ViewBag.Board[i].Title</a></td>
                         <td class="text-center">@ViewBag.Board[i].Name</td>
-                        <td class="text-center">@ViewBag.Board[i].ReplyCount</td>
-                        <td class="text-center">@ViewBag.Board[i].RecommandCount</td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
                     </tr>
                 }
             }
@@ -147,74 +146,74 @@
         });
     }
 
-    //검색 시 첫 화면  + 페이징 버튼 그리기
-    document.querySelector('#find-board').addEventListener('click', () => {
-        const param = {
-            PageNumber: 1,
-            PageCount: $('#board-count').val(),
-            Variable: document.querySelector("#find-value").value,
-            Input: $('#find').val(),
-        }
-        $.ajax({
-            url: '/Board/PageAndFind',
-            type: 'post',
-            dataType: "json",
-            data: JSON.stringify(param),
-            contentType: "application/json",
-            success: function (data) {
-                $('#page').empty();
-                for (let i = 1; i < (data.Result / document.querySelector('#board-count').value) + 1; i++) {
-                    if (i === 1) {
-                        $('#page').append(` <button class="page-btn btn btn-light btn-info" onclick="findPaging()" value=${i} >${i}</button>`);
-                    }
-                    else {
-                        $('#page').append(` <button class="page-btn btn btn-light" onclick="findPaging()" value=${i} >${i}</button>`);
-                    }
-                }
-                init();
-                $('#tbody').empty();
-                if (data.List !== "") {
-                    data.List.forEach((item) => {
-                        $('#tbody').append(createRow(item))
-                    })
-                }
-            },
-            error: function () {
-            }
-        });
-    })
+    ////검색 시 첫 화면  + 페이징 버튼 그리기
+    //document.querySelector('#find-board').addEventListener('click', () => {
+    //    const param = {
+    //        PageNumber: 1,
+    //        PageCount: $('#board-count').val(),
+    //        Variable: document.querySelector("#find-value").value,
+    //        Input: $('#find').val(),
+    //    }
+    //    $.ajax({
+    //        url: '/Board/PageAndFind',
+    //        type: 'post',
+    //        dataType: "json",
+    //        data: JSON.stringify(param),
+    //        contentType: "application/json",
+    //        success: function (data) {
+    //            $('#page').empty();
+    //            for (let i = 1; i < (data.Result / document.querySelector('#board-count').value) + 1; i++) {
+    //                if (i === 1) {
+    //                    $('#page').append(` <button class="page-btn btn btn-light btn-info" onclick="findPaging()" value=${i} >${i}</button>`);
+    //                }
+    //                else {
+    //                    $('#page').append(` <button class="page-btn btn btn-light" onclick="findPaging()" value=${i} >${i}</button>`);
+    //                }
+    //            }
+    //            init();
+    //            $('#tbody').empty();
+    //            if (data.List !== "") {
+    //                data.List.forEach((item) => {
+    //                    $('#tbody').append(createRow(item))
+    //                })
+    //            }
+    //        },
+    //        error: function () {
+    //        }
+    //    });
+    //})
 
-    // 검색 조건 있을 때 페이징
-    function findPaging() {
-        const param = {
-            PageNumber: event.target.value,
-            PageCount: $('#board-count').val(),
-            Variable: document.querySelector("#find-value").value,
-            Input: $('#find').val(),
-        }
-        $.ajax({
-            url: '/Board/PageAndFind',
-            type: 'post',
-            dataType: "json",
-            data: JSON.stringify(param),
-            contentType: "application/json",
-            success: function (data) {
-                $('#tbody').empty();
-                if (data.List !== "") {
-                    data.List.forEach((item) => {
-                        $('#tbody').append(createRow(item))
-                    })
-                }
-            },
-            error: function () {
-            }
-        });
-    }
+    //// 검색 조건 있을 때 페이징
+    //function findPaging() {
+    //    const param = {
+    //        PageNumber: event.target.value,
+    //        PageCount: $('#board-count').val(),
+    //        Variable: document.querySelector("#find-value").value,
+    //        Input: $('#find').val(),
+    //    }
+    //    $.ajax({
+    //        url: '/Board/PageAndFind',
+    //        type: 'post',
+    //        dataType: "json",
+    //        data: JSON.stringify(param),
+    //        contentType: "application/json",
+    //        success: function (data) {
+    //            $('#tbody').empty();
+    //            if (data.List !== "") {
+    //                data.List.forEach((item) => {
+    //                    $('#tbody').append(createRow(item))
+    //                })
+    //            }
+    //        },
+    //        error: function () {
+    //        }
+    //    });
+    //}
 
     function createRow(item) {
         return `
         <tr class="text-center">
-                    <td class="text-center">${item.BoardNum}</td>
+                    <td class="text-center">${item.No}</td>
                     <td class="text-center"><a href="/Board/Detail/${item.BoardNum}">${item.Title}</a></td>
                     <td class="text-center">${item.Name}</td>
                     <td class="text-center">${item.ReplyCount}</td>
