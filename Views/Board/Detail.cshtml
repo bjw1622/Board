@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Detail";
     //var maxReplyID = @ViewBag.MaxReplyID;
-    //string email = ViewBag.detailInfo.Email;
+    string email = ViewBag.detailInfo.Email;
 
 }
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -44,21 +44,23 @@
     <hr />
     @*<button class="btn btn-primary" id="recommand">추천 : @ViewBag.detailInfo.RecommandCount</button>*@
 
-    @*@if (Session["Email"].ToString() == email)
+    @if (Session["Email"].ToString() == email)
     {
         <div>
             <button class="btn btn-info" onclick="update()">수정</button>
             <button class="btn btn-danger" onclick="deleteBoard()">삭제</button>
         </div>
     }
+
     <hr />
+    
     <div class="input-group mb-3" style="display:flex;">
         <input type="text" class="form-control" style="margin-right : 5px;" id="reply">
         <button class="btn btn-outline-secondary" id="reply-btn" type="button">댓글 입력</button>
     </div>
     <hr />
 
-    <h3>댓글 목록</h3>
+    @*<h3>댓글 목록</h3>
     <div id="reply-content">
         @for (var i = 0; i <= ViewBag.replyList.Count - 1; i++)
         {
@@ -110,9 +112,9 @@
     // 게시글 수정
     function update() {
         const param = {
-            "BoardNum": window.location.pathname.split('/')[3],
+            "No": window.location.pathname.split('/')[3],
             "Title": $('#title').val(),
-            "MainContent": document.querySelector('#mainContent').value,
+            "Content": document.querySelector('#mainContent').value,
         }
         $.ajax({
             url: '/Board/Update',

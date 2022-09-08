@@ -84,13 +84,13 @@ namespace Board.Controllers
             return View();
         }
 
-        //    [HttpPost]
-        //    // 상세 페이지 - 수정
-        //    public void Update(BoardEntity obj)
-        //    {
-        //        Boards boards = new Boards();
-        //        boards.UpdateBoard(obj);
-        //    }
+        [HttpPost]
+        // 상세 페이지 - 수정
+        public void Update(BoardEntity obj)
+        {
+            Boards boards = new Boards();
+            boards.UpdateBoard(obj);
+        }
 
         //    // 상세 페이지 - 삭제
         //    public ActionResult Delete(int boardNum)

@@ -153,10 +153,12 @@ namespace Board.Models
                         boards.Content = Convert.ToString(reader["Content"]);
                         boards.User_No = Convert.ToInt32(reader["User_No"]);
                         boards.Name = Convert.ToString(reader["Name"]);
+                        boards.Email = Convert.ToString(reader["Email"]);
                     }
                 }
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 Console.WriteLine(e);
             }
             finally
@@ -166,31 +168,22 @@ namespace Board.Models
             return boards;
         }
 
-        //        // Update 게시판
-        //        public void UpdateBoard(BoardEntity obj)
-        //        {
-        //            try
-        //            {
-        //                Conn();
-        //                ConOpen();
-        //                using (SqlCommand com = new SqlCommand("dbo.UpdateBoard", con))
-        //                {
-        //                    com.CommandType = CommandType.StoredProcedure;
-        //                    com.Parameters.AddWithValue("@BoardNum", obj.BoardNum);
-        //                    com.Parameters.AddWithValue("@Title", obj.Title);
-        //                    com.Parameters.AddWithValue("@MainContent", obj.MainContent);
-        //                    SqlDataReader reader = com.ExecuteReader();
-        //                }
-        //            }
-        //            catch (Exception e)
-        //            {
-        //                Console.WriteLine(e);
-        //            }
-        //            finally
-        //            {
-        //                ConClose();
-        //            }
-        //        }
+        // Update 게시판
+        public void UpdateBoard(BoardEntity obj)
+        {
+            Conn();
+            ConOpen();
+            using (SqlCommand com = new SqlCommand("dbo.UpdateBoard", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@No", obj.No);
+                com.Parameters.AddWithValue("@Title", obj.Title);
+                com.Parameters.AddWithValue("@Content", obj.Content);
+                com.Parameters.AddWithValue("@UpdateDate", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"));
+                SqlDataReader reader = com.ExecuteReader();
+            }
+            ConClose();
+        }
 
         //        // Delete 게시판
         //        public void DeleteBoard(int boardNum)
