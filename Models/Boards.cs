@@ -185,19 +185,19 @@ namespace Board.Models
             ConClose();
         }
 
-        //        // Delete 게시판
-        //        public void DeleteBoard(int boardNum)
-        //        {
-        //            Conn();
-        //            ConOpen();
-        //            using (SqlCommand com = new SqlCommand("dbo.DeleteBoard", con))
-        //            {
-        //                com.CommandType = CommandType.StoredProcedure;
-        //                com.Parameters.AddWithValue("@BoardNum", boardNum);
-        //                SqlDataReader reader = com.ExecuteReader();
-        //            }
-        //            ConClose();
-        //        }
+        // Delete 게시판
+        public void DeleteBoard(int boardNum)
+        {
+            Conn();
+            ConOpen();
+            using (SqlCommand com = new SqlCommand("dbo.DeleteBoard", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@No", boardNum);
+                SqlDataReader reader = com.ExecuteReader();
+            }
+            ConClose();
+        }
 
         //        // 상세 페이지 - 추천 업데이트
         //        public void RecommandCountUpdate(RecommandEntity obj)

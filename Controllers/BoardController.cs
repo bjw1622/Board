@@ -92,13 +92,13 @@ namespace Board.Controllers
             boards.UpdateBoard(obj);
         }
 
-        //    // 상세 페이지 - 삭제
-        //    public ActionResult Delete(int boardNum)
-        //    {
-        //        Boards boards = new Boards();
-        //        boards.DeleteBoard(boardNum);
-        //        return RedirectToAction("Index", "Board");
-        //    }
+        // 상세 페이지 - 삭제
+        public ActionResult Delete(int boardNum)
+        {
+            Boards boards = new Boards();
+            boards.DeleteBoard(boardNum);
+            return RedirectToAction("Index", "Board");
+        }
 
         //    // 상세 페이지 - 추천 업데이트
         //    [HttpPost]
