@@ -39,10 +39,17 @@ namespace Board.Controllers
 
         [HttpPost]
         // 글쓰기
-        public void Write(BoardEntity obj)
+        public JsonResult Write(BoardEntity obj)
         {
+            bool flag = true;
+            if(obj.Title == null || obj.Content == null)
+            {
+                flag = false;
+                return Json(flag);
+            }
             Boards boards = new Boards();
             boards.WriteBoard(obj);
+            return Json(flag);
             //boards.WriteBoardFile(obj);
         }
 
