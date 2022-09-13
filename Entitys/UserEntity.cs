@@ -12,7 +12,7 @@ namespace Board.Entitys
         public string Email { get; set; }
         public string Pw { get; set; }
         public string Name { get; set; }
-        public string Birth { get; set; }
-        public string CreateDate { get; set; }
+        public DateTime Birth { get; set; }
+        public DateTime CreateDate { get; set; }
     }
 }

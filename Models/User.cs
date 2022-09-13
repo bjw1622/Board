@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 
@@ -14,8 +15,6 @@ namespace Board.Models
         // 회원 가입
         public void AddUser(UserEntity obj)
         {
-            try
-            {
                 Conn();
                 ConOpen();
                 using (SqlCommand com = new SqlCommand("dbo.InsertUser", con))
@@ -28,15 +27,7 @@ namespace Board.Models
                     com.Parameters.AddWithValue("@CreateDate", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"));
                     com.ExecuteNonQuery();
                 }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-            finally
-            {
                 ConClose();
-            }
         }
 
         // 로그인

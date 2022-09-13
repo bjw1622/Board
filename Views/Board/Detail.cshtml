@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "Detail";
-    var maxReplyID = @ViewBag.MaxReplyID;
+    //var maxReplyID = @ViewBag.MaxReplyID;
     string email = ViewBag.detailInfo.Email;
 
 }
@@ -22,10 +22,10 @@
 
     <div class="form-group">
         <label for="exampleFormControlTextarea1">내용</label>
-        <textarea class="form-control" name="MainContent" id="mainContent" rows="5">@ViewBag.detailInfo.MainContent</textarea>
+        <textarea class="form-control" name="MainContent" id="mainContent" rows="5">@ViewBag.detailInfo.Content</textarea>
     </div>
     <hr />
-    <div class="form-group">
+    @*<div class="form-group">
         <h4>첨부 파일</h4>
         @if (@ViewBag.GetFileImg[0].FileName != "")
         {
@@ -40,9 +40,9 @@
             </a>
         }
 
-    </div>
+    </div>*@
     <hr />
-    <button class="btn btn-primary" id="recommand">추천 : @ViewBag.detailInfo.RecommandCount</button>
+    @*<button class="btn btn-primary" id="recommand">추천 : @ViewBag.detailInfo.RecommandCount</button>*@
 
     @if (Session["Email"].ToString() == email)
     {
@@ -51,14 +51,16 @@
             <button class="btn btn-danger" onclick="deleteBoard()">삭제</button>
         </div>
     }
+
     <hr />
+    
     <div class="input-group mb-3" style="display:flex;">
         <input type="text" class="form-control" style="margin-right : 5px;" id="reply">
         <button class="btn btn-outline-secondary" id="reply-btn" type="button">댓글 입력</button>
     </div>
     <hr />
 
-    <h3>댓글 목록</h3>
+    @*<h3>댓글 목록</h3>
     <div id="reply-content">
         @for (var i = 0; i <= ViewBag.replyList.Count - 1; i++)
         {
@@ -69,11 +71,11 @@
                 <button class="remove-btn" name="@ViewBag.replyList[i].Email @ViewBag.replyList[i].ReplyID @ViewBag.replyList[i].ParentReplyID" onclick="ReplyRemove(event)">삭제</button>
             </div>
         }
-    </div>
+    </div>*@
 </body>
 </html>
 <script>
-    let recommandNumber = parseInt((document.querySelector('#recommand').innerHTML).replace(/[^0-9]/g, ''));
+    @*let recommandNumber = parseInt((document.querySelector('#recommand').innerHTML).replace(/[^0-9]/g, ''));
     let maxReplyID = @maxReplyID;
 
     // 일반 댓글 등록
@@ -105,14 +107,14 @@
                 alert('댓글을 입력해주세요.');
             }
         });
-    })
+    })*@
 
     // 게시글 수정
     function update() {
         const param = {
-            "BoardNum": window.location.pathname.split('/')[3],
+            "No": window.location.pathname.split('/')[3],
             "Title": $('#title').val(),
-            "MainContent": document.querySelector('#mainContent').value,
+            "Content": document.querySelector('#mainContent').value,
         }
         $.ajax({
             url: '/Board/Update',
@@ -137,7 +139,7 @@
         }
     };
 
-    // 게시글 추천
+    @*// 게시글 추천
     document.querySelector('#recommand').addEventListener('click', () => {
 
         const param = {
@@ -166,9 +168,9 @@
             error: function () {
             }
         });
-    })
+    })*@
 
-    function ReReply(event) {
+    @*function ReReply(event) {
         const param = {
             BoardNum: window.location.pathname.split('/')[3],
             ReplyID: maxReplyID + 1,
@@ -274,7 +276,7 @@
 
             }
         }
-    }
+    }*@
 
     // 대댓글 창 생성
     function createReReply(ParentReplyID) {
