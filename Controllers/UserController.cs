@@ -21,10 +21,14 @@ namespace Board.Controllers
             if (ModelState.IsValid)
             {
                 user.AddUser(obj);
-            }
-            return Content("<script language='javascript' type='text/javascript'> " +
+                return Content("<script language='javascript' type='text/javascript'> " +
                 "alert('회원가입이 완료 되었습니다.');" +
                 "location.href='/User/Login'" +
+                "</script>");
+            }
+            return Content("<script language='javascript' type='text/javascript'> " +
+                "alert('회원 가입이 되지 않았습니다.');" +
+                "location.href='/User/SignUp'" +
                 "</script>");
         }
 

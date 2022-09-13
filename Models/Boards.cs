@@ -15,7 +15,8 @@ namespace Board.Models
             try
             {
                 Conn();
-                ConOpen();
+                //ConOpen();
+                con.Open();
                 using (SqlCommand com = new SqlCommand("dbo.WriteBoard", con))
                 {
                     com.CommandType = CommandType.StoredProcedure;
