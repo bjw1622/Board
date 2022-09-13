@@ -86,7 +86,35 @@ namespace Board.Models
             }
             return boardEntity;
         }
-
+        // 댓글 개수 가져오기
+        public List<int> GetReplyCount()
+        {
+            List<int> replyCount = new List<int>();
+            try
+            {
+                Conn();
+                ConOpen();
+                using (SqlCommand com = new SqlCommand("dbo.GetReplyCount", con))
+                {
+                    com.CommandType = CommandType.StoredProcedure;
+                    SqlDataReader reader = com.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        int count = Convert.ToInt32(reader["count"]);
+                        replyCount.Add(count);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            finally
+            {
+                ConClose();
+            }
+            return replyCount;
+        }
         public BoardEntity GetEmail(int boardNum)
         {
             BoardEntity boards = new BoardEntity();
