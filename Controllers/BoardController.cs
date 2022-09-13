@@ -134,8 +134,9 @@ namespace Board.Controllers
                 new
                 {
                     RecommandCount = boards.RecommandNumber(obj.Board_No),
+                    Result = result,
                 }
-                );
+                ); 
         }
 
         // 인덱스 페이지 - 검색과 페이징 기능

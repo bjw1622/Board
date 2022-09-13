@@ -154,6 +154,12 @@
             data: JSON.stringify(param),
             contentType: "application/json",
             success: function (data) {
+                if (data.Result === 1) {
+                    alert('추천이 취소 되었습니다.');
+                }
+                else {
+                    alert('추천 되었습니다.');
+                }
                 document.querySelector('#recommand').innerHTML = `추천 : ${data.RecommandCount}`;
             },
             error: function () {
