@@ -274,7 +274,7 @@ namespace Board.Models
             ConClose();
         }
         // 상세 페이지 - 추천 개수
-        public int RecommandNumber(RecommandEntity obj)
+        public int RecommandNumber(int board_No)
         {
             int result = 0;
             Conn();
@@ -282,7 +282,7 @@ namespace Board.Models
             using (SqlCommand com = new SqlCommand("dbo.RecommandCount", con))
             {
                 com.CommandType = CommandType.StoredProcedure;
-                com.Parameters.AddWithValue("@No", obj.Board_No);
+                com.Parameters.AddWithValue("@No", board_No);
                 result = (int)(com.ExecuteScalar());
             }
             ConClose();

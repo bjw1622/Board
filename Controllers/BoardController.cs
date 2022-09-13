@@ -88,6 +88,8 @@ namespace Board.Controllers
             }
             // 게시판 상세 정보 가져오기
             ViewBag.detailInfo = boards.DetailBoard(boardNum);
+            // 추천 최신화
+            ViewBag.RecommandCount = boards.RecommandNumber(boardNum);
             ////댓글 가져오기
             //ViewBag.ReplyList = boards.ReadReply(boardNum);
             ////ReplyID 최신화 하기
@@ -118,11 +120,12 @@ namespace Board.Controllers
         public JsonResult RecommandInfo(RecommandEntity obj)
         {
             Boards boards = new Boards();
-            if (boards.RecommandInfo(obj) == 1)
+            int result = boards.RecommandInfo(obj);
+            if (result == 1)
             {
                 boards.DeleteRecommand(obj);
             }
-            else if (boards.RecommandInfo(obj) == 0)
+            else if (result == 0)
             {
                 boards.InsertRecommand(obj);
             }
@@ -130,7 +133,7 @@ namespace Board.Controllers
             return Json(
                 new
                 {
-                    RecommandCount = boards.RecommandNumber(obj),
+                    RecommandCount = boards.RecommandNumber(obj.Board_No),
                 }
                 );
         }
