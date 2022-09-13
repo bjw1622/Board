@@ -111,7 +111,7 @@
                 $('#tbody').empty();
                 if (data !== "") {
                     data.forEach((item,val) => {
-                        $('#tbody').append(createRow(item,val))
+                        $('#tbody').append(createRow(item, val, param.PageNumber))
 
                     })
                 }
@@ -137,7 +137,7 @@
                 $('#tbody').empty();
                 if (data !== "") {
                     data.forEach((item,val) => {
-                        $('#tbody').append(createRow(item,val))
+                        $('#tbody').append(createRow(item, val, param.PageNumber))
                     })
                 }
             },
@@ -174,7 +174,7 @@
                 $('#tbody').empty();
                 if (data.List !== "") {
                     data.List.forEach((item, val) => {
-                        $('#tbody').append(createRow(item, val));
+                        $('#tbody').append(createRow(item, val, param.PageNumber));
                     })
                 }
             },
@@ -201,7 +201,7 @@
                 $('#tbody').empty();
                 if (data.List !== "") {
                     data.List.forEach((item, val) => {
-                        $('#tbody').append(createRow(item, val));
+                        $('#tbody').append(createRow(item, val, param.PageNumber));
                     })
                 }
             },
@@ -210,11 +210,11 @@
         });
     }
 
-    function createRow(item,val) {
+    function createRow(item,val,pageNumber) {
         return `
         <tr class="text-center">
-                    <td class="text-center">${val+1}</td>
-                    <td class="text-center"><a href="/Board/Detail/${item.BoardNum}">${item.Title}</a></td>
+                    <td class="text-center">${(val + 1) + parseInt(pageNumber-1) * 20}</td>
+                    <td class="text-center"><a href="/Board/Detail/${item.No}">${item.Title}</a></td>
                     <td class="text-center">${item.Name}</td>
                     <td class="text-center">${item.ReplyCount}</td>
                     <td class="text-center">${item.RecommandCount}</td>

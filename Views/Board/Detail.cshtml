@@ -2,7 +2,6 @@
 @{
     ViewBag.Title = "Detail";
     //var maxReplyID = @ViewBag.MaxReplyID;
-    string email = ViewBag.detailInfo.Email;
 
 }
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -42,9 +41,9 @@
 
     </div>*@
     <hr />
-    @*<button class="btn btn-primary" id="recommand">추천 : @ViewBag.detailInfo.RecommandCount</button>*@
+    <button class="btn btn-primary" id="recommand">추천 : @ViewBag.RecommandCount</button>
 
-    @if (Session["Email"].ToString() == email)
+    @if (@ViewBag.SessionCheck == true)
     {
         <div>
             <button class="btn btn-info" onclick="update()">수정</button>
@@ -62,23 +61,24 @@
 
     @*<h3>댓글 목록</h3>
     <div id="reply-content">
-        @for (var i = 0; i <= ViewBag.replyList.Count - 1; i++)
+        @for (var i = 0; i <= ViewBag.ReplyList.Count - 1; i++)
         {
-            <div class="@ViewBag.replyList[i].ReplyID" ; style="margin-bottom:15px;">
-                <input type="text" class="form-control" value="@ViewBag.replyList[i].ReplyContent" readonly>
-                <button class="re-reply-btn" onclick="ReReplyButton(event)" name="@ViewBag.replyList[i].ReplyID">답글 달기</button>
-                <button onclick="ReadReReplyList(event)" name="@ViewBag.replyList[i].ReplyID">답글 보기</button>
-                <button class="remove-btn" name="@ViewBag.replyList[i].Email @ViewBag.replyList[i].ReplyID @ViewBag.replyList[i].ParentReplyID" onclick="ReplyRemove(event)">삭제</button>
+            <div class="@ViewBag.ReplyList[i].ReplyID" ; style="margin-bottom:15px;">
+                <input type="text" class="form-control" value="@ViewBag.ReplyList[i].ReplyContent" readonly>
+                <button class="re-reply-btn" onclick="ReReplyButton(event)" name="@ViewBag.ReplyList[i].ReplyID">답글 달기</button>
+                <button onclick="ReadReReplyList(event)" name="@ViewBag.ReplyList[i].ReplyID">답글 보기</button>
+                <button class="remove-btn" name="@ViewBag.ReplyList[i].Email @ViewBag.ReplyList[i].ReplyID @ViewBag.ReplyList[i].ParentReplyID" onclick="ReplyRemove(event)">삭제</button>
             </div>
         }
     </div>*@
 </body>
 </html>
 <script>
-    @*let recommandNumber = parseInt((document.querySelector('#recommand').innerHTML).replace(/[^0-9]/g, ''));
-    let maxReplyID = @maxReplyID;
+    let recommandNumber = parseInt((document.querySelector('#recommand').innerHTML).replace(/[^0-9]/g, ''));
 
-    // 일반 댓글 등록
+    @*let maxReplyID = @maxReplyID;*@
+
+    @*// 일반 댓글 등록
     document.querySelector('#reply-btn').addEventListener('click', () => {
         const param = {
             BoardNum: window.location.pathname.split('/')[3],
@@ -139,36 +139,33 @@
         }
     };
 
-    @*// 게시글 추천
+    // 게시글 추천
     document.querySelector('#recommand').addEventListener('click', () => {
 
         const param = {
-            "BoardNum": window.location.pathname.split('/')[3],
+            "Board_No": window.location.pathname.split('/')[3],
             "Email": "@Session["Email"]",
-            "RecommandCount": recommandNumber
         }
 
         $.ajax({
-            url: '/Board/RecommandUpdate',
+            url: '/Board/RecommandInfo',
             type: 'post',
             dataType: "json",
             data: JSON.stringify(param),
             contentType: "application/json",
             success: function (data) {
-                if (data.recommand == -1 || data.recommand == 0) {
-                    alert('추천 되었습니다.');
-                    recommandNumber += 1;
-                }
-                else if (data.recommand == 1) {
+                if (data.Result === 1) {
                     alert('추천이 취소 되었습니다.');
-                    recommandNumber -= 1;
+                }
+                else {
+                    alert('추천 되었습니다.');
                 }
                 document.querySelector('#recommand').innerHTML = `추천 : ${data.RecommandCount}`;
             },
             error: function () {
             }
         });
-    })*@
+    })
 
     @*function ReReply(event) {
         const param = {

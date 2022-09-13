@@ -42,7 +42,7 @@ namespace Board.Controllers
         public JsonResult Write(BoardEntity obj)
         {
             bool flag = true;
-            if(obj.Title == null || obj.Content == null)
+            if (obj.Title == null || obj.Content == null)
             {
                 flag = false;
                 return Json(flag);
@@ -80,10 +80,18 @@ namespace Board.Controllers
         public ActionResult Detail(int boardNum)
         {
             Boards boards = new Boards();
+
+            // 이메일 세션 일치하는지 확인
+            if (Session["Email"].ToString() == boards.DetailBoard(boardNum).Email)
+            {
+                ViewBag.SessionCheck = true;
+            }
             // 게시판 상세 정보 가져오기
             ViewBag.detailInfo = boards.DetailBoard(boardNum);
+            // 추천 최신화
+            ViewBag.RecommandCount = boards.RecommandNumber(boardNum);
             ////댓글 가져오기
-            //ViewBag.replyList = boards.ReadReply(boardNum);
+            //ViewBag.ReplyList = boards.ReadReply(boardNum);
             ////ReplyID 최신화 하기
             //ViewBag.MaxReplyID = boards.GetReplyID(boardNum);
             ////첨부파일 이미지 경로 가져오기
@@ -107,39 +115,29 @@ namespace Board.Controllers
             return RedirectToAction("Index", "Board");
         }
 
-        //    // 상세 페이지 - 추천 업데이트
-        //    [HttpPost]
-        //    public JsonResult RecommandUpdate(RecommandEntity obj)
-        //    {
-        //        Boards boards = new Boards();
-        //        // 보드 넘버랑 이메일로 0인지 1인지
-        //        int recommand = boards.GetRecommandNumber(obj);
-        //        if (recommand == -1)
-        //        {
-        //            obj.RecommandCount += 1;
-        //            //테이블에 보드넘버,이메일,1로 추가하기
-        //            boards.UpdateRecommand(obj);
-        //        }
-        //        if (recommand == 1)
-        //        {
-        //            obj.RecommandCount -= 1;
-        //            boards.SetRecomandDisabled(obj);
-        //        }
-        //        if (recommand == 0)
-        //        {
-        //            obj.RecommandCount += 1;
-        //            boards.SetRecomandActive(obj);
-
-        //        }
-        //        boards.RecommandCountUpdate(obj);
-        //        return Json(
-        //            new
-        //            {
-        //                recommand,
-        //                obj.RecommandCount
-        //            }
-        //            );
-        //    }
+        // 상세 페이지 - 추천 업데이트
+        [HttpPost]
+        public JsonResult RecommandInfo(RecommandEntity obj)
+        {
+            Boards boards = new Boards();
+            int result = boards.RecommandInfo(obj);
+            if (result == 1)
+            {
+                boards.DeleteRecommand(obj);
+            }
+            else if (result == 0)
+            {
+                boards.InsertRecommand(obj);
+            }
+            // 최신화
+            return Json(
+                new
+                {
+                    RecommandCount = boards.RecommandNumber(obj.Board_No),
+                    Result = result,
+                }
+                ); 
+        }
 
         // 인덱스 페이지 - 검색과 페이징 기능
         [HttpPost]

@@ -87,6 +87,35 @@ namespace Board.Models
             return boardEntity;
         }
 
+        public BoardEntity GetEmail(int boardNum)
+        {
+            BoardEntity boards = new BoardEntity();
+            try
+            {
+                Conn();
+                con.Open();
+                using (SqlCommand com = new SqlCommand("dbo.GetEmail", con))
+                {
+                    com.CommandType = CommandType.StoredProcedure;
+                    com.Parameters.AddWithValue("@No", boardNum);
+                    SqlDataReader reader = com.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        boards.Email = Convert.ToString(reader["Email"]);
+                    }
+                }
+                return boards;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            finally
+            {
+                ConClose();
+            }
+            return boards;
+        }
         //        public List<FileEntity> GetFileImg(int boardNum)
         //        {
         //            List<FileEntity> fileimg = new List<FileEntity>();
@@ -200,21 +229,65 @@ namespace Board.Models
             ConClose();
         }
 
-        //        // 상세 페이지 - 추천 업데이트
-        //        public void RecommandCountUpdate(RecommandEntity obj)
-        //        {
-        //            Conn();
-        //            ConOpen();
-        //            using (SqlCommand com = new SqlCommand("dbo.UpdateRecommandCount", con))
-        //            {
-        //                com.CommandType = CommandType.StoredProcedure;
-        //                com.Parameters.AddWithValue("@BoardNum", obj.BoardNum);
-        //                com.Parameters.AddWithValue("@RecommandCount", obj.RecommandCount);
-        //                SqlDataReader reader = com.ExecuteReader();
-        //            }
-        //            ConClose();
-        //        }
-
+        // 상세 페이지 - 추천 정보
+        public int RecommandInfo(RecommandEntity obj)
+        {
+            int result = 0;
+            Conn();
+            ConOpen();
+            using (SqlCommand com = new SqlCommand("dbo.UpdateRecommand", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@No", obj.Board_No);
+                com.Parameters.AddWithValue("@Email", obj.Email);
+                result = (int)(com.ExecuteScalar());
+            }
+            ConClose();
+            return result;
+        }
+        // 상세 페이지 - 추천 삭제
+        public void DeleteRecommand(RecommandEntity obj)
+        {
+            Conn();
+            ConOpen();
+            using (SqlCommand com = new SqlCommand("dbo.DeleteRecommand", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@No", obj.Board_No);
+                com.Parameters.AddWithValue("@Email", obj.Email);
+                SqlDataReader reader = com.ExecuteReader();
+            }
+            ConClose();
+        }
+        // 상세 페이지 - 추천 추가
+        public void InsertRecommand(RecommandEntity obj)
+        {
+            Conn();
+            ConOpen();
+            using (SqlCommand com = new SqlCommand("dbo.InsertRecommand", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@No", obj.Board_No);
+                com.Parameters.AddWithValue("@Email", obj.Email);
+                SqlDataReader reader = com.ExecuteReader();
+            }
+            ConClose();
+        }
+        // 상세 페이지 - 추천 개수
+        public int RecommandNumber(int board_No)
+        {
+            int result = 0;
+            Conn();
+            ConOpen();
+            using (SqlCommand com = new SqlCommand("dbo.RecommandCount", con))
+            {
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@No", board_No);
+                result = (int)(com.ExecuteScalar());
+            }
+            ConClose();
+            return result;
+        }
         // 페이징
         public List<BoardEntity> PagingBoardList(PageEntity obj)
         {
@@ -449,77 +522,6 @@ namespace Board.Models
         //                com.CommandType = CommandType.StoredProcedure;
         //                com.Parameters.AddWithValue("@BoardNum", boardNum);
         //                com.Parameters.AddWithValue("@ReplyCount", replyCount);
-        //                SqlDataReader reader = com.ExecuteReader();
-        //            }
-        //            ConClose();
-        //        }
-
-        //        public int GetRecommandNumber(RecommandEntity obj)
-        //        {
-        //            // ReplyID 가장 큰 값
-        //            int result;
-        //            Conn();
-        //            ConOpen();
-        //            using (SqlCommand com = new SqlCommand("dbo.GetRecommandNumber", con))
-        //            {
-        //                com.CommandType = CommandType.StoredProcedure;
-        //                com.Parameters.AddWithValue("@BoardNum", obj.BoardNum);
-        //                com.Parameters.AddWithValue("@Email", obj.Email);
-        //                Object nullCheck = com.ExecuteScalar();
-        //                if (nullCheck == null)
-        //                {
-        //                    //존재 X
-        //                    result = -1;
-        //                }
-        //                else
-        //                {
-        //                    // 0또는 1 반환
-        //                    result = (int)com.ExecuteScalar();
-        //                }
-        //            }
-        //            ConClose();
-        //            return result;
-        //        }
-
-        //        public void UpdateRecommand(RecommandEntity obj)
-        //        {
-        //            Conn();
-        //            ConOpen();
-        //            ReplyEntity boards = new ReplyEntity();
-        //            using (SqlCommand com = new SqlCommand("dbo.UpdateRecommand", con))
-        //            {
-        //                com.CommandType = CommandType.StoredProcedure;
-        //                com.Parameters.AddWithValue("@BoardNum", obj.BoardNum);
-        //                com.Parameters.AddWithValue("@Email", obj.Email);
-        //                SqlDataReader reader = com.ExecuteReader();
-        //            }
-        //            ConClose();
-        //        }
-        //        public void SetRecomandDisabled(RecommandEntity obj)
-        //        {
-        //            Conn();
-        //            ConOpen();
-        //            ReplyEntity boards = new ReplyEntity();
-        //            using (SqlCommand com = new SqlCommand("dbo.SetRecommandDisabled", con))
-        //            {
-        //                com.CommandType = CommandType.StoredProcedure;
-        //                com.Parameters.AddWithValue("@BoardNum", obj.BoardNum);
-        //                com.Parameters.AddWithValue("@Email", obj.Email);
-        //                SqlDataReader reader = com.ExecuteReader();
-        //            }
-        //            ConClose();
-        //        }
-
-        //        public void SetRecomandActive(RecommandEntity obj)
-        //        {
-        //            Conn();
-        //            ConOpen();
-        //            ReplyEntity boards = new ReplyEntity();
-        //            using (SqlCommand com = new SqlCommand("dbo.SetRecommandActive", con))
-        //            {
-        //                com.CommandType = CommandType.StoredProcedure;
-        //                com.Parameters.AddWithValue("@BoardNum", obj.BoardNum);
-        //                com.Parameters.AddWithValue("@Email", obj.Email);
         //                SqlDataReader reader = com.ExecuteReader();
         //            }
         //            ConClose();

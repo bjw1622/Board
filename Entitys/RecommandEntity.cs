@@ -7,9 +7,7 @@ namespace Board.Entitys
 {
     public class RecommandEntity
     {
-        public int BoardNum { get; set; }
+        public int Board_No { get; set; }
         public string Email { get; set; }
-        public int Recommand { get; set; }
-        public int RecommandCount { get; set; }
     }
 }
