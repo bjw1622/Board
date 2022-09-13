@@ -16,6 +16,8 @@ namespace Board.Controllers
             {
                 Boards boards = new Boards();
                 ViewBag.Board = boards.GetBoardList();
+                // 댓글 갯수 가져오기
+                ViewBag.ReplyCount = boards.GetReplyCount();
                 return View();
             }
             return RedirectToAction("Login", "User");
@@ -27,7 +29,10 @@ namespace Board.Controllers
         {
             Boards boards = new Boards();
             List<BoardEntity> boar = boards.PagingBoardList(obj);
-            return Json(boar);
+            // 댓글 갯수 가져오기
+            List<int> replyCount = boards.GetReplyCount();
+            return Json(new { Boar = boar, ReplyCount = replyCount });
+
 
         }
 
@@ -146,11 +151,13 @@ namespace Board.Controllers
             Boards boards = new Boards();
             List<BoardEntity> boar = boards.PagingAndFindingBoardList(obj);
             var result = boards.FindBoardCount(obj);
+            List<int> replyCount = boards.GetReplyCount();
             return Json(
                 new
                 {
                     List = boar,
                     Result = result,
+                    ReplyCount = replyCount,
                 }
                 );
         }
