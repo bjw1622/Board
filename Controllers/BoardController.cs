@@ -28,12 +28,11 @@ namespace Board.Controllers
         public JsonResult IndexPaging(PageEntity obj)
         {
             Boards boards = new Boards();
+
             List<BoardEntity> boar = boards.PagingBoardList(obj);
             // 댓글 갯수 가져오기
             List<int> replyCount = boards.GetReplyCount();
             return Json(new { Boar = boar, ReplyCount = replyCount });
-
-
         }
 
         // 글쓰기
@@ -141,7 +140,7 @@ namespace Board.Controllers
                     RecommandCount = boards.RecommandNumber(obj.Board_No),
                     Result = result,
                 }
-                ); 
+                );
         }
 
         // 인덱스 페이지 - 검색과 페이징 기능
@@ -157,7 +156,7 @@ namespace Board.Controllers
                 {
                     List = boar,
                     Result = result,
-                    ReplyCount = replyCount,
+                    Reply = replyCount,
                 }
                 );
         }
