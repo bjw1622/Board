@@ -1,5 +1,7 @@
 ﻿using Board.Entitys;
 using Board.Models;
+using System;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Board.Controllers
@@ -48,6 +50,10 @@ namespace Board.Controllers
             {
                 Session["Name"] = result.Name;
                 Session["Email"] = result.Email;
+                //HttpCookie cookie = new HttpCookie("Email", result.Email);
+                //Response.Cookies.Add(cookie);
+                //Response.Cookies["Email"].Value = result.Email;
+                //string emailCookies = cookie.Values["Email"];
                 return RedirectToAction("Index", "Board");
             }
             return Content("<script language='javascript' type='text/javascript'> " +
@@ -60,7 +66,6 @@ namespace Board.Controllers
         public JsonResult EmailCheck(UserEntity obj)
         {
             User user = new User();
-
             var result = user.EmailCheck(obj);
             return Json(result);
         }
